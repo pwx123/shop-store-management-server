@@ -1,9 +1,19 @@
 const connection = require('../db/connect');
-const resUtils = require('./resUtils');
+const errorMsg = require('./errorMsg');
 
-function connectionQuery(sql, sqlParams) {
+// res返回数据
+let resMsg = function (errorCode = 9999, data = '') {
+  return {
+    errorCode,
+    errorMsg: errorMsg[errorCode],
+    data
+  }
+}
+
+// mysql查询封装
+let connectionQuery = function (sql, sqlParams) {
   return new Promise((resolve, reject) => {
-    connection.query(sql, sqlParams, function(err, result) {
+    connection.query(sql, sqlParams, function (err, result) {
       if (err) {
         reject(9999);
       }
@@ -12,4 +22,7 @@ function connectionQuery(sql, sqlParams) {
   })
 }
 
-module.exports.connectionQuery = connectionQuery;
+module.exports = {
+  resMsg,
+  connectionQuery
+}

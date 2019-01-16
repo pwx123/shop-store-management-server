@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const rsaKey = require('./../utils/rsa');
+const resMsg = require('./../utils/utils').resMsg;
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
+router.post('/getPublicKey', (req, res, next) => {
+  let publicKey = rsaKey.exportKey('public');
+  res.json(resMsg(200, publicKey));
+})
 module.exports = router;
