@@ -1,6 +1,8 @@
 const connection = require('../db/connect');
 const errorMsg = require('./errorMsg');
 
+const SESSION_SALT = '9NRrE9iideRWxNdc9JkCH_o3YVQ6Xtlq'; // session 加盐
+
 // res返回数据
 let resMsg = function (errorCode = 9999, data = '') {
   return {
@@ -24,5 +26,6 @@ let connectionQuery = function (sql, sqlParams) {
 
 module.exports = {
   resMsg,
-  connectionQuery
+  connectionQuery,
+  SESSION_SALT
 }

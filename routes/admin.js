@@ -19,6 +19,7 @@ router.post('/login', (req, res, next) => {
           return false;
         }
         if (decryptPwd === result[0].pwd) {
+          req.session.user = result[0].name;
           res.json(resMsg(200));
         } else {
           res.json(resMsg(601));

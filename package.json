@@ -7,8 +7,10 @@
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
+    "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "express-session": "^1.15.6",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "log4js": "^3.0.6",
