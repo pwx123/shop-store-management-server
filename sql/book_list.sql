@@ -24,14 +24,17 @@ DROP TABLE IF EXISTS `book_list`;
 CREATE TABLE `book_list`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `stock` int(11) NOT NULL,
-  `author_id` int(11) NOT NULL,
-  `press_id` int(11) NOT NULL,
+  `author` int(11) NOT NULL,
+  `press` int(11) NOT NULL,
   `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `description` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `stock` int(11) NOT NULL,
   `price` float(10, 2) NOT NULL,
+  `sale_price` float(10, 2) NOT NULL,
+  `is_sell`  int(1) NOT NULL DEFAULT 1,
   `image_url` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `create_at` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_at` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

@@ -26,11 +26,12 @@ router.post('/login', (req, res, next) => {
         }
       })
       .catch(error => {
-        logger.warn(error);
-        res.json(resMsg(error));
+        logger.error(error);
+        res.json(resMsg());
       })
   } catch (error) {
-    res.json(resMsg(9999));
+    logger.error(error);
+    res.json(resMsg());
   }
 });
 
@@ -61,12 +62,12 @@ router.post('/register', (req, res, next) => {
         res.json(resMsg(200));
       })
       .catch(error => {
-        res.json(resMsg(error));
+        logger.error(error);
+        res.json(resMsg());
       })
   } catch (error) {
-    logger.warn(error);
-    res.json(resMsg(9999));
+    logger.error(error);
+    res.json(resMsg());
   }
-
 })
 module.exports = router;

@@ -3,15 +3,16 @@ var connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'shop_store_management'
+  database: 'shop_store_management',
+  multipleStatements: true
 });
 
 connection.connect(function (err) {
     if (err) {
-      console.error('连接错误: ' + err.stack);
+      console.error('mysql connction failed: ' + err.stack);
       return;
     }
-    console.log('数据库连接成功');
+    console.log('mysql connction success');
 })
 
 module.exports = connection;

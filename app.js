@@ -5,6 +5,7 @@ var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var bookRouter = require('./routes/book');
 var adminRouter = require('./routes/admin');
 
 const morgan = require('./utils/morgan');
@@ -39,13 +40,13 @@ app.use(function (req, res, next) {
     if (noSessionUrl.indexOf(url) !== -1) {
       next();
     } else {
-      console.log(1);
       res.status(401).json(resMsg(401));
     }
   }
 });
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/book', bookRouter);
 app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
