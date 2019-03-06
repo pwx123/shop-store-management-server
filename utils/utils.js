@@ -1,4 +1,6 @@
-const connection = require('../db/connect');
+const db = require('../config/dbConnect');
+const sequelize = db.sequelize;
+const Op = sequelize.Op;
 const errorMsg = require('./errorMsg');
 
 // res返回数据
@@ -7,35 +9,6 @@ let resMsg = function (errorCode = 9999, data = '') {
     errorCode,
     errorMsg: errorMsg[errorCode],
     data
-  }
-}
-
-// mysql查询封装
-let connectionQuery = function (sql, sqlParams) {
-  return new Promise((resolve, reject) => {
-    connection.query(sql, sqlParams, function (err, result) {
-      if (err) {
-        reject(err);
-      }
-      resolve(result);
-    });
-  })
-}
-
-/**
- * 分页数据格式化
- *
- * @param {Array} result sql分页查询结果
- * @param {Number} pageSize 每页数量
- * @param {Number} pageNumber 页码
- * @returns
- */
-let paginationData = function (result, pageSize, pageNumber) {
-  return {
-    pageSize,
-    pageNumber,
-    total: result[1][0].total,
-    rows: result[0]
   }
 }
 
@@ -56,61 +29,44 @@ let hasEmpty = function (...params) {
 }
 
 /**
- * 拼接sql
+ * 获取不为空的数值组成的sequelize WHERE 查询对象
  *
- * @param {Object} paramsObj 要拼接参数
- * @param {Boolean} isFirst 是否第一个 （是否添加WHERE）
- * @returns
+ * @param {Object} params 要拼接参数
+ * @returns {Object}
  */
-let splitSql = function (paramsObj, isFirst) {
-  let i = 0;
-  let sql = ' ';
-  for (key in paramsObj) {
-    let val = paramsObj[key];
+let getUncertainSqlObj = function (params) {
+  let obj = {};
+  for (key in params) {
+    let val = params[key];
     if (!hasEmpty(val)) {
-      val = typeof val === 'number' ? val : `${val}`;
-      if (i === 0 && isFirst) {
-        sql += `WHERE ${key}=${val} `;
-      } else {
-        sql += `AND ${key}=${val} `;
-      }
-      i++;
+      obj[key] = val;
     }
   }
-  return sql;
+  return obj;
 }
 
 /**
- * 拼接sql Like
+ * 获取不为空的数值组成的sequelize WHERE LIKE 查询对象
  *
- * @param {Object} paramsObj 要拼接参数
- * @param {Boolean} isFirst 是否第一个 （是否添加WHERE）
- * @returns
+ * @param {Object} params 需要LIKE的参数
+ * @returns {Object}
  */
-let splitLikeSql = function (paramsObj, isFirst) {
-  let i = 0;
-  let sql = ' ';
-  for (key in paramsObj) {
-    let val = paramsObj[key];
+let getUncertainLikeSqlObj = function (params) {
+  let obj = {};
+  for (key in params) {
+    let val = params[key];
     if (!hasEmpty(val)) {
-      val = typeof val === 'number' ? val : `${val}`;
-      if (i === 0 && isFirst) {
-        sql += `WHERE ${key} LIKE '%${val}%' `;
-      } else {
-        sql += `AND ${key} LIKE '%${val}%' `;
-      }
-      i++;
+      obj[key] = {};
+      obj[key][Op.like] = `%${val}%`;
     }
   }
-  return sql;
+  return obj;
 }
 
 
 module.exports = {
   resMsg,
-  connectionQuery,
-  paginationData,
   hasEmpty,
-  splitSql,
-  splitLikeSql
+  getUncertainSqlObj,
+  getUncertainLikeSqlObj
 }

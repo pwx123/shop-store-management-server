@@ -8,9 +8,9 @@ var usersRouter = require('./routes/users');
 var bookRouter = require('./routes/book');
 var adminRouter = require('./routes/admin');
 
-const morgan = require('./utils/morgan');
+const morgan = require('./config/morgan');
 const resMsg = require('./utils/utils').resMsg;
-const noSessionUrl = ['/admin/login', '/admin/register', '/getPublicKey'];
+const noSessionUrl = ['/admin/login', '/admin/register', '/getPublicKey', '/getUserList'];
 
 var app = express();
 app.set('views', path.join(__dirname, 'views'));
@@ -33,7 +33,7 @@ app.use(session({
 }))
 
 app.use(function (req, res, next) {
-  if (req.session.user && typeof req.session.user === 'string') {
+  if (req.session.loginUser && typeof req.session.loginUser === 'string') {
     next();
   } else {
     let url = req.originalUrl;
@@ -51,7 +51,7 @@ app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  next(createError(404));
+  res.status(404).json(resMsg(404));
 });
 
 // error handler
@@ -61,8 +61,7 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  res.status(err.status || 500).json(resMsg());
 });
 
 module.exports = app;

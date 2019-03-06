@@ -1,0 +1,70 @@
+const moment = require('moment');
+module.exports = function (sequelize, DataTypes) {
+  return sequelize.define('book_list', {
+    id: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    name: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    author: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    press: {
+      type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    title: {
+      type: DataTypes.STRING(200),
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.STRING(500),
+      allowNull: false
+    },
+    stock: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false
+    },
+    price: {
+      type: DataTypes.FLOAT(11, 2),
+      allowNull: false
+    },
+    salePrice: {
+      type: DataTypes.FLOAT(11, 2),
+      allowNull: false
+    },
+    isSell: {
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue: 1
+    },
+    imageUrl: {
+      type: DataTypes.STRING(200)
+    },
+    description: {
+      type: DataTypes.STRING(500),
+      allowNull: false
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      get() {
+        return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      get() {
+        return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+      }
+    }
+  }, {
+    timestamps: false,
+    freezeTableName: true
+  })
+}

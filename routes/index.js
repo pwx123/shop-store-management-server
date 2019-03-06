@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const rsaKey = require('./../utils/rsa');
+const rsaKey = require('./../config/rsa');
 const resMsg = require('./../utils/utils').resMsg;
 
 router.post('/getPublicKey', (req, res, next) => {
