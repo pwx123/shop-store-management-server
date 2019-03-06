@@ -33,8 +33,6 @@ class bookListModel {
       attributes: [
         [sequelize.fn('COUNT', sequelize.col('id')), 'total']
       ],
-      offset: pageSize * (pageNumber - 1),
-      limit: pageSize,
       where: {
         createdAt: {
           [Op.gt]: startTime,

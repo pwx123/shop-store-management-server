@@ -6,5 +6,7 @@ const adminUserController = require('../controllers/adminUserController')
 router.post('/login', adminUserController.login);
 // 注册
 router.post('/register', adminUserController.register);
+// 退出登陆
+router.post('/logout', adminUserController.logout);
 
 module.exports = router;

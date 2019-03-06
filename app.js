@@ -23,12 +23,12 @@ app.use(express.urlencoded({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: 'lolHQupaD7pzuuVunipqiK8gyQeZLg+ZAOvgA3jzNgpXPeGmWqhSHbFuiXn8OKqN9ldADkf+38KX9NJfqkG9JA==', //签名
+  secret: 'lolHQupaD7pzuuVunipqiK8gyQeZLg+ZAOvgA3jzNgpXPeGmWqhSHbFuiXn8OKqN9ldADkf+38KX9NJfqkG9JA', //签名
   name: 'SESSION_ID',
   resave: false,
   saveUninitialized: true,
   cookie: {
-    maxAge: 60 * 1000 * 300
+    maxAge: 60 * 60 * 1000
   }
 }))
 
@@ -49,7 +49,7 @@ app.use('/users', usersRouter);
 app.use('/book', bookRouter);
 app.use('/admin', adminRouter);
 
-// catch 404 and forward to error handler
+//404 handler
 app.use(function (req, res, next) {
   res.status(404).json(resMsg(404));
 });

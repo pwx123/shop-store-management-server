@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const rsaKey = require('./../config/rsa');
-const resMsg = require('./../utils/utils').resMsg;
+const indexController = require('../controllers/indexController')
 
-router.post('/getPublicKey', (req, res, next) => {
-  let publicKey = rsaKey.exportKey('public');
-  res.json(resMsg(200, publicKey));
-})
+// 获取公钥
+router.post('/getPublicKey', indexController.getPublicKey);
+// 获取用户信息
+router.post('/getUserInfo', indexController.getUserInfo);
+
 module.exports = router;

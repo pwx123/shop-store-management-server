@@ -2,6 +2,8 @@ const rsaKey = require('../config/rsa');
 const logger = require('../config/log4j');
 const resMsg = require('../utils/utils').resMsg;
 const hasEmpty = require('../utils/utils').hasEmpty;
+const mobileReg = require('../utils/utils').hasEmpty;
+const pwdReg = require('../utils/utils').hasEmpty;
 const adminUserModel = require('../modules/adminUserModel');
 
 class adminUserController {
@@ -59,7 +61,7 @@ class adminUserController {
       let repPwd = decodeURI(req.body.repPwd)
       let decryptPwd = rsaKey.decrypt(pwd, 'utf8');
       let decryptRepPwd = rsaKey.decrypt(repPwd, 'utf8');
-      if (hasEmpty(name, decryptPwd, decryptRepPwd)) {
+      if (hasEmpty(name, decryptPwd, decryptRepPwd) || !mobileReg.test(name) || !pwdReg.test(pwd)) {
         res.json(resMsg(9001));
         return false;
       } else {
@@ -82,6 +84,10 @@ class adminUserController {
       logger.error(error);
       res.json(resMsg());
     }
+  }
+  static async logout(req, res, next) {
+    req.session.destroy();
+    res.json(resMsg(200));
   }
 }
 

@@ -63,10 +63,14 @@ let getUncertainLikeSqlObj = function (params) {
   return obj;
 }
 
+const mobileReg = /^1[3456789]\d{9}$/;
+const pwdReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
 
 module.exports = {
   resMsg,
   hasEmpty,
   getUncertainSqlObj,
-  getUncertainLikeSqlObj
+  getUncertainLikeSqlObj,
+  mobileReg,
+  pwdReg
 }
