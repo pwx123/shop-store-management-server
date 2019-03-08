@@ -2,6 +2,7 @@ const db = require('../config/dbConnect');
 const sequelize = db.sequelize;
 const Op = sequelize.Op;
 const bookListSchema = sequelize.import('../schema/bookListSchema');
+const classifySchema = sequelize.import('../schema/classifySchema');
 const getUncertainLikeSqlObj = require('../utils/utils').getUncertainLikeSqlObj;
 
 class bookListModel {
@@ -29,20 +30,7 @@ class bookListModel {
       press
     });
 
-    let result = await bookListSchema.findAll({
-      attributes: [
-        [sequelize.fn('COUNT', sequelize.col('id')), 'total']
-      ],
-      where: {
-        createdAt: {
-          [Op.gt]: startTime,
-          [Op.lt]: endTime,
-        },
-        ...likeObj
-      }
-    })
-    let total = parseInt(result[0].get('total'));
-    let rows = await bookListSchema.findAll({
+    let result = await bookListSchema.findAndCountAll({
       offset: pageSize * (pageNumber - 1),
       limit: pageSize,
       where: {
@@ -56,8 +44,8 @@ class bookListModel {
     return {
       pageSize,
       pageNumber,
-      total,
-      rows
+      rows: result.rows,
+      total: result.count
     }
   }
 
@@ -80,18 +68,31 @@ class bookListModel {
   }
 
   /**
-   * 获取列表总数
    *
+   * 查询所有图书分类
    * @static
-   * @returns
+   * @returns {Promise<*>}
    * @memberof bookListModel
    */
-  static async getTotalNum() {
-    return await bookListSchema.findAll({
-      attributes: [
-        [sequelize.fn('COUNT', sequelize.col('id')), 'total']
-      ]
-    })
+  static async getAllClassify() {
+    return await classifySchema.findAll();
+  }
+
+  /**
+   *
+   * 删除图书分类
+   * @static
+   * @param {*} id 分类id
+   * @returns {Promise<*>}
+   * @memberof bookListModel
+   */
+  static async deleteClassify(id) {
+    await classifySchema.destroy({
+      where: {
+        id
+      }
+    });
+    return await sequelize.query(`UPDATE \`book_list\` SET \`classify\`=TRIM(BOTH ',' FROM replace(concat(',',\`classify\`,','), ',${id},', '')) WHERE FIND_IN_SET('${id}',classify)`);
   }
 }
 
