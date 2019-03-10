@@ -1,7 +1,14 @@
+const formidable = require('formidable');
+const fs = require("fs");
+const path = require('path');
+const nodeXlsx = require('node-xlsx');
+const nodeZip = require('archiver');
+const nodeUnZip = require('unzip');
 const logger = require('../config/log4j');
 const resMsg = require('../utils/utils').resMsg;
 const hasEmpty = require('../utils/utils').hasEmpty;
 const bookListModel = require('../modules/bookListModel');
+const uploadConfig = require('./../config/uploadConfig');
 class bookListController {
   /**
    * 获取图书列表
@@ -55,6 +62,219 @@ class bookListController {
   }
 
   /**
+   * 更新图书
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof bookListController
+   */
+  static async updateBook(req, res, next) {
+    let form = new formidable.IncomingForm();
+    form.encoding = uploadConfig.ENCODING;
+    form.uploadDir = uploadConfig.SERVER_DIR + uploadConfig.BOOK_IMG_URL;
+    form.keepExtensions = uploadConfig.KEEP_EXTENSIONS;
+    form.maxFileSize = uploadConfig.MAX_FILESIZE;
+    form.parse(req, async (error, fields, files) => {
+      if (error) {
+        logger.error(error);
+        res.json(resMsg());
+        return false;
+      }
+      let data = fields;
+      let {
+        id,
+        name,
+        author,
+        press,
+        title,
+        description,
+        price,
+        salePrice,
+        isSell
+      } = data;
+      if (hasEmpty(id, name, author, press, title, description, price, salePrice, isSell)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      if (files.imageUrl) {
+        let extname = path.extname(files.imageUrl.name);
+        let newPath = uploadConfig.SERVER_DIR + uploadConfig.BOOK_IMG_URL + data.id + extname.toLocaleLowerCase();
+        fs.renameSync(files.imageUrl.path, newPath);
+        data.imageUrl = uploadConfig.SERVER_URL + uploadConfig.BOOK_IMG_URL + data.id + extname.toLocaleLowerCase();
+      } else {
+        delete data.imageUrl;
+      }
+      await bookListModel.updateBook(data);
+      res.json(resMsg(200));
+    });
+    form.on('error', function (error) {
+      logger.error(error);
+      res.json(resMsg());
+      return false;
+    });
+  }
+
+  /**
+   * 上传excel
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof bookListController
+   */
+  static async uploadExcel(req, res, next) {
+    let excelUrl = uploadConfig.TEMP;
+    let form = new formidable.IncomingForm();
+    let map = {
+      1: 'A',
+      2: 'B',
+      3: 'C',
+      4: 'D',
+      5: 'E',
+      6: 'F',
+      7: 'G',
+      8: 'H',
+      9: 'I',
+      10: 'J',
+    }
+    const DATA_LENGTH = 10;
+    form.encoding = uploadConfig.ENCODING;
+    form.uploadDir = uploadConfig.SERVER_DIR + excelUrl;
+    form.keepExtensions = uploadConfig.KEEP_EXTENSIONS;
+    form.maxFileSize = uploadConfig.MAX_FILESIZE;
+    let errorMsg = '';
+    form.parse(req, async (error, fields, files) => {
+      if (error) {
+        logger.error(error);
+        res.json(resMsg());
+        return false;
+      }
+      const excelData = nodeXlsx.parse(files.excel.path);
+      let saveData = excelData[0].data;
+      if (saveData.length > 1) {
+        for (let i = 1, len = saveData.length; i < len; i++) {
+          let data = saveData[i];
+          for (let j = 0; j < DATA_LENGTH; j++) {
+            let val = data[j];
+            if (j === 3) {
+              if (hasEmpty(val)) {
+                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+                break;
+              }
+              if (val != 1 && val != 0) {
+                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据格式不正确，只能为 0 或 1`;
+                break;
+              }
+            } else if (j === 4) {
+              if (!hasEmpty(val) && !/^\d(,\d)*$/.test(val)) {
+                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据格式不正确，示例：'1' 或 '1,2,3'`;
+                break;
+              }
+            } else if (j === 7) {
+              if (hasEmpty(val)) {
+                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+                break;
+              }
+              if (!/^\d+$/.test(val)) {
+                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据格式不正确，必须为大于0的数字`;
+                break;
+              }
+            } else if (j === 8 || j === 9) {
+              if (hasEmpty(val)) {
+                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+                break;
+              }
+              if (!/^\d+(\.\d{0,2})?$/.test(val)) {
+                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据格式不正确，必须为大于0的数字，最多保留两位小数`;
+                break;
+              }
+            } else if (hasEmpty(val)) {
+              errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+              break;
+            }
+          }
+          if (errorMsg) {
+            break;
+          }
+        }
+        if (errorMsg) {
+          res.json({
+            errorCode: 9999,
+            errorMsg: errorMsg,
+            data: ''
+          })
+          return false;
+        } else {
+          console.log(saveData);
+          res.json(resMsg(200))
+        }
+      } else {
+        res.json(resMsg(2001));
+        return false;
+      }
+    })
+    form.on('error', function (error) {
+      logger.error(error);
+      res.json(resMsg());
+      return false;
+    });
+  }
+
+  /**
+   * 下载上传模板
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof bookListController
+   */
+  static async downloadBookTemplate(req, res, next) {
+    let filePath = uploadConfig.SERVER_DIR + '/' + uploadConfig.ZIP_NAME;
+    let classifyData = await bookListModel.getAllClassify();
+    let name = uploadConfig.CLASSIFY_EXEL_NAME;
+    let zipName = uploadConfig.ZIP_NAME;
+    let data = [
+      ['id', '分类名']
+    ];
+    for (var i = 0, len = classifyData.length; i < len; i++) {
+      let temp = [];
+      temp[0] = classifyData[i].id;
+      temp[1] = classifyData[i].name;
+      data.push(temp);
+    }
+    var buffer = nodeXlsx.build([{
+      name,
+      data
+    }]);
+    // 生成类别对照表excel
+    fs.writeFile(uploadConfig.SERVER_DIR + uploadConfig.BOOK_TEMPLATE + name, buffer, (err) => {
+      if (err) {
+        logger.error(err);
+        res.json(resMsg());
+        return false;
+      }
+      // 压缩为zip
+      let output = fs.createWriteStream(uploadConfig.SERVER_DIR + '/' + zipName);
+      let archive = nodeZip('zip');
+      archive.on('error', (err) => {
+        logger.error(err);
+        res.json(resMsg());
+        return false;
+      });
+      archive.pipe(output);
+      archive.directory(uploadConfig.SERVER_DIR + uploadConfig.BOOK_TEMPLATE, false);
+      archive.finalize();
+      output.on('close', () => {
+        res.download(filePath);
+      })
+    })
+  }
+
+  /**
    * 获取所有分类信息
    *
    * @static
@@ -91,6 +311,30 @@ class bookListController {
         return false;
       }
       await bookListModel.deleteClassify(req.body.id);
+      res.json(resMsg(200));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 新增分类
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns
+   * @memberof bookListController
+   */
+  static async addClassify(req, res, next) {
+    try {
+      if (hasEmpty(req.body.classifyName)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      await bookListModel.addClassify(req.body.classifyName);
       res.json(resMsg(200));
     } catch (error) {
       logger.error(error);

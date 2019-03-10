@@ -7,11 +7,13 @@
     "production": "set NODE_ENV=production&& node ./bin/www"
   },
   "dependencies": {
+    "archiver": "^3.0.0",
     "cookie-parser": "~1.4.3",
     "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-session": "^1.15.6",
+    "formidable": "^1.2.1",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "log4js": "^3.0.6",
@@ -19,6 +21,8 @@
     "mysql": "^2.16.0",
     "mysql2": "^1.6.5",
     "node-rsa": "^1.0.2",
-    "sequelize": "^4.43.0"
+    "node-xlsx": "^0.14.1",
+    "sequelize": "^4.43.0",
+    "unzip": "^0.1.11"
   }
 }
