@@ -7,6 +7,11 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
+    status: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false,
+      defaultValue: 0
+    },
     name: {
       type: DataTypes.STRING(100),
       allowNull: false
@@ -33,7 +38,8 @@ module.exports = function (sequelize, DataTypes) {
     },
     stock: {
       type: DataTypes.INTEGER(11),
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0
     },
     price: {
       type: DataTypes.FLOAT(11, 2),

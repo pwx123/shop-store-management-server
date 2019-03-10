@@ -117,6 +117,65 @@ class bookListController {
   }
 
   /**
+   * 新增图书
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof bookListController
+   */
+  static async insertBook(req, res, next) {
+    let form = new formidable.IncomingForm();
+    form.encoding = uploadConfig.ENCODING;
+    form.uploadDir = uploadConfig.SERVER_DIR + uploadConfig.BOOK_IMG_URL;
+    form.keepExtensions = uploadConfig.KEEP_EXTENSIONS;
+    form.maxFileSize = uploadConfig.MAX_FILESIZE;
+    form.parse(req, async (error, fields, files) => {
+      if (error) {
+        logger.error(error);
+        res.json(resMsg());
+        return false;
+      }
+      let data = fields;
+      let {
+        name,
+        author,
+        press,
+        title,
+        description,
+        price,
+        salePrice,
+        isSell
+      } = data;
+      if (hasEmpty(name, author, press, title, description, price, salePrice, isSell)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      delete data.imageUrl;
+      let result = await bookListModel.insertBook([data]);
+      let imageUrl = ''
+      if (files.imageUrl) {
+        let extname = path.extname(files.imageUrl.name);
+        let newPath = uploadConfig.SERVER_DIR + uploadConfig.BOOK_IMG_URL + result[0].id + extname.toLocaleLowerCase();
+        fs.renameSync(files.imageUrl.path, newPath);
+        imageUrl = uploadConfig.SERVER_URL + uploadConfig.BOOK_IMG_URL + result[0].id + extname.toLocaleLowerCase();
+        let updateObj = {
+          id: result[0].id,
+          imageUrl
+        }
+        await bookListModel.updateBook(updateObj);
+      }
+      res.json(resMsg(200));
+    });
+    form.on('error', function (error) {
+      logger.error(error);
+      res.json(resMsg());
+      return false;
+    });
+  }
+
+  /**
    * 上传excel
    *
    * @static
@@ -139,7 +198,19 @@ class bookListController {
       8: 'H',
       9: 'I',
       10: 'J',
-    }
+    };
+    let dataMap = {
+      0: 'name',
+      1: 'author',
+      2: 'press',
+      3: 'isSell',
+      4: 'classify',
+      5: 'title',
+      6: 'description',
+      7: 'stock',
+      8: 'price',
+      9: 'salePrice'
+    };
     const DATA_LENGTH = 10;
     form.encoding = uploadConfig.ENCODING;
     form.uploadDir = uploadConfig.SERVER_DIR + excelUrl;
@@ -153,10 +224,12 @@ class bookListController {
         return false;
       }
       const excelData = nodeXlsx.parse(files.excel.path);
-      let saveData = excelData[0].data;
-      if (saveData.length > 1) {
-        for (let i = 1, len = saveData.length; i < len; i++) {
-          let data = saveData[i];
+      let optionData = excelData[0].data;
+      let saveData = [];
+      if (optionData.length > 1) {
+        for (let i = 1, len = optionData.length; i < len; i++) {
+          let data = optionData[i];
+          let saveDataObj = {};
           for (let j = 0; j < DATA_LENGTH; j++) {
             let val = data[j];
             if (j === 3) {
@@ -195,10 +268,12 @@ class bookListController {
               errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
               break;
             }
+            saveDataObj[dataMap[j]] = val;
           }
           if (errorMsg) {
             break;
           }
+          saveData.push(saveDataObj);
         }
         if (errorMsg) {
           res.json({
@@ -208,7 +283,7 @@ class bookListController {
           })
           return false;
         } else {
-          console.log(saveData);
+          await bookListModel.insertBook(saveData);
           res.json(resMsg(200))
         }
       } else {

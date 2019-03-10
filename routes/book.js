@@ -9,6 +9,8 @@ router.post('/deleteBooks', bookListController.deleteBooks);
 // 获取所有图书分类
 router.post('/getAllClassify', bookListController.getAllClassify);
 // 更新图书
+router.post('/insertBook', bookListController.insertBook);
+// 更新图书
 router.post('/updateBook', bookListController.updateBook);
 // 批量上传图书
 router.post('/uploadExcel', bookListController.uploadExcel);

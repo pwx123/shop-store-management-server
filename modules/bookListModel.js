@@ -34,12 +34,16 @@ class bookListModel {
       offset: pageSize * (pageNumber - 1),
       limit: pageSize,
       where: {
+        status: 0,
         createdAt: {
           [Op.gt]: startTime,
           [Op.lt]: endTime,
         },
         ...likeObj
-      }
+      },
+      order: [
+        ['id', 'DESC']
+      ]
     })
     return {
       pageSize,
@@ -58,7 +62,9 @@ class bookListModel {
    * @memberof bookListModel
    */
   static async deleteBooks(ids) {
-    return await bookListSchema.destroy({
+    return await bookListSchema.update({
+      status: 1
+    },{
       where: {
         id: {
           [Op.in]: ids.split(',')
@@ -78,9 +84,12 @@ class bookListModel {
   static async updateBook(param) {
     let {
       id,
+      stock,
       ...updateData
     } = param;
+    let str = stock >= 0 ? `+${stock}` : `${stock}`;
     return await bookListSchema.update({
+      stock: sequelize.literal('`stock` ' + str),
       updatedAt: new Date(),
       ...updateData
     }, {
@@ -88,6 +97,17 @@ class bookListModel {
         id
       }
     })
+  }
+
+  /**
+   * 批量插入图书
+   *
+   * @static
+   * @param {Array} bookArr
+   * @memberof bookListModel
+   */
+  static async insertBook(bookArr) {
+    return await bookListSchema.bulkCreate(bookArr);
   }
 
   /**
