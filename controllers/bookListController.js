@@ -223,7 +223,14 @@ class bookListController {
         res.json(resMsg());
         return false;
       }
+      // 读取文件
       const excelData = nodeXlsx.parse(files.excel.path);
+      // 删除文件
+      fs.unlink(files.excel.path, (error) => {
+        if (error) {
+          logger.error(error);
+        }
+      })
       let optionData = excelData[0].data;
       let saveData = [];
       if (optionData.length > 1) {
@@ -276,6 +283,7 @@ class bookListController {
           saveData.push(saveDataObj);
         }
         if (errorMsg) {
+          logger.error(errorMsg);
           res.json({
             errorCode: 9999,
             errorMsg: errorMsg,
@@ -287,6 +295,7 @@ class bookListController {
           res.json(resMsg(200))
         }
       } else {
+        logger.error('上传文件内容为空');
         res.json(resMsg(2001));
         return false;
       }
