@@ -40,46 +40,17 @@ class adminUserModel {
   }
 
   /**
-   * 修改昵称
+   * 修改数据
    *
    * @static
-   * @param {*} nickname 昵称
+   * @param {Object} data 
    * @param {*} loginUser 用户手机号
    * @returns
    * @memberof adminUserModel
    */
-  static async updateNickname(nickname, loginUser) {
+  static async update(data, loginUser) {
     return await adminUserSchema.update({
-      nickname
-    }, {
-      where: {
-        name: loginUser
-      }
-    })
-  }
-
-  /**
-   * 更改密码
-   *
-   * @static
-   * @param {*} pwd 新密码
-   * @param {*} loginUser 用户手机号
-   * @returns
-   * @memberof adminUserModel
-   */
-  static async updatePassword(pwd, loginUser) {
-    return await adminUserSchema.update({
-      pwd
-    }, {
-      where: {
-        name: loginUser
-      }
-    })
-  }
-
-  static async updateAvatar(avatarUrl, loginUser) {
-    return await adminUserSchema.update({
-      avatarUrl
+      ...data
     }, {
       where: {
         name: loginUser

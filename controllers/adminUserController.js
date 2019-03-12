@@ -120,7 +120,9 @@ class adminUserController {
       if (hasEmpty(nickname)) {
         nickname = "";
       }
-      await adminUserModel.updateNickname(nickname, req.session.loginUser);
+      await adminUserModel.update({
+        nickname
+      }, req.session.loginUser);
       res.json(resMsg(200));
     } catch (error) {
       logger.error(error);
@@ -155,7 +157,9 @@ class adminUserController {
       }
       let result = await adminUserModel.getUserInfo(req.session.loginUser);
       if (result.pwd === decryptPwd) {
-        await adminUserModel.updatePassword(decryptNewPwd, req.session.loginUser);
+        await adminUserModel.update({
+          pwd: decryptNewPwd
+        }, req.session.loginUser);
         req.session.destroy();
         res.json(resMsg(200));
       } else {
@@ -198,7 +202,9 @@ class adminUserController {
         res.json(resMsg(9001));
         return false;
       }
-      await adminUserModel.updateAvatar(avatarUrl, req.session.loginUser);
+      await adminUserModel.update({
+        avatarUrl
+      }, req.session.loginUser);
       res.json(resMsg(200));
     });
     form.on('error', function (error) {
