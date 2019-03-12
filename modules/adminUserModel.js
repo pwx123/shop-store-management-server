@@ -38,6 +38,54 @@ class adminUserModel {
       pwd
     })
   }
+
+  /**
+   * 修改昵称
+   *
+   * @static
+   * @param {*} nickname 昵称
+   * @param {*} loginUser 用户手机号
+   * @returns
+   * @memberof adminUserModel
+   */
+  static async updateNickname(nickname, loginUser) {
+    return await adminUserSchema.update({
+      nickname
+    }, {
+      where: {
+        name: loginUser
+      }
+    })
+  }
+
+  /**
+   * 更改密码
+   *
+   * @static
+   * @param {*} pwd 新密码
+   * @param {*} loginUser 用户手机号
+   * @returns
+   * @memberof adminUserModel
+   */
+  static async updatePassword(pwd, loginUser) {
+    return await adminUserSchema.update({
+      pwd
+    }, {
+      where: {
+        name: loginUser
+      }
+    })
+  }
+
+  static async updateAvatar(avatarUrl, loginUser) {
+    return await adminUserSchema.update({
+      avatarUrl
+    }, {
+      where: {
+        name: loginUser
+      }
+    })
+  }
 }
 
 module.exports = adminUserModel;

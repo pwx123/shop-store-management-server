@@ -20,6 +20,8 @@ const MAX_FILESIZE = 1024 * 1024 * 20;
 const SERVER_URL = 'http://127.0.0.1';
 // 图书图片地址
 const BOOK_IMG_URL = '/images/book/';
+// 管理员头像地址
+const ADMIN_AVATAR_URL = '/images/admin/';
 
 module.exports = {
   ENCODING,
@@ -32,5 +34,6 @@ module.exports = {
   CLASSIFY_EXEL_NAME,
   ZIP_NAME,
   BOOK_IMG_URL,
-  TEMP
+  TEMP,
+  ADMIN_AVATAR_URL
 }

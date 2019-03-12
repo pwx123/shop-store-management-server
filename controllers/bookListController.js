@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require('path');
 const nodeXlsx = require('node-xlsx');
 const nodeZip = require('archiver');
-const nodeUnZip = require('unzip');
 const logger = require('../config/log4j');
 const resMsg = require('../utils/utils').resMsg;
 const hasEmpty = require('../utils/utils').hasEmpty;
