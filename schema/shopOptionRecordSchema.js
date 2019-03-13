@@ -7,8 +7,12 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
-    optionUser: {
+    optionName: {
       type: DataTypes.STRING(40),
+      allowNull: false
+    },
+    optionNickname: {
+      type: DataTypes.STRING(20),
       allowNull: false
     },
     optionType: {
@@ -23,7 +27,7 @@ module.exports = function (sequelize, DataTypes) {
     createdAt: {
       type: DataTypes.DATE,
       get() {
-        return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+        return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
       }
     }
   }, {

@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 12/03/2019 16:13:01
+ Date: 13/03/2019 20:50:51
 */
 
 SET NAMES utf8mb4;
@@ -25,20 +25,21 @@ CREATE TABLE `admin_user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `pwd` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `nickname` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `nickname` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `avatarUrl` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `createdAt` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
-INSERT INTO `admin_user` VALUES (1, 'pwx', '123', NULL, NULL, '2019-01-07 21:28:26', '2019-03-11 15:16:16');
-INSERT INTO `admin_user` VALUES (4, '15553509117', '827ccb0eea8a706c4c34a16891f84e7b', '', '', '2019-01-17 22:17:07', '2019-03-11 15:16:16');
-INSERT INTO `admin_user` VALUES (5, '15553598117', '9c67e149bf846087c5b0043bb40eb35f', '管理员2', 'http://127.0.0.1/images/admin/15553598117.jpg', '2019-01-20 22:14:43', '2019-03-11 15:16:16');
-INSERT INTO `admin_user` VALUES (6, '15553598112', '9c67e149bf846087c5b0043bb40eb35f', NULL, NULL, '2019-03-11 15:33:20', '2019-03-11 15:33:20');
+INSERT INTO `admin_user` VALUES (1, 'pwx', '123', '1', NULL, '2019-01-07 21:28:26', '2019-03-11 15:16:16');
+INSERT INTO `admin_user` VALUES (4, '15553509117', '827ccb0eea8a706c4c34a16891f84e7b', '1', '', '2019-01-17 22:17:07', '2019-03-11 15:16:16');
+INSERT INTO `admin_user` VALUES (5, '15553598117', '212653b377dbb56c6608ce225db24979', '管理员1', 'http://127.0.0.1/images/admin/15553598117.jpg', '2019-01-20 22:14:43', '2019-03-11 15:16:16');
+INSERT INTO `admin_user` VALUES (6, '15553598112', '9c67e149bf846087c5b0043bb40eb35f', '1', NULL, '2019-03-11 15:33:20', '2019-03-11 15:33:20');
+INSERT INTO `admin_user` VALUES (7, '15553598111', '9c67e149bf846087c5b0043bb40eb35f', 'pwx', NULL, '2019-03-13 12:41:26', '2019-03-13 12:41:26');
 
 -- ----------------------------
 -- Table structure for book_category
@@ -115,6 +116,46 @@ INSERT INTO `book_list` VALUES (156, 0, '红楼梦', '吴承恩', '人民出版�
 INSERT INTO `book_list` VALUES (157, 0, '水浒传', '吴承恩', '人民出版社', '2', '四大名著', '四大名著经典之作', 12, 40.43, 30.20, 1, NULL, '2019-03-11 12:18:10', '2019-03-11 12:18:10');
 INSERT INTO `book_list` VALUES (158, 0, '红楼里', '夏明', '山东出版社', '1,2', '名著', '值得一看', 10, 20.00, 10.00, 0, NULL, '2019-03-11 12:19:17', '2019-03-11 21:13:36');
 INSERT INTO `book_list` VALUES (159, 1, '红楼里', '夏明', '山东出版社', '1,3', '名著', '值得一看', 10, 20.00, 10.00, 0, NULL, '2019-03-11 12:19:17', '2019-03-11 12:19:17');
+
+-- ----------------------------
+-- Table structure for shop_info
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_info`;
+CREATE TABLE `shop_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `shopName` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  `updatedAt` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of shop_info
+-- ----------------------------
+INSERT INTO `shop_info` VALUES (1, '天天书店1', 1, '书店成立于2017年，图书种类齐全1，书店成立于2017年，图书种类齐全1，书店成立于2017年，图书种类齐全', '2019-03-28 22:16:55');
+
+-- ----------------------------
+-- Table structure for shop_option_record
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_option_record`;
+CREATE TABLE `shop_option_record`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `optionName` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `optionNickname` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `optionType` int(11) NOT NULL,
+  `remark` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of shop_option_record
+-- ----------------------------
+INSERT INTO `shop_option_record` VALUES (1, '15553598117', '管理员', 1, '测试', '2019-03-12 22:57:31');
+INSERT INTO `shop_option_record` VALUES (2, '15553598111', 'pwx', 0, '修改店铺名', '2019-03-13 16:07:29');
+INSERT INTO `shop_option_record` VALUES (3, '15553598111', 'pwx', 0, '打开了店铺', '2019-03-13 16:14:41');
+INSERT INTO `shop_option_record` VALUES (4, '15553598111', 'pwx', 0, '修改介绍', '2019-03-13 16:18:31');
 
 -- ----------------------------
 -- Table structure for shop_user

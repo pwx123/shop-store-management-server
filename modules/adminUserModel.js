@@ -29,13 +29,8 @@ class adminUserModel {
    * @memberof adminUserModel
    */
   static async create(user) {
-    let {
-      name,
-      pwd
-    } = user;
     return await adminUserSchema.create({
-      name,
-      pwd
+     ...user
     })
   }
 
@@ -43,14 +38,14 @@ class adminUserModel {
    * 修改数据
    *
    * @static
-   * @param {Object} data 
+   * @param {Object} parmas 
    * @param {*} loginUser 用户手机号
    * @returns
    * @memberof adminUserModel
    */
-  static async update(data, loginUser) {
+  static async update(parmas, loginUser) {
     return await adminUserSchema.update({
-      ...data
+      ...parmas
     }, {
       where: {
         name: loginUser

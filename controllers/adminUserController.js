@@ -60,11 +60,12 @@ class adminUserController {
   static async register(req, res, next) {
     try {
       let name = req.body.name;
+      let nickname = req.body.nickname;
       let pwd = decodeURI(req.body.pwd);
       let repPwd = decodeURI(req.body.repPwd)
       let decryptPwd = rsaKey.decrypt(pwd, 'utf8');
       let decryptRepPwd = rsaKey.decrypt(repPwd, 'utf8');
-      if (hasEmpty(name, decryptPwd, decryptRepPwd) || !mobileReg.test(name)) {
+      if (hasEmpty(name, decryptPwd, decryptRepPwd, nickname) || !mobileReg.test(name) || nickname.length > 20) {
         res.json(resMsg(9001));
         return false;
       } else {
@@ -78,6 +79,7 @@ class adminUserController {
           return false;
         }
         await adminUserModel.create({
+          nickname: nickname,
           name: name,
           pwd: decryptPwd
         });
@@ -117,7 +119,7 @@ class adminUserController {
       let {
         nickname
       } = req.body;
-      if (hasEmpty(nickname)) {
+      if (hasEmpty(nickname) || nickname.length > 20) {
         nickname = "";
       }
       await adminUserModel.update({

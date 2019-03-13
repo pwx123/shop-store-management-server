@@ -17,7 +17,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     nickname: {
       type: DataTypes.STRING(20),
-      allowNull: true
+      allowNull: false
     },
     avatarUrl: {
       type: DataTypes.STRING(200),
