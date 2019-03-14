@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
     updatedAt: {
       type: DataTypes.DATE,
       get() {
-        return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+        return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
       }
     }
   }, {
