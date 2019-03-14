@@ -2,6 +2,7 @@ const logger = require('../config/log4j');
 const rsaKey = require('./../config/rsa');
 const resMsg = require('../utils/utils').resMsg;
 const indexModel = require('../modules/indexModel');
+const areaModel = require('../modules/areaModel');
 
 class indexController {
   /**
@@ -38,6 +39,63 @@ class indexController {
     try {
       let name = req.session.loginUser;
       let result = await indexModel.getUserInfo(name);
+      res.json(resMsg(200, result));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 获取省份
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof indexController
+   */
+  static async getProvince(req, res, next) {
+    try {
+      let result = await areaModel.getProvince();
+      res.json(resMsg(200, result));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 根据省份获取市
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof indexController
+   */
+  static async getCityByProvince(req, res, next) {
+    try {
+      let result = await areaModel.getCityByProvince(req.body.provinceId);
+      res.json(resMsg(200, result));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 根据市获取县
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof indexController
+   */
+  static async getCountryByCity(req, res, next) {
+    try {
+      let result = await areaModel.getCountryByCity(req.body.cityId);
       res.json(resMsg(200, result));
     } catch (error) {
       logger.error(error);

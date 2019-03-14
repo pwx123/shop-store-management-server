@@ -7,7 +7,7 @@ var redisStore = require('connect-redis')(session);
 var redis = require('./config/redisConnect').reids;
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/user');
 var bookRouter = require('./routes/book');
 var adminRouter = require('./routes/admin');
 var shopRouter = require('./routes/shop');
@@ -53,7 +53,7 @@ app.use(function (req, res, next) {
   }
 });
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', usersRouter);
 app.use('/book', bookRouter);
 app.use('/admin', adminRouter);
 app.use('/shop', shopRouter);
