@@ -2,6 +2,9 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var session = require('express-session');
+var redisStore = require('connect-redis')(session);
+
+var redis = require('./config/redisConnect').reids;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -24,6 +27,10 @@ app.use(express.urlencoded({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
+  store: new redisStore({
+    client: redis,
+    prefix: 'se'
+  }),
   secret: 'lolHQupaD7pzuuVunipqiK8gyQeZLg+ZAOvgA3jzNgpXPeGmWqhSHbFuiXn8OKqN9ldADkf+38KX9NJfqkG9JA', //签名
   name: 'SESSION_ID',
   resave: false,

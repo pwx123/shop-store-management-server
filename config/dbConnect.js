@@ -21,7 +21,7 @@ const sequelize = new Sequelize('shop_store_management', 'root', '', {
 sequelize
   .authenticate()
   .then(() => {
-    console.log('\x1B[32mConnection successfully\x1B[0m');
+    console.log('\x1B[32m mysql connection successfully\x1B[0m');
   })
   .catch(err => {
     console.error('Unable to connect to the database:', err);
