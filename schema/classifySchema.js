@@ -1,4 +1,3 @@
-const moment = require('moment');
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define('book_category', {
     id: {

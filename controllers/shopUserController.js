@@ -26,6 +26,30 @@ class shopUserController {
       res.json(resMsg());
     }
   }
+
+  /**
+   * 查询用户收货地址
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns
+   * @memberof shopUserController
+   */
+  static async getUserDeliveryAddress(req, res, next) {
+    try {
+      if (hasEmpty(req.body.userId)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      let result = await shopUserModel.getUserDeliveryAddress(req.body.userId);
+      res.json(resMsg(200, result));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
 }
 
 module.exports = shopUserController;
