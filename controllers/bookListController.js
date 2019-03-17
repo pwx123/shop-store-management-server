@@ -143,11 +143,13 @@ class bookListController {
         press,
         title,
         description,
+        stock,
+        stockPrice,
         price,
         salePrice,
         isSell
       } = data;
-      if (hasEmpty(name, author, press, title, description, price, salePrice, isSell)) {
+      if (hasEmpty(name, author, press, title, description, stock, stockPrice, price, salePrice, isSell)) {
         res.json(resMsg(9001));
         return false;
       }
@@ -175,6 +177,32 @@ class bookListController {
   }
 
   /**
+   * 修改库存
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof bookListController
+   */
+  static async updateBookStock(req, res, next) {
+    try {
+      if (hasEmpty(req.body.id, req.body.changeStock)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      await bookListModel.updateBook({
+        id: req.body.id,
+        stock: req.body.changeStock
+      });
+      res.json(resMsg(200));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
    * 上传excel
    *
    * @static
@@ -197,6 +225,7 @@ class bookListController {
       8: 'H',
       9: 'I',
       10: 'J',
+      11: 'K'
     };
     let dataMap = {
       0: 'name',
@@ -207,10 +236,11 @@ class bookListController {
       5: 'title',
       6: 'description',
       7: 'stock',
-      8: 'price',
-      9: 'salePrice'
+      8: 'stockPrice',
+      9: 'price',
+      10: 'salePrice'
     };
-    const DATA_LENGTH = 10;
+    const DATA_LENGTH = Object.keys(dataMap).length;
     form.encoding = uploadConfig.ENCODING;
     form.uploadDir = uploadConfig.SERVER_DIR + excelUrl;
     form.keepExtensions = uploadConfig.KEEP_EXTENSIONS;
@@ -261,7 +291,7 @@ class bookListController {
                 errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据格式不正确，必须为大于0的数字`;
                 break;
               }
-            } else if (j === 8 || j === 9) {
+            } else if (j === 8 || j === 9 || j === 10) {
               if (hasEmpty(val)) {
                 errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
                 break;
@@ -418,6 +448,30 @@ class bookListController {
         return false;
       }
       await bookListModel.addClassify(req.body.classifyName);
+      res.json(resMsg(200));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 批量修改图书上下架
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns
+   * @memberof bookListController
+   */
+  static async changeBookSellStatus(req, res, next) {
+    try {
+      if (hasEmpty(req.body.isSell, req.body.ids)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      await bookListModel.changeBookSellStatus(req.body.isSell, req.body.ids);
       res.json(resMsg(200));
     } catch (error) {
       logger.error(error);

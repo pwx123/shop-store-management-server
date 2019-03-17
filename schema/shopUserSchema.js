@@ -32,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: true
     },
     avatarUrl: {
-      type: DataTypes.STRING(200),
+      type: DataTypes.STRING(500),
       allowNull: true
     },
     createdAt: {

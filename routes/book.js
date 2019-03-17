@@ -20,4 +20,8 @@ router.post('/downloadBookTemplate', bookListController.downloadBookTemplate);
 router.post('/deleteClassify', bookListController.deleteClassify);
 // 新增分类
 router.post('/addClassify', bookListController.addClassify);
+// 批量上下架
+router.post('/changeBookSellStatus', bookListController.changeBookSellStatus);
+// 修改库存
+router.post('/updateBookStock', bookListController.updateBookStock);
 module.exports = router;

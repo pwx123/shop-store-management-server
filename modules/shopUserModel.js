@@ -103,32 +103,30 @@ class shopModel {
       }
     })
   }
-  // static async getUserDeliveryAddress(userId) {
-  //   return await sequelize.query(`SELECT
-  //   \`shop_user_delivery\`.\`id\`,
-  //   \`shop_user_delivery\`.\`userId\`,
-  //   \`shop_user_delivery\`.\`deliveryName\`,
-  //   \`shop_user_delivery\`.\`deliveryMobile\`,
-  //   \`delivery_province\`.\`name\` AS \`provinceName\`,
-  //   \`delivery_city\`.\`name\` AS \`cityName\`,
-  //   \`delivery_country\`.\`name\` AS \`countryName\`,
-  //   \`shop_user_delivery\`.\`detailAddress\`,
-  //   \`shop_user_delivery\`.\`isDefault\`,
-  //   \`shop_user_delivery\`.\`createdAt\`,
-  //   \`shop_user_delivery\`.\`updatedAt\` 
-  // FROM
-  //   \`shop_user_delivery\`,
-  //   \`delivery_province\`,
-  //   \`delivery_city\`,
-  //   \`delivery_country\` 
-  // WHERE
-  //   \`shop_user_delivery\`.\`userId\` = ${userId}
-  //   AND \`shop_user_delivery\`.\`provinceId\` = \`delivery_province\`.\`provinceId\` 
-  //   AND \`shop_user_delivery\`.\`cityId\` = \`delivery_city\`.\`cityId\` 
-  //   AND \`shop_user_delivery\`.\`countryId\` = \`delivery_country\`.\`countryId\`;`, {
-  //     type: sequelize.QueryTypes.SELECT
-  //   });
-  // }
+
+  /**
+   * 更新
+   *
+   * @static
+   * @param {obj} id 用户id
+   * @returns
+   * @memberof shopModel
+   */
+  static async update(parmas) {
+    let {
+      id,
+      ...updateData
+    } = parmas;
+    return await shopUserSchema.update({
+      ...updateData
+    }, {
+      where: {
+        id
+      }
+    })
+  }
+
+
 }
 
 module.exports = shopModel;

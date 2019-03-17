@@ -3,6 +3,9 @@ const sequelize = db.sequelize;
 const Op = sequelize.Op;
 const errorMsg = require('./errorMsg');
 
+const ALLCHAR = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz'; // 去掉了容易混淆的字符
+const ALLNUM = '123456789';
+
 // res返回数据
 let resMsg = function (errorCode = 9999, data = '') {
   return {
@@ -63,6 +66,28 @@ let getUncertainLikeSqlObj = function (params) {
   return obj;
 }
 
+let getRandomPwd = function () {
+  return getRandomStr(6) + getRandomStrNum(4);
+}
+
+let getRandomStr = function (len) {
+  let str = '';
+  let maxLength = ALLCHAR.length;
+  for (i = 0; i < len; i++) {
+    str += ALLCHAR.charAt(Math.floor(Math.random() * maxLength));
+  }
+  return str;
+}
+
+let getRandomStrNum = function (len) {
+  let str = '';
+  let maxLength = ALLNUM.length;
+  for (i = 0; i < len; i++) {
+    str += ALLNUM.charAt(Math.floor(Math.random() * maxLength));
+  }
+  return str;
+}
+
 const mobileReg = /^1[3456789]\d{9}$/;
 const pwdReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
 
@@ -72,5 +97,6 @@ module.exports = {
   getUncertainSqlObj,
   getUncertainLikeSqlObj,
   mobileReg,
-  pwdReg
+  pwdReg,
+  getRandomPwd
 }

@@ -38,10 +38,13 @@ module.exports = function (sequelize, DataTypes) {
     },
     stock: {
       type: DataTypes.INTEGER(11),
-      allowNull: false,
-      defaultValue: 0
+      allowNull: false
     },
     price: {
+      type: DataTypes.FLOAT(11, 2),
+      allowNull: false
+    },
+    stockPrice: {
       type: DataTypes.FLOAT(11, 2),
       allowNull: false
     },

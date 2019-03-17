@@ -64,7 +64,7 @@ class bookListModel {
   static async deleteBooks(ids) {
     return await bookListSchema.update({
       status: 1
-    },{
+    }, {
       where: {
         id: {
           [Op.in]: ids.split(',')
@@ -87,7 +87,12 @@ class bookListModel {
       stock,
       ...updateData
     } = param;
-    let str = stock >= 0 ? `+${stock}` : `${stock}`;
+    let str = '';
+    if (stock == undefined) {
+      str = `+0`;
+    } else {
+      str = stock >= 0 ? `+${stock}` : `${stock}`;
+    }
     return await bookListSchema.update({
       stock: sequelize.literal('`stock` ' + str),
       updatedAt: new Date(),
@@ -138,10 +143,38 @@ class bookListModel {
     return await sequelize.query(`UPDATE \`book_list\` SET \`classify\`=TRIM(BOTH ',' FROM replace(concat(',',\`classify\`,','), ',${id},', '')) WHERE FIND_IN_SET('${id}',classify)`);
   }
 
-  // 新增分类
+
+  /**
+   * 添加分类
+   *
+   * @static
+   * @param {string} classifyName 分类名
+   * @returns
+   * @memberof bookListModel
+   */
   static async addClassify(classifyName) {
     return await classifySchema.create({
       name: classifyName
+    })
+  }
+
+  /**
+   * 批量修改上下架
+   *
+   * @static
+   * @param {*} isSell 上下架
+   * @param {*} ids 逗号分隔 ids
+   * @memberof bookListModel
+   */
+  static async changeBookSellStatus(isSell, ids) {
+    return await bookListSchema.update({
+      isSell
+    }, {
+      where: {
+        id: {
+          [Op.in]: ids.split(',')
+        }
+      }
     })
   }
 }
