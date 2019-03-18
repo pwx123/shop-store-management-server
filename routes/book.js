@@ -24,4 +24,6 @@ router.post('/addClassify', bookListController.addClassify);
 router.post('/changeBookSellStatus', bookListController.changeBookSellStatus);
 // 修改库存
 router.post('/updateBookStock', bookListController.updateBookStock);
+// 分页查询进货记录
+router.post('/getStockRecordList', bookListController.getStockRecordList);
 module.exports = router;

@@ -7,6 +7,7 @@ const logger = require('../config/log4j');
 const resMsg = require('../utils/utils').resMsg;
 const hasEmpty = require('../utils/utils').hasEmpty;
 const bookListModel = require('../modules/bookListModel');
+const shopStockRecordModel = require('../modules/shopStockRecordModel');
 const uploadConfig = require('./../config/uploadConfig');
 class bookListController {
   /**
@@ -167,6 +168,15 @@ class bookListController {
         }
         await bookListModel.updateBook(updateObj);
       }
+      let stockObj = {
+        bookId: result[0].id,
+        bookName: result[0].name,
+        stockNum: stock,
+        stockPrice,
+        type: 0,
+        remark: '新进图书：新进图书'
+      }
+      await shopStockRecordModel.createStockRecord([stockObj]);
       res.json(resMsg(200));
     });
     form.on('error', function (error) {
@@ -195,6 +205,20 @@ class bookListController {
         id: req.body.id,
         stock: req.body.changeStock
       });
+      let stockObj = {
+        bookId: req.body.id,
+        bookName: req.body.name,
+        stockNum: req.body.changeStock
+      }
+      if (req.body.type === 0) {
+        stockObj.stockPrice = req.body.stockPrice;
+        stockObj.type = 1;
+        stockObj.remark = '新进图书：增加库存';
+      } else {
+        stockObj.type = 2;
+        stockObj.remark = '删除库存：' + req.body.remark;
+      }
+      await shopStockRecordModel.createStockRecord([stockObj]);
       res.json(resMsg(200));
     } catch (error) {
       logger.error(error);
@@ -320,7 +344,21 @@ class bookListController {
           })
           return false;
         } else {
-          await bookListModel.insertBook(saveData);
+          let result = await bookListModel.insertBook(saveData);
+          let saveStockData = [];
+          for (let i = 0, len = result.length; i < len; i++) {
+            let item = result[i];
+            let saveStockObj = {
+              bookId: item.id,
+              bookName: item.name,
+              stockNum: item.stock,
+              stockPrice: item.stockPrice,
+              type: 0,
+              remark: '新进图书：新进图书'
+            };
+            saveStockData.push(saveStockObj);
+          }
+          await shopStockRecordModel.createStockRecord(saveStockData);
           res.json(resMsg(200))
         }
       } else {
@@ -473,6 +511,29 @@ class bookListController {
       }
       await bookListModel.changeBookSellStatus(req.body.isSell, req.body.ids);
       res.json(resMsg(200));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 分页获取进货记录
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof bookListController
+   */
+  static async getStockRecordList(req, res, next) {
+    try {
+      if (hasEmpty(req.body.pageSize, req.body.pageNumber, req.body.startTime, req.body.endTime)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      let result = await shopStockRecordModel.getStockRecordList(req.body);
+      res.json(resMsg(200, result));
     } catch (error) {
       logger.error(error);
       res.json(resMsg());
