@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('delivery_city', {
+  return sequelize.define('shop_delivery_city', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,

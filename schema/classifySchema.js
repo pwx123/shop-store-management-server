@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('book_category', {
+  return sequelize.define('shop_book_category', {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,

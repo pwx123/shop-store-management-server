@@ -140,7 +140,7 @@ class bookListModel {
         id
       }
     });
-    return await sequelize.query(`UPDATE \`book_list\` SET \`classify\`=TRIM(BOTH ',' FROM replace(concat(',',\`classify\`,','), ',${id},', '')) WHERE FIND_IN_SET('${id}',classify)`);
+    return await sequelize.query(`UPDATE \`shop_book_list\` SET \`classify\`=TRIM(BOTH ',' FROM replace(concat(',',\`classify\`,','), ',${id},', '')) WHERE FIND_IN_SET('${id}',classify)`);
   }
 
 

@@ -11,6 +11,7 @@ var usersRouter = require('./routes/user');
 var bookRouter = require('./routes/book');
 var adminRouter = require('./routes/admin');
 var shopRouter = require('./routes/shop');
+var orderRouter = require('./routes/order');
 
 const morgan = require('./config/morgan');
 const resMsg = require('./utils/utils').resMsg;
@@ -57,6 +58,7 @@ app.use('/user', usersRouter);
 app.use('/book', bookRouter);
 app.use('/admin', adminRouter);
 app.use('/shop', shopRouter);
+app.use('/order', orderRouter);
 
 //404 handler
 app.use(function (req, res, next) {
