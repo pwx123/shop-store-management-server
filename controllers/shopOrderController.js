@@ -1,7 +1,12 @@
+const formidable = require('formidable');
+const fs = require("fs");
+const nodeXlsx = require('node-xlsx');
 const logger = require("../config/log4j");
 const resMsg = require("../utils/utils").resMsg;
 const hasEmpty = require("../utils/utils").hasEmpty;
+const numReg = require("../utils/utils").numReg;
 const shopOrderModel = require("../modules/shopOrderModel");
+const uploadConfig = require('./../config/uploadConfig');
 
 class shopOrderController {
   /**
@@ -21,6 +26,244 @@ class shopOrderController {
       }
       let result = await shopOrderModel.getOrderList(req.body);
       res.json(resMsg(200, result));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 确认待处理订单
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns
+   * @memberof shopOrderController
+   */
+  static async submitOrder(req, res, next) {
+    try {
+      if (hasEmpty(req.body.ids)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      let result = await shopOrderModel.submitOrder(req.body.ids);
+      if (!result || result[0] === 0) {
+        res.json(resMsg(2002));
+      } else {
+        res.json(resMsg(200));
+      }
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 上传/编辑物流信息
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof shopOrderController
+   */
+  static async submitDeliveryInfo(req, res, next) {
+    try {
+      let {
+        id,
+        deliveryId,
+        deliveryOrderId
+      } = req.body;
+      if (hasEmpty(id, deliveryId, deliveryOrderId) || !/^[A-Za-z0-9]+$/.test(deliveryOrderId) || !numReg.test(deliveryId)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      let params = {
+        id,
+        deliveryId,
+        deliveryOrderId
+      }
+      let result = await shopOrderModel.getSubmitDeliveryInfo(params);
+      if (!result || result.length === 0) {
+        res.json(resMsg(2002));
+      } else {
+        await shopOrderModel.submitDeliveryInfo(params);
+        res.json(resMsg(200));
+      }
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 获取所有物流公司
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns
+   * @memberof shopOrderController
+   */
+  static async getAllDeliveryCompany(req, res, next) {
+    try {
+      let result = await shopOrderModel.getAllDeliveryCompany();
+      res.json(resMsg(200, result));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 删除物流公司
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns
+   * @memberof shopOrderController
+   */
+  static async deleteDeliveryCompany(req, res, next) {
+    try {
+      if (hasEmpty(req.body.id)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      await shopOrderModel.deleteDeliveryCompany(req.body.id);
+      res.json(resMsg(200));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 新增物流公司
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns
+   * @memberof shopOrderController
+   */
+  static async addDeliveryCompany(req, res, next) {
+    try {
+      if (hasEmpty(req.body.deliveryCompanyName)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      await shopOrderModel.addDeliveryCompany([{
+        name: req.body.deliveryCompanyName
+      }]);
+      res.json(resMsg(200));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+
+  /**
+   * 批量上传物流公司
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof shopOrderController
+   */
+  static async uploadDeliveryExcel(req, res, next) {
+    let excelUrl = uploadConfig.TEMP;
+    let form = new formidable.IncomingForm();
+    let map = {
+      1: 'A'
+    };
+    let dataMap = {
+      0: 'name'
+    };
+    const DATA_LENGTH = Object.keys(dataMap).length;
+    form.encoding = uploadConfig.ENCODING;
+    form.uploadDir = uploadConfig.SERVER_DIR + excelUrl;
+    form.keepExtensions = uploadConfig.KEEP_EXTENSIONS;
+    form.maxFileSize = uploadConfig.MAX_FILESIZE;
+    let errorMsg = '';
+    form.parse(req, async (error, fields, files) => {
+      if (error) {
+        logger.error(error);
+        res.json(resMsg());
+        return false;
+      }
+      // 读取文件
+      const excelData = nodeXlsx.parse(files.excel.path);
+      // 删除文件
+      fs.unlink(files.excel.path, (error) => {
+        if (error) {
+          logger.error(error);
+        }
+      })
+      let optionData = excelData[0].data;
+      let saveData = [];
+      if (optionData.length > 1) {
+        for (let i = 1, len = optionData.length; i < len; i++) {
+          let data = optionData[i];
+          let saveDataObj = {};
+          for (let j = 0; j < DATA_LENGTH; j++) {
+            let val = data[j];
+            if (hasEmpty(val)) {
+              errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+              break;
+            }
+            saveDataObj[dataMap[j]] = val;
+          }
+          if (errorMsg) {
+            break;
+          }
+          saveData.push(saveDataObj);
+        }
+        if (errorMsg) {
+          logger.error(errorMsg);
+          res.json({
+            errorCode: 9999,
+            errorMsg: errorMsg,
+            data: ''
+          })
+          return false;
+        } else {
+          await shopOrderModel.addDeliveryCompany(saveData);
+          res.json(resMsg(200));
+        }
+      } else {
+        logger.error('上传文件内容为空');
+        res.json(resMsg(2001));
+        return false;
+      }
+    })
+    form.on('error', function (error) {
+      logger.error(error);
+      res.json(resMsg());
+      return false;
+    });
+  }
+
+  /**
+   * 下载物流上传模板
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof shopOrderController
+   */
+  static async downloadDeliveryTemplate(req, res, next) {
+    try {
+      let filePath = uploadConfig.SERVER_DIR + uploadConfig.BOOK_TEMPLATE + uploadConfig.DELIVERY_COMPONY_EXCEL;
+      res.download(filePath);
     } catch (error) {
       logger.error(error);
       res.json(resMsg());

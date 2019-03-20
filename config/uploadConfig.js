@@ -12,6 +12,8 @@ const TEMP = '/temp';
 const CLASSIFY_EXEL_NAME = '分类对照表.xlsx';
 // 压缩文件名
 const ZIP_NAME = '上传模板.zip';
+// 物流下载模板名称
+const DELIVERY_COMPONY_EXCEL = '物流公司上传模板.xlsx';
 // 是否保存拓展
 const KEEP_EXTENSIONS = true;
 // 最大上传大小
@@ -35,5 +37,6 @@ module.exports = {
   ZIP_NAME,
   BOOK_IMG_URL,
   TEMP,
-  ADMIN_AVATAR_URL
+  ADMIN_AVATAR_URL,
+  DELIVERY_COMPONY_EXCEL
 }

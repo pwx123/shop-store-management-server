@@ -90,6 +90,7 @@ let getRandomStrNum = function (len) {
 
 const mobileReg = /^1[3456789]\d{9}$/;
 const pwdReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
+const numReg = /^[0-9]+$/;
 
 module.exports = {
   resMsg,
@@ -98,5 +99,6 @@ module.exports = {
   getUncertainLikeSqlObj,
   mobileReg,
   pwdReg,
+  numReg,
   getRandomPwd
 }
