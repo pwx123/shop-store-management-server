@@ -262,7 +262,7 @@ class shopOrderController {
    */
   static async downloadDeliveryTemplate(req, res, next) {
     try {
-      let filePath = uploadConfig.SERVER_DIR + uploadConfig.BOOK_TEMPLATE + uploadConfig.DELIVERY_COMPONY_EXCEL;
+      let filePath = uploadConfig.SERVER_DIR + uploadConfig.DELIVERY_TEMPLATE + '/' + uploadConfig.DELIVERY_COMPONY_EXCEL;
       res.download(filePath);
     } catch (error) {
       logger.error(error);

@@ -54,6 +54,29 @@ class shopUserController {
   }
 
   /**
+   * 根据id获取收货地址信息
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof shopUserController
+   */
+  static async getOrderAddressById(req, res, next) {
+    try {
+      if (hasEmpty(req.body.id)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      let result = await shopUserModel.getOrderAddressById(req.body.id);
+      res.json(resMsg(200, result[0]));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg())
+    }
+  }
+
+  /**
    * 更新账号状态
    *
    * @static

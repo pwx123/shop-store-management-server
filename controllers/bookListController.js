@@ -386,7 +386,7 @@ class bookListController {
   static async downloadBookTemplate(req, res, next) {
     let filePath = uploadConfig.SERVER_DIR + '/' + uploadConfig.ZIP_NAME;
     let classifyData = await bookListModel.getAllClassify();
-    let name = uploadConfig.CLASSIFY_EXEL_NAME;
+    let name = uploadConfig.CLASSIFY_EXCEL_NAME;
     let zipName = uploadConfig.ZIP_NAME;
     let data = [
       ['id', '分类名']
@@ -402,7 +402,7 @@ class bookListController {
       data
     }]);
     // 生成类别对照表excel
-    fs.writeFile(uploadConfig.SERVER_DIR + uploadConfig.BOOK_TEMPLATE + name, buffer, (err) => {
+    fs.writeFile(uploadConfig.SERVER_DIR + uploadConfig.BOOK_TEMPLATE + '/' + name, buffer, (err) => {
       if (err) {
         logger.error(err);
         res.json(resMsg());

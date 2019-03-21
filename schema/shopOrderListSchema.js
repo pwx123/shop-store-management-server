@@ -11,6 +11,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(20),
       allowNull: false
     },
+    userId: {
+      type: DataTypes.INTEGER(11),
+      allowNull: false
+    },
     userName: {
       type: DataTypes.STRING(20),
       allowNull: false

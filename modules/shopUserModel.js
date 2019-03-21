@@ -83,9 +83,9 @@ class shopModel {
     return await shopUserDeliveryAddress.findAll({
       attributes: {
         include: [
-          [sequelize.col('delivery_province.name'), 'provinceName'],
-          [sequelize.col('delivery_city.name'), 'cityName'],
-          [sequelize.col('delivery_country.name'), 'countryName']
+          [sequelize.col('shop_delivery_province.name'), 'provinceName'],
+          [sequelize.col('shop_delivery_city.name'), 'cityName'],
+          [sequelize.col('shop_delivery_country.name'), 'countryName']
         ]
       },
       include: [{
@@ -101,6 +101,51 @@ class shopModel {
       where: {
         userId
       }
+    })
+  }
+
+  /**
+   * 根据id查询收货地址信息
+   *
+   * @static
+   * @param {*} id
+   * @memberof shopModel
+   */
+  static async getOrderAddressById(id){
+    shopUserDeliveryAddress.belongsTo(provinceSchema, {
+      foreignKey: 'provinceId',
+      targetKey: 'provinceId'
+    });
+    shopUserDeliveryAddress.belongsTo(citySchema, {
+      foreignKey: 'cityId',
+      targetKey: 'cityId'
+    });
+    shopUserDeliveryAddress.belongsTo(countrySchema, {
+      foreignKey: 'countryId',
+      targetKey: 'countryId'
+    });
+    return await shopUserDeliveryAddress.findAll({
+      attributes: {
+        include: [
+          [sequelize.col('shop_delivery_province.name'), 'provinceName'],
+          [sequelize.col('shop_delivery_city.name'), 'cityName'],
+          [sequelize.col('shop_delivery_country.name'), 'countryName']
+        ]
+      },
+      include: [{
+        model: provinceSchema,
+        attributes: []
+      }, {
+        model: citySchema,
+        attributes: []
+      }, {
+        model: countrySchema,
+        attributes: []
+      }],
+      where: {
+        id
+      },
+      raw: true
     })
   }
 

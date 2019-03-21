@@ -8,6 +8,9 @@ router.post('/getOrderList', shopOrderController.getOrderList);
 router.post('/submitOrder', shopOrderController.submitOrder);
 // 上传/编辑物流信息
 router.post('/submitDeliveryInfo', shopOrderController.submitDeliveryInfo);
+// 更改收货地址
+// TODO: 更改收货地址
+router.post('/updateOrderAddress', shopOrderController.updateOrderAddress);
 // 查询所有物流公司
 router.post('/getAllDeliveryCompany', shopOrderController.getAllDeliveryCompany);
 // 添加物流公司
