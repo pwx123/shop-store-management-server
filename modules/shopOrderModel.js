@@ -4,6 +4,7 @@ const Op = sequelize.Op;
 const shopOrderListSchema = sequelize.import('../schema/shopOrderListSchema');
 const shopSubOrderListSchema = sequelize.import('../schema/shopSubOrderListSchema');
 const shopDeliveryCompanySchema = sequelize.import('../schema/shopDeliveryCompanySchema');
+const shopUserDeliveryAddressSchema = sequelize.import('../schema/shopUserDeliveryAddressSchema');
 const hasEmpty = require("../utils/utils").hasEmpty;
 const getUncertainSqlObj = require('./../utils/utils').getUncertainSqlObj;
 
@@ -106,6 +107,27 @@ class shopOrderModel {
   }
 
   /**
+   * 查询符合收货地址符合条件的
+   *
+   * @static
+   * @param {*} parmas
+   * @memberof shopOrderModel
+   */
+  static async getUpdateAddressInfo(parmas) {
+    let {
+      id
+    } = parmas;
+    return await shopOrderListSchema.findAll({
+      where: {
+        status: {
+          [Op.or]: [1, 2, 3]
+        },
+        id
+      }
+    })
+  }
+
+  /**
    * 上传/编辑物流信息
    *
    * @static
@@ -127,6 +149,44 @@ class shopOrderModel {
         },
         id
       }
+    })
+  }
+
+
+  /**
+   * 更改订单物流信息
+   *
+   * @static
+   * @param {Object} parmas
+   * @memberof shopOrderModel
+   */
+  static async updateAddressInfo(parmas) {
+    let {
+      id,
+      ...updateObj
+    } = parmas;
+    return await shopOrderListSchema.update({
+      ...updateObj
+    }, {
+      where: {
+        status: {
+          [Op.or]: [1, 2, 3]
+        },
+        id
+      }
+    })
+  }
+
+  /**
+   * 新增收货地址
+   *
+   * @static
+   * @param {Object} param 新增的字段
+   * @memberof shopOrderModel
+   */
+  static async submitAddAddress(param) {
+    return await shopUserDeliveryAddressSchema.create({
+      ...param
     })
   }
 

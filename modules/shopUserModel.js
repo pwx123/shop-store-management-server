@@ -5,7 +5,7 @@ const shopUserSchema = sequelize.import('../schema/shopUserSchema');
 const provinceSchema = sequelize.import('../schema/provinceSchema');
 const citySchema = sequelize.import('../schema/citySchema');
 const countrySchema = sequelize.import('../schema/countrySchema');
-const shopUserDeliveryAddress = sequelize.import('../schema/shopUserDeliveryAddress');
+const shopUserDeliveryAddressSchema = sequelize.import('../schema/shopUserDeliveryAddressSchema');
 const hasEmpty = require("../utils/utils").hasEmpty;
 const getUncertainSqlObj = require('./../utils/utils').getUncertainSqlObj;
 
@@ -68,19 +68,19 @@ class shopModel {
    * @memberof shopModel
    */
   static async getUserDeliveryAddress(userId) {
-    shopUserDeliveryAddress.belongsTo(provinceSchema, {
+    shopUserDeliveryAddressSchema.belongsTo(provinceSchema, {
       foreignKey: 'provinceId',
       targetKey: 'provinceId'
     });
-    shopUserDeliveryAddress.belongsTo(citySchema, {
+    shopUserDeliveryAddressSchema.belongsTo(citySchema, {
       foreignKey: 'cityId',
       targetKey: 'cityId'
     });
-    shopUserDeliveryAddress.belongsTo(countrySchema, {
+    shopUserDeliveryAddressSchema.belongsTo(countrySchema, {
       foreignKey: 'countryId',
       targetKey: 'countryId'
     });
-    return await shopUserDeliveryAddress.findAll({
+    return await shopUserDeliveryAddressSchema.findAll({
       attributes: {
         include: [
           [sequelize.col('shop_delivery_province.name'), 'provinceName'],
@@ -112,19 +112,19 @@ class shopModel {
    * @memberof shopModel
    */
   static async getOrderAddressById(id){
-    shopUserDeliveryAddress.belongsTo(provinceSchema, {
+    shopUserDeliveryAddressSchema.belongsTo(provinceSchema, {
       foreignKey: 'provinceId',
       targetKey: 'provinceId'
     });
-    shopUserDeliveryAddress.belongsTo(citySchema, {
+    shopUserDeliveryAddressSchema.belongsTo(citySchema, {
       foreignKey: 'cityId',
       targetKey: 'cityId'
     });
-    shopUserDeliveryAddress.belongsTo(countrySchema, {
+    shopUserDeliveryAddressSchema.belongsTo(countrySchema, {
       foreignKey: 'countryId',
       targetKey: 'countryId'
     });
-    return await shopUserDeliveryAddress.findAll({
+    return await shopUserDeliveryAddressSchema.findAll({
       attributes: {
         include: [
           [sequelize.col('shop_delivery_province.name'), 'provinceName'],

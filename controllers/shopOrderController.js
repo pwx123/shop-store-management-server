@@ -99,6 +99,42 @@ class shopOrderController {
   }
 
   /**
+   * 更改订单物流信息
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof shopOrderController
+   */
+  static async updateOrderAddress(req, res, next) {
+    try {
+      let {
+        id,
+        deliveryAddressId
+      } = req.body;
+      if (hasEmpty(id, deliveryAddressId)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      let params = {
+        id,
+        deliveryAddressId
+      }
+      let result = await shopOrderModel.getUpdateAddressInfo(params);
+      if (!result || result.length === 0) {
+        res.json(resMsg(2002));
+      } else {
+        await shopOrderModel.updateAddressInfo(params);
+        res.json(resMsg(200));
+      }
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
    * 获取所有物流公司
    *
    * @static
@@ -112,6 +148,46 @@ class shopOrderController {
     try {
       let result = await shopOrderModel.getAllDeliveryCompany();
       res.json(resMsg(200, result));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 新增收货地址
+   *
+   * @static
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @memberof shopOrderController
+   */
+  static async submitAddAddress(req, res, next) {
+    try {
+      let {
+        userId,
+        deliveryName,
+        deliveryMobile,
+        provinceId,
+        cityId,
+        countryId,
+        detailAddress
+      } = req.body;
+      if (hasEmpty(userId, deliveryName, deliveryMobile, provinceId, cityId, countryId, detailAddress)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      await shopOrderModel.submitAddAddress({
+        userId,
+        deliveryName,
+        deliveryMobile,
+        provinceId,
+        cityId,
+        countryId,
+        detailAddress
+      });
+      res.json(resMsg(200));
     } catch (error) {
       logger.error(error);
       res.json(resMsg());

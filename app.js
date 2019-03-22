@@ -34,10 +34,12 @@ app.use(session({
   }),
   secret: 'lolHQupaD7pzuuVunipqiK8gyQeZLg+ZAOvgA3jzNgpXPeGmWqhSHbFuiXn8OKqN9ldADkf+38KX9NJfqkG9JA', //签名
   name: 'SESSION_ID',
-  resave: false,
-  saveUninitialized: true,
+  resave: true, // 重新写入redis
+  rolling: true, // 重新计算时间
+  saveUninitialized: false,
   cookie: {
-    maxAge: 60 * 60 * 1000
+    httpOnly: true,
+    maxAge: 60 * 60 * 1000 // 1小时过期
   }
 }))
 
