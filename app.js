@@ -1,10 +1,11 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var session = require('express-session');
-var redisStore = require('connect-redis')(session);
 
-var redis = require('./config/redisConnect').reids;
+var sessionMiddleware = require('./config/sessionMiddleware');
+const morgan = require('./config/morgan');
+const resMsg = require('./utils/utils').resMsg;
+const logger = require('./config/log4j');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user');
@@ -12,12 +13,44 @@ var bookRouter = require('./routes/book');
 var adminRouter = require('./routes/admin');
 var shopRouter = require('./routes/shop');
 var orderRouter = require('./routes/order');
+var apiRouter = require('./routes/api');
 
-const morgan = require('./config/morgan');
-const resMsg = require('./utils/utils').resMsg;
-const noSessionUrl = ['/admin/login', '/admin/register', '/getPublicKey', '/getUserList'];
+const noSessionUrl = ['/admin/login', '/admin/register', '/getPublicKey', '/getUserList', '/api/getOrder'];
 
 var app = express();
+
+var io = require('socket.io').listen(app.listen(3000));
+io.sockets.use(function (socket, next) {
+  sessionMiddleware(socket.request, socket.request.res, next);
+});
+io.sockets.use(function (socket, next) {
+  if (socket.request.session.loginUser && typeof socket.request.session.loginUser === 'string') {
+    next();
+  } else {
+    socket.emit('err', resMsg(401));
+    socket.disconnect(true);
+  }
+});
+io.sockets.on('connection', (socket) => {
+  console.log('\x1B[32m new socket.io connection successfully\x1B[0m');
+  // socket.on('startSend', (value) => {
+  //   let sessionID = socket.request.sessionID;
+  //   socket.request.sessionStore.client.get(sessionID, function (err, result) {
+  //     if (err) {
+  //       logger.error(err);
+  //       return false;
+  //     }
+  //     if (result) {
+  //       socket.emit('startSendRes', resMsg(200));
+  //     } else {
+  //       socket.emit('err', resMsg(401));
+  //       socket.disconnect(true);
+  //     }
+  //   });
+  // })
+})
+app.io = io;
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(morgan('live-api'));
@@ -27,21 +60,7 @@ app.use(express.urlencoded({
   extended: false
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
-  store: new redisStore({
-    client: redis,
-    prefix: 'se'
-  }),
-  secret: 'lolHQupaD7pzuuVunipqiK8gyQeZLg+ZAOvgA3jzNgpXPeGmWqhSHbFuiXn8OKqN9ldADkf+38KX9NJfqkG9JA', //签名
-  name: 'SESSION_ID',
-  resave: true, // 重新写入redis
-  rolling: true, // 重新计算时间
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    maxAge: 60 * 60 * 1000 // 1小时过期
-  }
-}))
+app.use(sessionMiddleware);
 
 app.use(function (req, res, next) {
   if (req.session.loginUser && typeof req.session.loginUser === 'string') {
@@ -61,6 +80,7 @@ app.use('/book', bookRouter);
 app.use('/admin', adminRouter);
 app.use('/shop', shopRouter);
 app.use('/order', orderRouter);
+app.use('/api', apiRouter);
 
 //404 handler
 app.use(function (req, res, next) {

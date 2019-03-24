@@ -8,7 +8,7 @@ module.exports = function (sequelize, DataTypes) {
       autoIncrement: true
     },
     orderId: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(40),
       allowNull: false
     },
     userId: {
@@ -59,14 +59,16 @@ module.exports = function (sequelize, DataTypes) {
     },
     deliveryAt: {
       type: DataTypes.DATE,
+      allowNull: true,
       get() {
-        return moment(this.getDataValue('deliveryAt')).format('YYYY-MM-DD HH:mm:ss');
+        return this.getDataValue('deliveryAt') ? moment(this.getDataValue('deliveryAt')).format('YYYY-MM-DD HH:mm:ss') : '';
       }
     },
     dealAt: {
       type: DataTypes.DATE,
+      allowNull: true,
       get() {
-        return moment(this.getDataValue('dealAt')).format('YYYY-MM-DD HH:mm:ss');
+        return this.getDataValue('dealAt') ? moment(this.getDataValue('dealAt')).format('YYYY-MM-DD HH:mm:ss') : '';
       }
     }
   }, {

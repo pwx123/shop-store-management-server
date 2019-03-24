@@ -54,7 +54,8 @@ class shopOrderModel {
       }],
       order: [
         ['id', 'DESC']
-      ]
+      ],
+      distinct: true
     })
     return {
       pageSize,
@@ -228,6 +229,30 @@ class shopOrderModel {
    */
   static async addDeliveryCompany(deliveryCompanyArr) {
     return await shopDeliveryCompanySchema.bulkCreate(deliveryCompanyArr);
+  }
+
+  /**
+   * 生成订单
+   *
+   * @static
+   * @param {*} param
+   * @returns
+   * @memberof shopOrderModel
+   */
+  static async createOrder(param) {
+    return await shopOrderListSchema.create(param);
+  }
+
+  /**
+   * 生成子订单
+   *
+   * @static
+   * @param {*} paramsArr
+   * @returns
+   * @memberof shopOrderModel
+   */
+  static async createSubOrder(paramsArr) {
+    return await shopSubOrderListSchema.bulkCreate(paramsArr);
   }
 }
 

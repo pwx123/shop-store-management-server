@@ -8,7 +8,6 @@ const sequelize = new Sequelize('shop_store_management', 'root', '', {
     supportBigNumbers: true,
     bigNumberStrings: true
   },
-
   pool: {
     max: 5,
     min: 0,
