@@ -1,14 +1,15 @@
-const formidable = require('formidable');
+const formidable = require("formidable");
 const fs = require("fs");
-const path = require('path');
-const nodeXlsx = require('node-xlsx');
-const nodeZip = require('archiver');
-const logger = require('../config/log4j');
-const resMsg = require('../utils/utils').resMsg;
-const hasEmpty = require('../utils/utils').hasEmpty;
-const bookListModel = require('../modules/bookListModel');
-const shopStockRecordModel = require('../modules/shopStockRecordModel');
-const uploadConfig = require('./../config/uploadConfig');
+const path = require("path");
+const nodeXlsx = require("node-xlsx");
+const nodeZip = require("archiver");
+const logger = require("../config/log4j");
+const resMsg = require("../utils/utils").resMsg;
+const hasEmpty = require("../utils/utils").hasEmpty;
+const bookListModel = require("../modules/bookListModel");
+const shopStockRecordModel = require("../modules/shopStockRecordModel");
+const uploadConfig = require("./../config/uploadConfig");
+
 class bookListController {
   /**
    * 获取图书列表
@@ -109,7 +110,7 @@ class bookListController {
       await bookListModel.updateBook(data);
       res.json(resMsg(200));
     });
-    form.on('error', function (error) {
+    form.on("error", function (error) {
       logger.error(error);
       res.json(resMsg());
       return false;
@@ -156,7 +157,7 @@ class bookListController {
       }
       delete data.imageUrl;
       let result = await bookListModel.insertBook([data]);
-      let imageUrl = ''
+      let imageUrl = "";
       if (files.imageUrl) {
         let extname = path.extname(files.imageUrl.name);
         let newPath = uploadConfig.SERVER_DIR + uploadConfig.BOOK_IMG_URL + result[0].id + extname.toLocaleLowerCase();
@@ -165,7 +166,7 @@ class bookListController {
         let updateObj = {
           id: result[0].id,
           imageUrl
-        }
+        };
         await bookListModel.updateBook(updateObj);
       }
       let stockObj = {
@@ -174,12 +175,12 @@ class bookListController {
         stockNum: stock,
         stockPrice,
         type: 0,
-        remark: '新进图书：新进图书'
-      }
+        remark: "新进图书：新进图书"
+      };
       await shopStockRecordModel.createStockRecord([stockObj]);
       res.json(resMsg(200));
     });
-    form.on('error', function (error) {
+    form.on("error", function (error) {
       logger.error(error);
       res.json(resMsg());
       return false;
@@ -209,14 +210,14 @@ class bookListController {
         bookId: req.body.id,
         bookName: req.body.name,
         stockNum: req.body.changeStock
-      }
+      };
       if (req.body.type === 0) {
         stockObj.stockPrice = req.body.stockPrice;
         stockObj.type = 1;
-        stockObj.remark = '新进图书：增加库存';
+        stockObj.remark = "新进图书：增加库存";
       } else {
         stockObj.type = 2;
-        stockObj.remark = '删除库存：' + req.body.remark;
+        stockObj.remark = "删除库存：" + req.body.remark;
       }
       await shopStockRecordModel.createStockRecord([stockObj]);
       res.json(resMsg(200));
@@ -239,37 +240,37 @@ class bookListController {
     let excelUrl = uploadConfig.TEMP;
     let form = new formidable.IncomingForm();
     let map = {
-      1: 'A',
-      2: 'B',
-      3: 'C',
-      4: 'D',
-      5: 'E',
-      6: 'F',
-      7: 'G',
-      8: 'H',
-      9: 'I',
-      10: 'J',
-      11: 'K'
+      1: "A",
+      2: "B",
+      3: "C",
+      4: "D",
+      5: "E",
+      6: "F",
+      7: "G",
+      8: "H",
+      9: "I",
+      10: "J",
+      11: "K"
     };
     let dataMap = {
-      0: 'name',
-      1: 'author',
-      2: 'press',
-      3: 'isSell',
-      4: 'classify',
-      5: 'title',
-      6: 'description',
-      7: 'stock',
-      8: 'stockPrice',
-      9: 'price',
-      10: 'salePrice'
+      0: "name",
+      1: "author",
+      2: "press",
+      3: "isSell",
+      4: "classify",
+      5: "title",
+      6: "description",
+      7: "stock",
+      8: "stockPrice",
+      9: "price",
+      10: "salePrice"
     };
     const DATA_LENGTH = Object.keys(dataMap).length;
     form.encoding = uploadConfig.ENCODING;
     form.uploadDir = uploadConfig.SERVER_DIR + excelUrl;
     form.keepExtensions = uploadConfig.KEEP_EXTENSIONS;
     form.maxFileSize = uploadConfig.MAX_FILESIZE;
-    let errorMsg = '';
+    let errorMsg = "";
     form.parse(req, async (error, fields, files) => {
       if (error) {
         logger.error(error);
@@ -283,7 +284,7 @@ class bookListController {
         if (error) {
           logger.error(error);
         }
-      })
+      });
       let optionData = excelData[0].data;
       let saveData = [];
       if (optionData.length > 1) {
@@ -294,38 +295,38 @@ class bookListController {
             let val = data[j];
             if (j === 3) {
               if (hasEmpty(val)) {
-                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+                errorMsg = `第 <span style='color:#f56c6c'>${i + 1}</span> 行第 <span style='color:#f56c6c'>${map[j + 1]}</span> 列数据不能为空`;
                 break;
               }
-              if (val != 1 && val != 0) {
-                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据格式不正确，只能为 0 或 1`;
+              if (val !== 1 && val !== 0) {
+                errorMsg = `第 <span style='color:#f56c6c'>${i + 1}</span> 行第 <span style='color:#f56c6c'>${map[j + 1]}</span> 列数据格式不正确，只能为 0 或 1`;
                 break;
               }
             } else if (j === 4) {
               if (!hasEmpty(val) && !/^\d(,\d)*$/.test(val)) {
-                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据格式不正确，示例：'1' 或 '1,2,3'`;
+                errorMsg = `第 <span style='color:#f56c6c'>${i + 1}</span> 行第 <span style='color:#f56c6c'>${map[j + 1]}</span> 列数据格式不正确，示例：'1' 或 '1,2,3'`;
                 break;
               }
             } else if (j === 7) {
               if (hasEmpty(val)) {
-                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+                errorMsg = `第 <span style='color:#f56c6c'>${i + 1}</span> 行第 <span style='color:#f56c6c'>${map[j + 1]}</span> 列数据不能为空`;
                 break;
               }
               if (!/^\d+$/.test(val)) {
-                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据格式不正确，必须为大于0的数字`;
+                errorMsg = `第 <span style='color:#f56c6c'>${i + 1}</span> 行第 <span style='color:#f56c6c'>${map[j + 1]}</span> 列数据格式不正确，必须为大于0的数字`;
                 break;
               }
             } else if (j === 8 || j === 9 || j === 10) {
               if (hasEmpty(val)) {
-                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+                errorMsg = `第 <span style='color:#f56c6c'>${i + 1}</span> 行第 <span style='color:#f56c6c'>${map[j + 1]}</span> 列数据不能为空`;
                 break;
               }
               if (!/^\d+(\.\d{0,2})?$/.test(val)) {
-                errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据格式不正确，必须为大于0的数字，最多保留两位小数`;
+                errorMsg = `第 <span style='color:#f56c6c'>${i + 1}</span> 行第 <span style='color:#f56c6c'>${map[j + 1]}</span> 列数据格式不正确，必须为大于0的数字，最多保留两位小数`;
                 break;
               }
             } else if (hasEmpty(val)) {
-              errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+              errorMsg = `第 <span style='color:#f56c6c'>${i + 1}</span> 行第 <span style='color:#f56c6c'>${map[j + 1]}</span> 列数据不能为空`;
               break;
             }
             saveDataObj[dataMap[j]] = val;
@@ -340,8 +341,8 @@ class bookListController {
           res.json({
             errorCode: 9999,
             errorMsg: errorMsg,
-            data: ''
-          })
+            data: ""
+          });
           return false;
         } else {
           let result = await bookListModel.insertBook(saveData);
@@ -354,20 +355,20 @@ class bookListController {
               stockNum: item.stock,
               stockPrice: item.stockPrice,
               type: 0,
-              remark: '新进图书：新进图书'
+              remark: "新进图书：新进图书"
             };
             saveStockData.push(saveStockObj);
           }
           await shopStockRecordModel.createStockRecord(saveStockData);
-          res.json(resMsg(200))
+          res.json(resMsg(200));
         }
       } else {
-        logger.error('上传文件内容为空');
+        logger.error("上传文件内容为空");
         res.json(resMsg(2001));
         return false;
       }
-    })
-    form.on('error', function (error) {
+    });
+    form.on("error", function (error) {
       logger.error(error);
       res.json(resMsg());
       return false;
@@ -384,12 +385,12 @@ class bookListController {
    * @memberof bookListController
    */
   static async downloadBookTemplate(req, res, next) {
-    let filePath = uploadConfig.SERVER_DIR + '/' + uploadConfig.ZIP_NAME;
+    let filePath = uploadConfig.SERVER_DIR + "/" + uploadConfig.ZIP_NAME;
     let classifyData = await bookListModel.getAllClassify();
     let name = uploadConfig.CLASSIFY_EXCEL_NAME;
     let zipName = uploadConfig.ZIP_NAME;
     let data = [
-      ['id', '分类名']
+      ["id", "分类名"]
     ];
     for (var i = 0, len = classifyData.length; i < len; i++) {
       let temp = [];
@@ -402,16 +403,16 @@ class bookListController {
       data
     }]);
     // 生成类别对照表excel
-    fs.writeFile(uploadConfig.SERVER_DIR + uploadConfig.BOOK_TEMPLATE + '/' + name, buffer, (err) => {
+    fs.writeFile(uploadConfig.SERVER_DIR + uploadConfig.BOOK_TEMPLATE + "/" + name, buffer, (err) => {
       if (err) {
         logger.error(err);
         res.json(resMsg());
         return false;
       }
       // 压缩为zip
-      let output = fs.createWriteStream(uploadConfig.SERVER_DIR + '/' + zipName);
-      let archive = nodeZip('zip');
-      archive.on('error', (err) => {
+      let output = fs.createWriteStream(uploadConfig.SERVER_DIR + "/" + zipName);
+      let archive = nodeZip("zip");
+      archive.on("error", (err) => {
         logger.error(err);
         res.json(resMsg());
         return false;
@@ -419,10 +420,10 @@ class bookListController {
       archive.pipe(output);
       archive.directory(uploadConfig.SERVER_DIR + uploadConfig.BOOK_TEMPLATE, false);
       archive.finalize();
-      output.on('close', () => {
+      output.on("close", () => {
         res.download(filePath);
-      })
-    })
+      });
+    });
   }
 
   /**

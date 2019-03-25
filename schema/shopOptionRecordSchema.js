@@ -1,6 +1,6 @@
-const moment = require('moment');
+const moment = require("moment");
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('shop_option_record', {
+  return sequelize.define("shop_option_record", {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -27,11 +27,11 @@ module.exports = function (sequelize, DataTypes) {
     createdAt: {
       type: DataTypes.DATE,
       get() {
-        return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
+        return moment(this.getDataValue("createdAt")).format("YYYY-MM-DD HH:mm:ss");
       }
     }
   }, {
     timestamps: false,
     freezeTableName: true
-  })
-}
+  });
+};

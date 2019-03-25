@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('shop_delivery_country', {
+  return sequelize.define("shop_delivery_country", {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -21,5 +21,5 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     timestamps: false,
     freezeTableName: true
-  })
-}
+  });
+};

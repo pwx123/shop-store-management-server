@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('shop_sub_order_list', {
+  return sequelize.define("shop_sub_order_list", {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
@@ -16,6 +16,10 @@ module.exports = function (sequelize, DataTypes) {
     },
     bookName: {
       type: DataTypes.STRING(100),
+      allowNull: false
+    },
+    bookTitle: {
+      type: DataTypes.STRING(200),
       allowNull: false
     },
     bookNum: {
@@ -37,5 +41,5 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     timestamps: false,
     freezeTableName: true
-  })
-}
+  });
+};

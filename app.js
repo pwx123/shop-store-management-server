@@ -1,38 +1,38 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
 
-var sessionMiddleware = require('./config/sessionMiddleware');
-const morgan = require('./config/morgan');
-const resMsg = require('./utils/utils').resMsg;
-const logger = require('./config/log4j');
+var sessionMiddleware = require("./config/sessionMiddleware");
+const morgan = require("./config/morgan");
+const resMsg = require("./utils/utils").resMsg;
+const logger = require("./config/log4j");
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/user');
-var bookRouter = require('./routes/book');
-var adminRouter = require('./routes/admin');
-var shopRouter = require('./routes/shop');
-var orderRouter = require('./routes/order');
-var apiRouter = require('./routes/api');
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/user");
+var bookRouter = require("./routes/book");
+var adminRouter = require("./routes/admin");
+var shopRouter = require("./routes/shop");
+var orderRouter = require("./routes/order");
+var apiRouter = require("./routes/api");
 
-const noSessionUrl = ['/admin/login', '/admin/register', '/getPublicKey', '/getUserList', '/api/getOrder'];
+const noSessionUrl = ["/admin/login", "/admin/register", "/getPublicKey", "/getUserList", "/api/getOrder"];
 
 var app = express();
 
-var io = require('socket.io').listen(app.listen(3000));
+var io = require("socket.io").listen(app.listen(3000));
 io.sockets.use(function (socket, next) {
   sessionMiddleware(socket.request, socket.request.res, next);
 });
 io.sockets.use(function (socket, next) {
-  if (socket.request.session.loginUser && typeof socket.request.session.loginUser === 'string') {
+  if (socket.request.session.loginUser && typeof socket.request.session.loginUser === "string") {
     next();
   } else {
-    socket.emit('err', resMsg(401));
+    socket.emit("err", resMsg(401));
     socket.disconnect(true);
   }
 });
-io.sockets.on('connection', (socket) => {
-  console.log('\x1B[32m new socket.io connection successfully\x1B[0m');
+io.sockets.on("connection", (socket) => {
+  console.log("\x1B[32m new socket.io connection successfully\x1B[0m");
   // socket.on('startSend', (value) => {
   //   let sessionID = socket.request.sessionID;
   //   socket.request.sessionStore.client.get(sessionID, function (err, result) {
@@ -48,22 +48,22 @@ io.sockets.on('connection', (socket) => {
   //     }
   //   });
   // })
-})
+});
 app.io = io;
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-app.use(morgan('live-api'));
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
+app.use(morgan("live-api"));
 
 app.use(express.json());
 app.use(express.urlencoded({
   extended: false
 }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(sessionMiddleware);
 
 app.use(function (req, res, next) {
-  if (req.session.loginUser && typeof req.session.loginUser === 'string') {
+  if (req.session.loginUser && typeof req.session.loginUser === "string") {
     next();
   } else {
     let url = req.originalUrl;
@@ -74,13 +74,13 @@ app.use(function (req, res, next) {
     }
   }
 });
-app.use('/', indexRouter);
-app.use('/user', usersRouter);
-app.use('/book', bookRouter);
-app.use('/admin', adminRouter);
-app.use('/shop', shopRouter);
-app.use('/order', orderRouter);
-app.use('/api', apiRouter);
+app.use("/", indexRouter);
+app.use("/user", usersRouter);
+app.use("/book", bookRouter);
+app.use("/admin", adminRouter);
+app.use("/shop", shopRouter);
+app.use("/order", orderRouter);
+app.use("/api", apiRouter);
 
 //404 handler
 app.use(function (req, res, next) {
@@ -91,7 +91,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
   res.status(err.status || 500).json(resMsg());

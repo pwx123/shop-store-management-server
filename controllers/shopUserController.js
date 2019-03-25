@@ -3,7 +3,7 @@ const resMsg = require("../utils/utils").resMsg;
 const hasEmpty = require("../utils/utils").hasEmpty;
 const getRandomPwd = require("../utils/utils").getRandomPwd;
 const shopUserModel = require("../modules/shopUserModel");
-const crypto = require('crypto');
+const crypto = require("crypto");
 
 class shopUserController {
   /**
@@ -72,7 +72,7 @@ class shopUserController {
       res.json(resMsg(200, result[0]));
     } catch (error) {
       logger.error(error);
-      res.json(resMsg())
+      res.json(resMsg());
     }
   }
 
@@ -98,7 +98,7 @@ class shopUserController {
       res.json(resMsg(200));
     } catch (error) {
       logger.error(error);
-      res.json(resMsg())
+      res.json(resMsg());
     }
   }
 
@@ -118,20 +118,20 @@ class shopUserController {
         return false;
       }
       let ranPwd = getRandomPwd();
-      let hash = crypto.createHash('md5');
+      let hash = crypto.createHash("md5");
       hash.update(ranPwd);
-      let hashPwd = hash.digest('hex');
+      let hashPwd = hash.digest("hex");
       await shopUserModel.update({
         id: req.body.id,
         pwd: hashPwd
       });
       let buffer = new Buffer.from(ranPwd);
       res.json(resMsg(200, {
-        newPwd: buffer.toString('base64')
+        newPwd: buffer.toString("base64")
       }));
     } catch (error) {
       logger.error(error);
-      res.json(resMsg())
+      res.json(resMsg());
     }
   }
 }

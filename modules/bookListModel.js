@@ -1,9 +1,9 @@
-const db = require('../config/dbConnect');
+const db = require("../config/dbConnect");
 const sequelize = db.sequelize;
 const Op = sequelize.Op;
-const bookListSchema = sequelize.import('../schema/bookListSchema');
-const classifySchema = sequelize.import('../schema/classifySchema');
-const getUncertainLikeSqlObj = require('../utils/utils').getUncertainLikeSqlObj;
+const bookListSchema = sequelize.import("../schema/bookListSchema");
+const classifySchema = sequelize.import("../schema/classifySchema");
+const getUncertainLikeSqlObj = require("../utils/utils").getUncertainLikeSqlObj;
 
 class bookListModel {
   /**
@@ -42,15 +42,15 @@ class bookListModel {
         ...likeObj
       },
       order: [
-        ['id', 'DESC']
+        ["id", "DESC"]
       ]
-    })
+    });
     return {
       pageSize,
       pageNumber,
       rows: result.rows,
       total: result.count
-    }
+    };
   }
 
   /**
@@ -67,10 +67,10 @@ class bookListModel {
     }, {
       where: {
         id: {
-          [Op.in]: ids.split(',')
+          [Op.in]: ids.split(",")
         }
       }
-    })
+    });
   }
 
   /**
@@ -87,21 +87,21 @@ class bookListModel {
       stock,
       ...updateData
     } = param;
-    let str = '';
+    let str = "";
     if (stock == undefined) {
       str = `+0`;
     } else {
       str = stock >= 0 ? `+${stock}` : `${stock}`;
     }
     return await bookListSchema.update({
-      stock: sequelize.literal('`stock` ' + str),
+      stock: sequelize.literal("`stock` " + str),
       updatedAt: new Date(),
       ...updateData
     }, {
       where: {
         id
       }
-    })
+    });
   }
 
   /**
@@ -155,7 +155,7 @@ class bookListModel {
   static async addClassify(classifyName) {
     return await classifySchema.create({
       name: classifyName
-    })
+    });
   }
 
   /**
@@ -172,10 +172,10 @@ class bookListModel {
     }, {
       where: {
         id: {
-          [Op.in]: ids.split(',')
+          [Op.in]: ids.split(",")
         }
       }
-    })
+    });
   }
 }
 

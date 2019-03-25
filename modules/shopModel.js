@@ -1,10 +1,10 @@
-const db = require('../config/dbConnect');
+const db = require("../config/dbConnect");
 const sequelize = db.sequelize;
 const Op = sequelize.Op;
-const shopSchema = sequelize.import('../schema/shopSchema');
-const shopOptionRecordSchema = sequelize.import('../schema/shopOptionRecordSchema');
+const shopSchema = sequelize.import("../schema/shopSchema");
+const shopOptionRecordSchema = sequelize.import("../schema/shopOptionRecordSchema");
 const hasEmpty = require("../utils/utils").hasEmpty;
-const getUncertainSqlObj = require('./../utils/utils').getUncertainSqlObj;
+const getUncertainSqlObj = require("./../utils/utils").getUncertainSqlObj;
 
 class shopModel {
   /**
@@ -22,7 +22,7 @@ class shopModel {
    * 修改数据
    *
    * @static
-   * @param {Object} parmas 
+   * @param {Object} parmas
    * @returns
    * @memberof shopModel
    */
@@ -31,7 +31,7 @@ class shopModel {
       ...parmas
     }, {
       where: {}
-    })
+    });
   }
 
   /**
@@ -57,7 +57,7 @@ class shopModel {
         optionName: name
       }, {
         optionNickname: name
-      }]
+      }];
     }
     let result = await shopOptionRecordSchema.findAndCountAll({
       offset: pageSize * (pageNumber - 1),
@@ -70,15 +70,15 @@ class shopModel {
         ...searchObj
       },
       order: [
-        ['id', 'DESC']
+        ["id", "DESC"]
       ]
-    })
+    });
     return {
       pageSize,
       pageNumber,
       rows: result.rows,
       total: result.count
-    }
+    };
   }
 
   /**
@@ -91,7 +91,7 @@ class shopModel {
   static async createOptionRecord(params) {
     shopOptionRecordSchema.create({
       ...params
-    })
+    });
   }
 }
 

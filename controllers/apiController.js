@@ -33,12 +33,12 @@ class apiController {
           } else {
             if (result) {
               if (params.status === 1) {
-                socket.emit('hasNewOrder', resMsg(200));
+                socket.emit("hasNewOrder", resMsg(200));
               } else if (params.status === 6) {
-                socket.emit('hasNewRefundOrder', resMsg(200));
+                socket.emit("hasNewRefundOrder", resMsg(200));
               }
             } else {
-              socket.emit('err', resMsg(401));
+              socket.emit("err", resMsg(401));
               socket.disconnect(true);
             }
           }

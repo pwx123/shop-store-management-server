@@ -1,6 +1,6 @@
-const db = require('../config/dbConnect');
+const db = require("../config/dbConnect");
 const sequelize = db.sequelize;
-const adminUserSchema = sequelize.import('../schema/adminUserSchema');
+const adminUserSchema = sequelize.import("../schema/adminUserSchema");
 
 class indexModel {
   /**
@@ -14,12 +14,12 @@ class indexModel {
   static async getUserInfo(name) {
     return await adminUserSchema.findOne({
       attributes: {
-        exclude: ['pwd', 'id']
+        exclude: ["pwd", "id"]
       },
       where: {
         name
       }
-    })
+    });
   }
 }
 

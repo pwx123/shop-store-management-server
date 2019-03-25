@@ -1,12 +1,12 @@
-const formidable = require('formidable');
+const formidable = require("formidable");
 const fs = require("fs");
-const path = require('path');
+const path = require("path");
 const rsaKey = require("../config/rsa");
 const logger = require("../config/log4j");
 const resMsg = require("../utils/utils").resMsg;
 const hasEmpty = require("../utils/utils").hasEmpty;
 const mobileReg = require("../utils/utils").mobileReg;
-const uploadConfig = require('./../config/uploadConfig');
+const uploadConfig = require("./../config/uploadConfig");
 const adminUserModel = require("../modules/adminUserModel");
 
 class adminUserController {
@@ -62,9 +62,9 @@ class adminUserController {
       let name = req.body.name;
       let nickname = req.body.nickname;
       let pwd = decodeURI(req.body.pwd);
-      let repPwd = decodeURI(req.body.repPwd)
-      let decryptPwd = rsaKey.decrypt(pwd, 'utf8');
-      let decryptRepPwd = rsaKey.decrypt(repPwd, 'utf8');
+      let repPwd = decodeURI(req.body.repPwd);
+      let decryptPwd = rsaKey.decrypt(pwd, "utf8");
+      let decryptRepPwd = rsaKey.decrypt(repPwd, "utf8");
       if (hasEmpty(name, decryptPwd, decryptRepPwd, nickname) || !mobileReg.test(name) || nickname.length > 20) {
         res.json(resMsg(9001));
         return false;
@@ -153,7 +153,7 @@ class adminUserController {
         res.json(resMsg(9001));
         return false;
       }
-      if (decryptNewPwd != decryptRepNewPwd) {
+      if (decryptNewPwd !== decryptRepNewPwd) {
         res.json(resMsg(1004));
         return false;
       }
@@ -165,7 +165,7 @@ class adminUserController {
         req.session.destroy();
         res.json(resMsg(200));
       } else {
-        logger.error('原密码错误');
+        logger.error("原密码错误");
         res.json(resMsg(1005));
       }
     } catch (error) {
@@ -194,7 +194,7 @@ class adminUserController {
         res.json(resMsg());
         return false;
       }
-      let avatarUrl = '';
+      let avatarUrl = "";
       if (files.avatar) {
         let extname = path.extname(files.avatar.name);
         let newPath = uploadConfig.SERVER_DIR + uploadConfig.ADMIN_AVATAR_URL + req.session.loginUser + extname.toLocaleLowerCase();
@@ -209,7 +209,7 @@ class adminUserController {
       }, req.session.loginUser);
       res.json(resMsg(200));
     });
-    form.on('error', function (error) {
+    form.on("error", function (error) {
       logger.error(error);
       res.json(resMsg());
       return false;

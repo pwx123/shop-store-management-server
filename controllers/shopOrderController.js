@@ -1,12 +1,12 @@
-const formidable = require('formidable');
+const formidable = require("formidable");
 const fs = require("fs");
-const nodeXlsx = require('node-xlsx');
+const nodeXlsx = require("node-xlsx");
 const logger = require("../config/log4j");
 const resMsg = require("../utils/utils").resMsg;
 const hasEmpty = require("../utils/utils").hasEmpty;
 const numReg = require("../utils/utils").numReg;
 const shopOrderModel = require("../modules/shopOrderModel");
-const uploadConfig = require('./../config/uploadConfig');
+const uploadConfig = require("./../config/uploadConfig");
 
 class shopOrderController {
   /**
@@ -84,7 +84,7 @@ class shopOrderController {
         id,
         deliveryId,
         deliveryOrderId
-      }
+      };
       let result = await shopOrderModel.getSubmitDeliveryInfo(params);
       if (!result || result.length === 0) {
         res.json(resMsg(2002));
@@ -120,7 +120,7 @@ class shopOrderController {
       let params = {
         id,
         deliveryAddressId
-      }
+      };
       let result = await shopOrderModel.getUpdateAddressInfo(params);
       if (!result || result.length === 0) {
         res.json(resMsg(2002));
@@ -195,6 +195,74 @@ class shopOrderController {
   }
 
   /**
+   *  处理退款订单
+   * @param req
+   * @param res
+   * @param next
+   */
+  static async submitRefundInfo(req, res, next) {
+    try {
+      let {
+        ids,
+        refundRemark,
+        refundStatus
+      } = req.body;
+      if (hasEmpty(ids, refundRemark, refundStatus) || (refundStatus !== 0 && refundStatus !== 1)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      let idsArr = ids.split(",");
+      let result = await shopOrderModel.getUpdateRefundInfo(idsArr);
+      if (!result || result.length !== idsArr.length) {
+        res.json(resMsg(2002));
+      } else {
+        let status = refundStatus === 0 ? 8 : 7;
+        await shopOrderModel.submitRefundInfo({
+          idsArr,
+          status
+        });
+        let refundRecordData = [];
+        for (let i = 0, len = result.length; i < len; i++) {
+          let obj = {
+            remark: refundRemark,
+            status
+          };
+          obj.orderNumId = result[i].orderId;
+          obj.userName = result[i].userName;
+          obj.refundMoney = status === 7 ? result[i].totalMoney : null;
+          refundRecordData.push(obj);
+        }
+        await shopOrderModel.createRefundRecord(refundRecordData);
+        res.json(resMsg(200));
+      }
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   *  分页获取退款订单记录
+   * @param req
+   * @param res
+   * @param next
+   * @returns {Promise<boolean>}
+   */
+  static async getRefundRecord(req, res, next){
+    try {
+      if (hasEmpty(req.body.pageSize, req.body.pageNumber, req.body.startTime, req.body.endTime)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      let result = await shopOrderModel.getRefundRecord(req.body);
+      res.json(resMsg(200, result));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
    * 删除物流公司
    *
    * @static
@@ -244,7 +312,6 @@ class shopOrderController {
     }
   }
 
-
   /**
    * 批量上传物流公司
    *
@@ -258,17 +325,17 @@ class shopOrderController {
     let excelUrl = uploadConfig.TEMP;
     let form = new formidable.IncomingForm();
     let map = {
-      1: 'A'
+      1: "A"
     };
     let dataMap = {
-      0: 'name'
+      0: "name"
     };
     const DATA_LENGTH = Object.keys(dataMap).length;
     form.encoding = uploadConfig.ENCODING;
     form.uploadDir = uploadConfig.SERVER_DIR + excelUrl;
     form.keepExtensions = uploadConfig.KEEP_EXTENSIONS;
     form.maxFileSize = uploadConfig.MAX_FILESIZE;
-    let errorMsg = '';
+    let errorMsg = "";
     form.parse(req, async (error, fields, files) => {
       if (error) {
         logger.error(error);
@@ -282,7 +349,7 @@ class shopOrderController {
         if (error) {
           logger.error(error);
         }
-      })
+      });
       let optionData = excelData[0].data;
       let saveData = [];
       if (optionData.length > 1) {
@@ -292,7 +359,7 @@ class shopOrderController {
           for (let j = 0; j < DATA_LENGTH; j++) {
             let val = data[j];
             if (hasEmpty(val)) {
-              errorMsg = `第 <span style='color:#f56c6c'>${i+1}</span> 行第 <span style='color:#f56c6c'>${map[j+1]}</span> 列数据不能为空`;
+              errorMsg = `第 <span style="color:#f56c6c">${i + 1}</span> 行第 <span style="color:#f56c6c">${map[j + 1]}</span> 列数据不能为空`;
               break;
             }
             saveDataObj[dataMap[j]] = val;
@@ -307,20 +374,20 @@ class shopOrderController {
           res.json({
             errorCode: 9999,
             errorMsg: errorMsg,
-            data: ''
-          })
+            data: ""
+          });
           return false;
         } else {
           await shopOrderModel.addDeliveryCompany(saveData);
           res.json(resMsg(200));
         }
       } else {
-        logger.error('上传文件内容为空');
+        logger.error("上传文件内容为空");
         res.json(resMsg(2001));
         return false;
       }
-    })
-    form.on('error', function (error) {
+    });
+    form.on("error", function (error) {
       logger.error(error);
       res.json(resMsg());
       return false;
@@ -338,7 +405,7 @@ class shopOrderController {
    */
   static async downloadDeliveryTemplate(req, res, next) {
     try {
-      let filePath = uploadConfig.SERVER_DIR + uploadConfig.DELIVERY_TEMPLATE + '/' + uploadConfig.DELIVERY_COMPONY_EXCEL;
+      let filePath = uploadConfig.SERVER_DIR + uploadConfig.DELIVERY_TEMPLATE + "/" + uploadConfig.DELIVERY_COMPONY_EXCEL;
       res.download(filePath);
     } catch (error) {
       logger.error(error);

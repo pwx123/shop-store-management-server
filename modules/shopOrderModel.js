@@ -1,12 +1,13 @@
-const db = require('../config/dbConnect');
+const db = require("../config/dbConnect");
 const sequelize = db.sequelize;
 const Op = sequelize.Op;
-const shopOrderListSchema = sequelize.import('../schema/shopOrderListSchema');
-const shopSubOrderListSchema = sequelize.import('../schema/shopSubOrderListSchema');
-const shopDeliveryCompanySchema = sequelize.import('../schema/shopDeliveryCompanySchema');
-const shopUserDeliveryAddressSchema = sequelize.import('../schema/shopUserDeliveryAddressSchema');
+const shopOrderListSchema = sequelize.import("../schema/shopOrderListSchema");
+const shopSubOrderListSchema = sequelize.import("../schema/shopSubOrderListSchema");
+const shopDeliveryCompanySchema = sequelize.import("../schema/shopDeliveryCompanySchema");
+const shopUserDeliveryAddressSchema = sequelize.import("../schema/shopUserDeliveryAddressSchema");
+const shopRefundRecordSchema = sequelize.import("../schema/shopRefundRecordSchema");
 const hasEmpty = require("../utils/utils").hasEmpty;
-const getUncertainSqlObj = require('./../utils/utils').getUncertainSqlObj;
+const getUncertainSqlObj = require("./../utils/utils").getUncertainSqlObj;
 
 class shopOrderModel {
   /**
@@ -31,11 +32,11 @@ class shopOrderModel {
       userName
     });
     shopOrderListSchema.hasMany(shopSubOrderListSchema, {
-      foreignKey: 'mainOrderId',
-      sourceKey: 'id',
+      foreignKey: "mainOrderId",
+      sourceKey: "id",
       as: {
-        singular: 'orders',
-        plural: 'orders'
+        singular: "orders",
+        plural: "orders"
       }
     });
     let result = await shopOrderListSchema.findAndCountAll({
@@ -50,19 +51,19 @@ class shopOrderModel {
       },
       include: [{
         model: shopSubOrderListSchema,
-        as: 'orders'
+        as: "orders"
       }],
       order: [
-        ['id', 'DESC']
+        ["id", "DESC"]
       ],
       distinct: true
-    })
+    });
     return {
       pageSize,
       pageNumber,
       rows: result.rows,
       total: result.count
-    }
+    };
   }
 
   /**
@@ -80,10 +81,10 @@ class shopOrderModel {
       where: {
         status: 1,
         id: {
-          [Op.in]: ids.split(',')
+          [Op.in]: ids.split(",")
         }
       }
-    })
+    });
   }
 
   /**
@@ -104,7 +105,7 @@ class shopOrderModel {
         },
         id
       }
-    })
+    });
   }
 
   /**
@@ -125,7 +126,96 @@ class shopOrderModel {
         },
         id
       }
-    })
+    });
+  }
+
+  /**
+   * 查询符合退款条件的
+   *
+   * @static
+   * @param ids 退款的ids
+   * @memberof shopOrderModel
+   */
+  static async getUpdateRefundInfo(idsArr) {
+    return await shopOrderListSchema.findAll({
+      where: {
+        status: 6,
+        id: {
+          [Op.in]: idsArr
+        }
+      }
+    });
+  }
+
+  /**
+   * 更新待退款状态
+   *
+   * @static
+   * @param param
+   * @memberof shopOrderModel
+   */
+  static async submitRefundInfo(param) {
+    return await shopOrderListSchema.update({
+      status: param.status
+    }, {
+      where: {
+        status: 6,
+        id: {
+          [Op.in]: param.idsArr
+        }
+      }
+    });
+  }
+
+  /**
+   * 生成退款订单记录
+   * @param refundArr 退款订单数据
+   * @returns {Promise<*>}
+   */
+  static async createRefundRecord(refundArr) {
+    return await shopRefundRecordSchema.bulkCreate(refundArr);
+  }
+
+  /**
+   * 分页获取退款订单记录
+   * @param params
+   * @returns {Promise<{total: *, pageNumber: *, pageSize: *, rows: *}>}
+   */
+  static async getRefundRecord(params) {
+    let {
+      pageSize,
+      pageNumber,
+      startTime,
+      endTime,
+      orderNumId,
+      userName,
+      status
+    } = params;
+    let queryObj = getUncertainSqlObj({
+      orderNumId,
+      userName,
+      status
+    });
+    let result = await shopRefundRecordSchema.findAndCountAll({
+      offset: pageSize * (pageNumber - 1),
+      limit: pageSize,
+      where: {
+        createdAt: {
+          [Op.gt]: startTime,
+          [Op.lt]: endTime,
+        },
+        ...queryObj
+      },
+      order: [
+        ["id", "DESC"]
+      ]
+    });
+    return {
+      pageSize,
+      pageNumber,
+      rows: result.rows,
+      total: result.count
+    };
   }
 
   /**
@@ -150,7 +240,7 @@ class shopOrderModel {
         },
         id
       }
-    })
+    });
   }
 
 
@@ -175,7 +265,7 @@ class shopOrderModel {
         },
         id
       }
-    })
+    });
   }
 
   /**
@@ -188,7 +278,7 @@ class shopOrderModel {
   static async submitAddAddress(param) {
     return await shopUserDeliveryAddressSchema.create({
       ...param
-    })
+    });
   }
 
   /**

@@ -1,9 +1,9 @@
-const db = require('../config/dbConnect');
+const db = require("../config/dbConnect");
 const sequelize = db.sequelize;
 const Op = sequelize.Op;
-const shopStockRecordSchema = sequelize.import('../schema/shopStockRecordSchema');
-const getUncertainSqlObj = require('./../utils/utils').getUncertainSqlObj;
-const getUncertainLikeSqlObj = require('./../utils/utils').getUncertainLikeSqlObj;
+const shopStockRecordSchema = sequelize.import("../schema/shopStockRecordSchema");
+const getUncertainSqlObj = require("./../utils/utils").getUncertainSqlObj;
+const getUncertainLikeSqlObj = require("./../utils/utils").getUncertainLikeSqlObj;
 
 class shopModel {
 
@@ -27,7 +27,7 @@ class shopModel {
     });
     let likeObj = getUncertainLikeSqlObj({
       bookName
-    })
+    });
     let result = await shopStockRecordSchema.findAndCountAll({
       offset: pageSize * (pageNumber - 1),
       limit: pageSize,
@@ -40,15 +40,15 @@ class shopModel {
         ...likeObj
       },
       order: [
-        ['id', 'DESC']
+        ["id", "DESC"]
       ]
-    })
+    });
     return {
       pageSize,
       pageNumber,
       rows: result.rows,
       total: result.count
-    }
+    };
   }
 
   /**

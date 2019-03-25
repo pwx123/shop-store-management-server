@@ -1,35 +1,31 @@
 const moment = require("moment");
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define("shop_stock_record", {
+  return sequelize.define("shop_refund_record", {
     id: {
       type: DataTypes.INTEGER(11),
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
     },
-    bookId: {
+    orderNumId: {
+      type: DataTypes.STRING(40),
+      allowNull: false
+    },
+    userName: {
+      type: DataTypes.STRING(20),
+      allowNull: false
+    },
+    status: {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
-    bookName: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    stockNum: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false
-    },
-    stockPrice: {
+    refundMoney: {
       type: DataTypes.FLOAT(11, 2),
       allowNull: true
     },
-    type: {
-      type: DataTypes.INTEGER(11),
-      allowNull: false,
-    },
     remark: {
-      type: DataTypes.STRING(255),
-      allowNull: true
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
     createdAt: {
       type: DataTypes.DATE,

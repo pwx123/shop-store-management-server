@@ -17,7 +17,7 @@ class shopController {
   static async getShopInfo(req, res, next) {
     try {
       let result = await shopModel.getUserInfo();
-      res.json(resMsg(200, result))
+      res.json(resMsg(200, result));
     } catch (error) {
       logger.error(error);
       res.json(resMsg());
@@ -54,7 +54,7 @@ class shopController {
         optionNickname: nickname,
         type: 0,
         remark
-      })
+      });
       res.json(resMsg(200));
     } catch (error) {
       logger.error(error);
@@ -92,7 +92,7 @@ class shopController {
         optionNickname: nickname,
         type: 1,
         remark
-      })
+      });
       res.json(resMsg(200));
     } catch (error) {
       logger.error(error);
@@ -130,7 +130,7 @@ class shopController {
         optionNickname: nickname,
         type: 2,
         remark
-      })
+      });
       res.json(resMsg(200));
     } catch (error) {
       logger.error(error);

@@ -1,8 +1,8 @@
-const logger = require('../config/log4j');
-const rsaKey = require('./../config/rsa');
-const resMsg = require('../utils/utils').resMsg;
-const indexModel = require('../modules/indexModel');
-const areaModel = require('../modules/areaModel');
+const logger = require("../config/log4j");
+const rsaKey = require("./../config/rsa");
+const resMsg = require("../utils/utils").resMsg;
+const indexModel = require("../modules/indexModel");
+const areaModel = require("../modules/areaModel");
 
 class indexController {
   /**
@@ -17,7 +17,7 @@ class indexController {
    */
   static async getPublicKey(req, res, next) {
     try {
-      let publicKey = rsaKey.exportKey('public');
+      let publicKey = rsaKey.exportKey("public");
       res.json(resMsg(200, publicKey));
     } catch (error) {
       logger.error(error);

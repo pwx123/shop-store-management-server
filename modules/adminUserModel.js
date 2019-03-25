@@ -1,6 +1,6 @@
-const db = require('../config/dbConnect');
+const db = require("../config/dbConnect");
 const sequelize = db.sequelize;
-const adminUserSchema = sequelize.import('../schema/adminUserSchema');
+const adminUserSchema = sequelize.import("../schema/adminUserSchema");
 
 class adminUserModel {
   /**
@@ -16,7 +16,7 @@ class adminUserModel {
       where: {
         name
       }
-    })
+    });
   }
 
   /**
@@ -30,15 +30,15 @@ class adminUserModel {
    */
   static async create(user) {
     return await adminUserSchema.create({
-     ...user
-    })
+      ...user
+    });
   }
 
   /**
    * 修改数据
    *
    * @static
-   * @param {Object} parmas 
+   * @param {Object} parmas
    * @param {*} loginUser 用户手机号
    * @returns
    * @memberof adminUserModel
@@ -50,7 +50,7 @@ class adminUserModel {
       where: {
         name: loginUser
       }
-    })
+    });
   }
 }
 
