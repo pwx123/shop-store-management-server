@@ -67,6 +67,32 @@ class shopOrderModel {
   }
 
   /**
+   * 根据订单号查询订单
+   * @param orderId
+   * @returns {Promise<*>}
+   */
+  static async getOrderByOrderId(orderId) {
+    shopOrderListSchema.hasMany(shopSubOrderListSchema, {
+      foreignKey: "mainOrderId",
+      sourceKey: "id",
+      as: {
+        singular: "orders",
+        plural: "orders"
+      }
+    });
+    return await shopOrderListSchema.findOne({
+      where: {
+        orderId
+      },
+      include: [{
+        model: shopSubOrderListSchema,
+        as: "orders"
+      }],
+      distinct: true
+    });
+  }
+
+  /**
    * 确认待处理订单
    *
    * @static
@@ -156,7 +182,8 @@ class shopOrderModel {
    */
   static async submitRefundInfo(param) {
     return await shopOrderListSchema.update({
-      status: param.status
+      status: param.status,
+      dealAt: new Date()
     }, {
       where: {
         status: 6,
@@ -187,11 +214,13 @@ class shopOrderModel {
       pageNumber,
       startTime,
       endTime,
+      refundOrderId,
       orderNumId,
       userName,
       status
     } = params;
     let queryObj = getUncertainSqlObj({
+      refundOrderId,
       orderNumId,
       userName,
       status

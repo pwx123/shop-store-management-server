@@ -7,6 +7,10 @@ module.exports = function (sequelize, DataTypes) {
       primaryKey: true,
       autoIncrement: true
     },
+    refundOrderId: {
+      type: DataTypes.STRING(40),
+      allowNull: false
+    },
     orderNumId: {
       type: DataTypes.STRING(40),
       allowNull: false

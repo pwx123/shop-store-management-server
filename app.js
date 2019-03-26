@@ -33,21 +33,6 @@ io.sockets.use(function (socket, next) {
 });
 io.sockets.on("connection", (socket) => {
   console.log("\x1B[32m new socket.io connection successfully\x1B[0m");
-  // socket.on('startSend', (value) => {
-  //   let sessionID = socket.request.sessionID;
-  //   socket.request.sessionStore.client.get(sessionID, function (err, result) {
-  //     if (err) {
-  //       logger.error(err);
-  //       return false;
-  //     }
-  //     if (result) {
-  //       socket.emit('startSendRes', resMsg(200));
-  //     } else {
-  //       socket.emit('err', resMsg(401));
-  //       socket.disconnect(true);
-  //     }
-  //   });
-  // })
 });
 app.io = io;
 

@@ -5,6 +5,7 @@ const logger = require("../config/log4j");
 const resMsg = require("../utils/utils").resMsg;
 const hasEmpty = require("../utils/utils").hasEmpty;
 const numReg = require("../utils/utils").numReg;
+const getRefundOrderId = require("../utils/utils").getRefundOrderId;
 const shopOrderModel = require("../modules/shopOrderModel");
 const uploadConfig = require("./../config/uploadConfig");
 
@@ -25,6 +26,27 @@ class shopOrderController {
         return false;
       }
       let result = await shopOrderModel.getOrderList(req.body);
+      res.json(resMsg(200, result));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 根据订单号查询订单
+   * @param req
+   * @param res
+   * @param next
+   * @returns {Promise<void>}
+   */
+  static async getOrderByOrderId(req, res, next){
+    try {
+      if (hasEmpty(req.body.orderId)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      let result = await shopOrderModel.getOrderByOrderId(req.body.orderId);
       res.json(resMsg(200, result));
     } catch (error) {
       logger.error(error);
@@ -83,7 +105,8 @@ class shopOrderController {
       let params = {
         id,
         deliveryId,
-        deliveryOrderId
+        deliveryOrderId,
+        deliveryAt: new Date()
       };
       let result = await shopOrderModel.getSubmitDeliveryInfo(params);
       if (!result || result.length === 0) {
@@ -227,6 +250,7 @@ class shopOrderController {
             remark: refundRemark,
             status
           };
+          obj.refundOrderId = getRefundOrderId(result[i].userId);
           obj.orderNumId = result[i].orderId;
           obj.userName = result[i].userName;
           obj.refundMoney = status === 7 ? result[i].totalMoney : null;

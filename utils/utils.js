@@ -88,6 +88,44 @@ let getRandomStrNum = function (len) {
   return str;
 };
 
+/**
+ * 获取 yyyyMMddHHmmss 时间
+ *
+ * @memberof autoCreateOrder
+ */
+let getDataStr = function () {
+  let date = new Date();
+  let year = date.getFullYear();
+  let month = date.getMonth();
+  let day = padLeft(2, date.getDate());
+  let hour = padLeft(2, date.getHours());
+  let minute = padLeft(2, date.getMinutes());
+  let second = padLeft(2, date.getSeconds());
+  return `${year}${month}${day}${hour}${minute}${second}`;
+};
+
+/**
+ * 左补全
+ * @param len
+ * @param num
+ * @returns {string}
+ */
+let padLeft = function (len, num) {
+  return new Array(len - (num + "").length + 1).join("0") + num;
+};
+
+/**
+ * 获取退款流水号
+ * @param userId 用户id
+ * @returns {string}
+ */
+let getRefundOrderId = function (userId) {
+  let str = "T";
+  str += padLeft(9, userId);
+  str += getDataStr();
+  return str;
+};
+
 const mobileReg = /^1[3456789]\d{9}$/;
 const pwdReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
 const numReg = /^[0-9]+$/;
@@ -100,5 +138,6 @@ module.exports = {
   mobileReg,
   pwdReg,
   numReg,
-  getRandomPwd
+  getRandomPwd,
+  getRefundOrderId
 };

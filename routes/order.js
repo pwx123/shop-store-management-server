@@ -4,6 +4,8 @@ const shopOrderController = require("../controllers/shopOrderController");
 
 // 分页查询订单列表
 router.post("/getOrderList", shopOrderController.getOrderList);
+// 根据订单号查询订单
+router.post("/getOrderByOrderId", shopOrderController.getOrderByOrderId);
 // 确认待处理订单
 router.post("/submitOrder", shopOrderController.submitOrder);
 // 上传/编辑物流信息
