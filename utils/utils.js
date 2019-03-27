@@ -126,6 +126,18 @@ let getRefundOrderId = function (userId) {
   return str;
 };
 
+/**
+ * 生成随机数
+ *
+ * @param {Number} lower 最小值
+ * @param {Number} upper 最大值
+ * @returns
+ * @memberof autoCreateOrder
+ */
+let getRandom = function(lower, upper) {
+  return Math.floor(Math.random() * (upper - lower)) + lower;
+};
+
 const mobileReg = /^1[3456789]\d{9}$/;
 const pwdReg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
 const numReg = /^[0-9]+$/;
@@ -138,6 +150,7 @@ module.exports = {
   mobileReg,
   pwdReg,
   numReg,
+  getRandom,
   getRandomPwd,
   getRefundOrderId
 };
