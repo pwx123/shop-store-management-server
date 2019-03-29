@@ -4,6 +4,7 @@ const resMsg = require("../utils/utils").resMsg;
 const hasEmpty = require("../utils/utils").hasEmpty;
 const getRandom = require("../utils/utils").getRandom;
 const indexModel = require("../modules/indexModel");
+const shopOrderModel = require("../modules/shopOrderModel");
 const areaModel = require("../modules/areaModel");
 
 class indexController {
@@ -165,6 +166,64 @@ class indexController {
         resObj.infoArr.push(deliveryInfo[getRandom(0, len)]);
       }
       res.json(resMsg(200, resObj));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 获取订单信息
+   * @param req
+   * @param res
+   * @param next
+   * @returns {Promise<void>}
+   */
+  static async getOrderStatistics(req, res, next) {
+    try {
+      let promiseArr = [shopOrderModel.getTodayOrder(), shopOrderModel.getAllDealWithOrder(), shopOrderModel.getAllRefundOrder()];
+      let resultArr = await Promise.all(promiseArr);
+      res.json(resMsg(200, {
+        todayOrderNum: resultArr[0][0].get("todayOrderNum"),
+        dealWithOrderNum: resultArr[1][0].get("dealWithOrderNum"),
+        refundOrderNum: resultArr[2][0].get("refundOrderNum"),
+      }));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   *
+   * @param req
+   * @param res
+   * @param next
+   * @returns {Promise<boolean>}
+   */
+  static async getOrderStatisticsByType(req, res, next) {
+    try {
+      if (hasEmpty(req.body.type)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      if (req.body.type === 0) {
+        let promiseArr = [shopOrderModel.getTodaySubOrder(), shopOrderModel.getWeekSubOrder(), shopOrderModel.getMonthSubOrder()];
+        let resultArr = await Promise.all(promiseArr);
+        res.json(resMsg(200, {
+          today: resultArr[0][0].get("today"),
+          week: resultArr[1][0].get("week"),
+          month: resultArr[2][0].get("month"),
+        }));
+      } else {
+        let promiseArr = [shopOrderModel.getTodayMoney(), shopOrderModel.getWeekMoney(), shopOrderModel.getMonthMoney()];
+        let resultArr = await Promise.all(promiseArr);
+        res.json(resMsg(200, {
+          today: resultArr[0][0].get("today").toFixed(2),
+          week: resultArr[1][0].get("week").toFixed(2),
+          month: resultArr[2][0].get("month").toFixed(2),
+        }));
+      }
     } catch (error) {
       logger.error(error);
       res.json(resMsg());

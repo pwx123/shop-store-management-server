@@ -1,3 +1,4 @@
+const moment = require("moment");
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define("shop_sub_order_list", {
     id: {
@@ -37,6 +38,12 @@ module.exports = function (sequelize, DataTypes) {
     bookImageUrl: {
       type: DataTypes.STRING(200),
       allowNull: true
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      get() {
+        return moment(this.getDataValue("createdAt")).format("YYYY-MM-DD HH:mm:ss");
+      }
     }
   }, {
     timestamps: false,

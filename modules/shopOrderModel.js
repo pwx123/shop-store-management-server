@@ -6,7 +6,6 @@ const shopSubOrderListSchema = sequelize.import("../schema/shopSubOrderListSchem
 const shopDeliveryCompanySchema = sequelize.import("../schema/shopDeliveryCompanySchema");
 const shopUserDeliveryAddressSchema = sequelize.import("../schema/shopUserDeliveryAddressSchema");
 const shopRefundRecordSchema = sequelize.import("../schema/shopRefundRecordSchema");
-const hasEmpty = require("../utils/utils").hasEmpty;
 const getUncertainSqlObj = require("./../utils/utils").getUncertainSqlObj;
 
 class shopOrderModel {
@@ -159,8 +158,8 @@ class shopOrderModel {
    * 查询符合退款条件的
    *
    * @static
-   * @param ids 退款的ids
    * @memberof shopOrderModel
+   * @param idsArr
    */
   static async getUpdateRefundInfo(idsArr) {
     return await shopOrderListSchema.findAll({
@@ -372,6 +371,149 @@ class shopOrderModel {
    */
   static async createSubOrder(paramsArr) {
     return await shopSubOrderListSchema.bulkCreate(paramsArr);
+  }
+
+  /**
+   * 获取今日订单
+   * @returns {Promise<void>}
+   */
+  static getTodayOrder() {
+    let todayStartTime = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    return shopOrderListSchema.findAll({
+      attributes: [[sequelize.fn("COUNT", sequelize.col("id")), "todayOrderNum"]],
+      where: {
+        createdAt: {
+          [Op.gt]: todayStartTime,
+        }
+      }
+    });
+  }
+
+  /**
+   * 获取待处理订单
+   * @returns {Promise<void>}
+   */
+  static getAllDealWithOrder() {
+    return shopOrderListSchema.findAll({
+      attributes: [[sequelize.fn("COUNT", sequelize.col("id")), "dealWithOrderNum"]],
+      where: {
+        status: 1
+      }
+    });
+  }
+
+  /**
+   * 获取退款订单
+   * @returns {Promise<void>}
+   */
+  static getAllRefundOrder() {
+    return shopOrderListSchema.findAll({
+      attributes: [[sequelize.fn("COUNT", sequelize.col("id")), "refundOrderNum"]],
+      where: {
+        status: 6
+      }
+    });
+  }
+
+  /**
+   * 获取今日销量
+   * @returns {Promise<void>}
+   */
+  static getTodaySubOrder() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    return shopSubOrderListSchema.findAll({
+      attributes: [[sequelize.fn("COUNT", sequelize.col("id")), "today"]],
+      where: {
+        createdAt: {
+          [Op.gt]: time,
+        }
+      }
+    });
+  }
+
+  /**
+   * 获取本周销量
+   * @returns {Promise<void>}
+   */
+  static getWeekSubOrder() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    time.setDate(time.getDate() - time.getDay() - 1);
+    return shopSubOrderListSchema.findAll({
+      attributes: [[sequelize.fn("COUNT", sequelize.col("id")), "week"]],
+      where: {
+        createdAt: {
+          [Op.gt]: time,
+        }
+      }
+    });
+  }
+
+  /**
+   * 获取本月销量
+   * @returns {Promise<void>}
+   */
+  static getMonthSubOrder() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    time.setDate(1);
+    return shopSubOrderListSchema.findAll({
+      attributes: [[sequelize.fn("COUNT", sequelize.col("id")), "month"]],
+      where: {
+        createdAt: {
+          [Op.gt]: time,
+        }
+      }
+    });
+  }
+
+
+  /**
+   * 获取今日销售额
+   * @returns {Promise<void>}
+   */
+  static getTodayMoney() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    return shopSubOrderListSchema.findAll({
+      attributes: [[sequelize.literal("SUM(bookSalePrice * bookNum)"), "today"]],
+      where: {
+        createdAt: {
+          [Op.gt]: time,
+        }
+      }
+    });
+  }
+
+  /**
+   * 获取本周销售额
+   * @returns {Promise<void>}
+   */
+  static getWeekMoney() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    time.setDate(time.getDate() - time.getDay() - 1);
+    return shopSubOrderListSchema.findAll({
+      attributes: [[sequelize.literal("SUM(bookSalePrice * bookNum)"), "week"]],
+      where: {
+        createdAt: {
+          [Op.gt]: time,
+        }
+      }
+    });
+  }
+
+  /**
+   * 获取本月销售额
+   * @returns {Promise<void>}
+   */
+  static getMonthMoney() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    time.setDate(1);
+    return shopSubOrderListSchema.findAll({
+      attributes: [[sequelize.literal("SUM(bookSalePrice * bookNum)"), "month"]],
+      where: {
+        createdAt: {
+          [Op.gt]: time,
+        }
+      }
+    });
   }
 }
 
