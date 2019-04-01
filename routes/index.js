@@ -18,5 +18,9 @@ router.post("/getDeliveryInfoById", indexController.getDeliveryInfoById);
 router.post("/getOrderStatistics", indexController.getOrderStatistics);
 // 获取订单统计信息
 router.post("/getOrderStatisticsByType", indexController.getOrderStatisticsByType);
+// 获取本月Top10信息
+router.post("/getTop10Info", indexController.getTop10Info);
+// 获取趋势信息
+router.post("/getTrendInfo", indexController.getTrendInfo);
 
 module.exports = router;

@@ -1,11 +1,13 @@
 const db = require("../config/dbConnect");
 const sequelize = db.sequelize;
 const Op = sequelize.Op;
+const moment = require("moment");
 const shopOrderListSchema = sequelize.import("../schema/shopOrderListSchema");
 const shopSubOrderListSchema = sequelize.import("../schema/shopSubOrderListSchema");
 const shopDeliveryCompanySchema = sequelize.import("../schema/shopDeliveryCompanySchema");
 const shopUserDeliveryAddressSchema = sequelize.import("../schema/shopUserDeliveryAddressSchema");
 const shopRefundRecordSchema = sequelize.import("../schema/shopRefundRecordSchema");
+const shopStockRecordSchema = sequelize.import("../schema/shopStockRecordSchema");
 const getUncertainSqlObj = require("./../utils/utils").getUncertainSqlObj;
 
 class shopOrderModel {
@@ -437,7 +439,9 @@ class shopOrderModel {
    */
   static getWeekSubOrder() {
     let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
-    time.setDate(time.getDate() - time.getDay() - 1);
+    let day = time.getDay();
+    day = day === 0 ? 7 : day;
+    time.setDate(time.getDate() - day + 1);
     return shopSubOrderListSchema.findAll({
       attributes: [[sequelize.fn("COUNT", sequelize.col("id")), "week"]],
       where: {
@@ -488,7 +492,9 @@ class shopOrderModel {
    */
   static getWeekMoney() {
     let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
-    time.setDate(time.getDate() - time.getDay() - 1);
+    let day = time.getDay();
+    day = day === 0 ? 7 : day;
+    time.setDate(time.getDate() - day + 1);
     return shopSubOrderListSchema.findAll({
       attributes: [[sequelize.literal("SUM(bookSalePrice * bookNum)"), "week"]],
       where: {
@@ -514,6 +520,111 @@ class shopOrderModel {
         }
       }
     });
+  }
+
+  /**
+   * 获取书籍销量Top10
+   * @returns {Promise<*>}
+   */
+  static async getBookTop10() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    time.setDate(1);
+    return shopSubOrderListSchema.findAll({
+      attributes: [[sequelize.fn("COUNT", sequelize.col("id")), "bookCount"], "bookName"],
+      where: {
+        createdAt: {
+          [Op.gt]: time,
+        }
+      },
+      group: "bookId",
+      order: [
+        [[sequelize.literal("bookCount"), "DESC"]]
+      ],
+      limit: 10
+    });
+  }
+
+  /**
+   * 获取进货量Top10
+   * @returns {Promise<*>}
+   */
+  static async getStockTop10() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    time.setDate(1);
+    return shopStockRecordSchema.findAll({
+      attributes: ["stockNum", "bookName"],
+      where: {
+        createdAt: {
+          [Op.gt]: time,
+        }
+      },
+      order: [
+        ["stockNum", "DESC"]
+      ],
+      limit: 10
+    });
+  }
+
+  /**
+   * 获取用户消费Top10
+   * @returns {Promise<*>}
+   */
+  static async getUserTop10() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    time.setDate(1);
+    return shopOrderListSchema.findAll({
+      attributes: [[sequelize.literal("SUM(totalMoney)"), "userMoney"], "userName"],
+      where: {
+        createdAt: {
+          [Op.gt]: time,
+        }
+      },
+      group: "userId",
+      order: [
+        [[sequelize.literal("userMoney"), "DESC"]]
+      ],
+      limit: 10
+    });
+  }
+
+  /**
+   * 统计七个月销售量
+   * @returns {Promise<void>}
+   */
+  static async getTrendCountInfo() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    time.setMonth(time.getMonth() - 7);
+    time.setDate(1);
+    return await sequelize.query(`
+    SELECT
+      DATE_FORMAT(createdAt, '%Y-%m') day,
+      COUNT(id) count
+    FROM
+      \`shop_sub_order_list\`
+    WHERE
+       createdAt BETWEEN '${moment(time).format("YYYY-MM-DD HH:mm:ss")}' AND '${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}'
+    GROUP BY day
+    ORDER BY createdAt;`);
+  }
+
+  /**
+   * 统计七个月销售额
+   * @returns {Promise<void>}
+   */
+  static async getTrendMoneyInfo() {
+    let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
+    time.setMonth(time.getMonth() - 7);
+    time.setDate(1);
+    return await sequelize.query(`
+    SELECT
+      DATE_FORMAT(createdAt, '%Y-%m') day,
+      SUM(bookNum*bookPrice) count
+    FROM
+      \`shop_sub_order_list\`
+    WHERE
+       createdAt BETWEEN '${moment(time).format("YYYY-MM-DD HH:mm:ss")}' AND '${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")}'
+    GROUP BY day
+    ORDER BY createdAt;`);
   }
 }
 

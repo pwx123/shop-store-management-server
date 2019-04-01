@@ -219,10 +219,58 @@ class indexController {
         let promiseArr = [shopOrderModel.getTodayMoney(), shopOrderModel.getWeekMoney(), shopOrderModel.getMonthMoney()];
         let resultArr = await Promise.all(promiseArr);
         res.json(resMsg(200, {
-          today: resultArr[0][0].get("today").toFixed(2),
-          week: resultArr[1][0].get("week").toFixed(2),
-          month: resultArr[2][0].get("month").toFixed(2),
+          today: resultArr[0][0].get("today") && resultArr[0][0].get("today").toFixed(2),
+          week: resultArr[1][0].get("week") && resultArr[1][0].get("week").toFixed(2),
+          month: resultArr[2][0].get("month") && resultArr[2][0].get("month").toFixed(2),
         }));
+      }
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 获取本月Top10信息
+   * @param req
+   * @param res
+   * @param next
+   * @returns {Promise<void>}
+   */
+  static async getTop10Info(req, res, next){
+    try {
+      let promiseArr = [shopOrderModel.getBookTop10(), shopOrderModel.getStockTop10(), shopOrderModel.getUserTop10()];
+      let resultArr = await Promise.all(promiseArr);
+      res.json(resMsg(200, {
+        book: resultArr[0],
+        stock: resultArr[1],
+        user: resultArr[2],
+      }));
+    } catch (error) {
+      logger.error(error);
+      res.json(resMsg());
+    }
+  }
+
+  /**
+   * 获取趋势变化信息
+   * @param req
+   * @param res
+   * @param next
+   * @returns {Promise<boolean>}
+   */
+  static async getTrendInfo(req, res, next) {
+    try {
+      if (hasEmpty(req.body.type)) {
+        res.json(resMsg(9001));
+        return false;
+      }
+      if (req.body.type === 0) {
+        let result = await shopOrderModel.getTrendCountInfo();
+        res.json(resMsg(200, result[0] || []));
+      } else {
+        let result = await shopOrderModel.getTrendMoneyInfo();
+        res.json(resMsg(200, result[0] || []));
       }
     } catch (error) {
       logger.error(error);

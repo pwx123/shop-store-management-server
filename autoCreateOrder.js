@@ -221,7 +221,7 @@ class autoCreateOrder {
 }
 
 let option = {
-  time: 1000 * 10
+  time: 1000 * 1
 };
 
 new autoCreateOrder(option);
