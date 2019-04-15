@@ -593,7 +593,7 @@ class shopOrderModel {
    */
   static async getTrendCountInfo() {
     let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
-    time.setMonth(time.getMonth() - 7);
+    time.setMonth(time.getMonth() - 10);
     time.setDate(1);
     return await sequelize.query(`
     SELECT
@@ -613,7 +613,7 @@ class shopOrderModel {
    */
   static async getTrendMoneyInfo() {
     let time = new Date(new Date(new Date().toLocaleDateString()).getTime());
-    time.setMonth(time.getMonth() - 7);
+    time.setMonth(time.getMonth() - 10);
     time.setDate(1);
     return await sequelize.query(`
     SELECT

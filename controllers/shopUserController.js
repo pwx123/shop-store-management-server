@@ -17,7 +17,7 @@ class shopUserController {
    */
   static async getShopUserInfo(req, res, next) {
     try {
-      if (hasEmpty(req.body.pageSize, req.body.pageNumber, req.body.startTime, req.body.endTime)) {
+      if (hasEmpty(req.body.pageSize, req.body.pageNumber)) {
         res.json(resMsg(9001));
         return false;
       }

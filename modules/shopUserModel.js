@@ -38,14 +38,21 @@ class shopModel {
         nickname: name
       }];
     }
+    let createdAt = {};
+    if (!hasEmpty(startTime)) {
+      createdAt[Op.gt] = startTime;
+    }
+    if (!hasEmpty(endTime)) {
+      createdAt[Op.lt] = endTime;
+    }
+    // symbols keys 不能判断
+    if (Object.getOwnPropertySymbols(createdAt).length) {
+      searchObj.createdAt = createdAt;
+    }
     let result = await shopUserSchema.findAndCountAll({
       offset: pageSize * (pageNumber - 1),
       limit: pageSize,
       where: {
-        createdAt: {
-          [Op.gt]: startTime,
-          [Op.lt]: endTime,
-        },
         ...searchObj
       },
       order: [
