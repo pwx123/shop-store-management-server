@@ -15,4 +15,4 @@
 
 ## 资源文件
 
-资源文件见 [链接](https://github.com/pwx123/shop-store-management-server/resource), 复制到 `Apache` 服务器根目录下即可。
+资源文件见 [链接](https://github.com/pwx123/shop-store-management-server/tree/master/resource), 复制到 `Apache` 服务器根目录下即可。
