@@ -11,7 +11,7 @@
  Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 01/04/2019 15:33:15
+ Date: 27/05/2019 17:34:27
 */
 
 SET NAMES utf8mb4;
@@ -30,12 +30,13 @@ CREATE TABLE `shop_admin_user`  (
   `createdAt` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_admin_user
 -- ----------------------------
 INSERT INTO `shop_admin_user` VALUES (5, '15553598117', '9c67e149bf846087c5b0043bb40eb35f', '管理员', 'http://127.0.0.1/images/admin/15553598117.jpg', '2019-01-20 22:14:43', '2019-03-11 15:16:16');
+INSERT INTO `shop_admin_user` VALUES (9, '15553598111', '9c67e149bf846087c5b0043bb40eb35f', 'pwx', NULL, '2019-05-13 21:43:05', '2019-05-13 21:43:05');
 
 -- ----------------------------
 -- Table structure for shop_book_category
@@ -45,7 +46,7 @@ CREATE TABLE `shop_book_category`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 20 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_book_category
@@ -54,13 +55,17 @@ INSERT INTO `shop_book_category` VALUES (1, '科幻');
 INSERT INTO `shop_book_category` VALUES (2, '儿童');
 INSERT INTO `shop_book_category` VALUES (3, '地理');
 INSERT INTO `shop_book_category` VALUES (4, '农业');
-INSERT INTO `shop_book_category` VALUES (5, 'JAVA');
+INSERT INTO `shop_book_category` VALUES (14, '传记');
 INSERT INTO `shop_book_category` VALUES (6, '历史');
 INSERT INTO `shop_book_category` VALUES (7, '文学');
-INSERT INTO `shop_book_category` VALUES (8, '微生物');
-INSERT INTO `shop_book_category` VALUES (9, '天文地理');
-INSERT INTO `shop_book_category` VALUES (10, '文学列别');
+INSERT INTO `shop_book_category` VALUES (15, '心理学');
+INSERT INTO `shop_book_category` VALUES (13, '小说');
 INSERT INTO `shop_book_category` VALUES (11, '天文');
+INSERT INTO `shop_book_category` VALUES (12, '励志');
+INSERT INTO `shop_book_category` VALUES (16, '军事');
+INSERT INTO `shop_book_category` VALUES (17, '当代小说');
+INSERT INTO `shop_book_category` VALUES (18, '都市');
+INSERT INTO `shop_book_category` VALUES (19, '情感');
 
 -- ----------------------------
 -- Table structure for shop_book_list
@@ -84,53 +89,51 @@ CREATE TABLE `shop_book_list`  (
   `createdAt` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 177 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 182 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_book_list
 -- ----------------------------
-INSERT INTO `shop_book_list` VALUES (1, 0, '三体', '刘慈欣', '电子科技出版社', '5,4,1,3', '特价图书', '中国科幻巨作，值得期待', 70, 0.00, 61.00, 53.00, 1, 'http://127.0.0.1/images/book/1.jpg', '2019-02-21 21:35:09', '2019-03-10 20:49:20');
-INSERT INTO `shop_book_list` VALUES (2, 0, '流浪地球', '刘慈欣', '北京师范大学出版社', '2', '特价', '中国科幻巨作', 66, 0.00, 55.50, 53.00, 1, 'http://127.0.0.1/images/book/2.jpg', '2019-02-20 21:35:09', '2019-03-10 15:00:11');
-INSERT INTO `shop_book_list` VALUES (6, 0, '三儿童', '刘慈欣', '清华大学出版社', '1,10', '特价小搜', '中国科幻巨作', 66, 0.00, 55.50, 53.00, 1, 'http://127.0.0.1/images/book/6.jpg', '2019-02-20 21:35:09', '2019-03-10 15:05:46');
-INSERT INTO `shop_book_list` VALUES (7, 0, '三体 热', '刘慈欣', '北京师范大学出版', '5', '特价小搜', '中国科幻巨作', 66, 0.00, 55.50, 53.00, 1, 'http://127.0.0.1/images/book/7.jpg', '2019-02-20 21:35:09', '2019-03-10 15:06:00');
-INSERT INTO `shop_book_list` VALUES (8, 0, '三 ', '刘慈欣', '北京师范大学出版社', '', '特价小搜', '中国科幻巨作', 66, 0.00, 55.50, 53.00, 1, 'http://127.0.0.1/images/book/8.jpg', '2019-02-20 21:35:09', '2019-03-09 20:08:32');
-INSERT INTO `shop_book_list` VALUES (9, 0, '三体', '刘慈欣', '北京师范大学出版社', NULL, '特价小搜', '中国科幻巨作', 66, 0.00, 55.50, 53.00, 1, NULL, '2019-02-20 21:35:09', '2019-02-20 21:35:09');
-INSERT INTO `shop_book_list` VALUES (10, 0, '三绕太阳', '刘慈欣', '北京师范大学出版社', '', '特价小搜', '中国科幻巨作', 60, 0.00, 55.50, 53.00, 1, 'http://127.0.0.1/images/book/10.jpg', '2019-02-20 21:35:09', '2019-03-10 21:12:35');
-INSERT INTO `shop_book_list` VALUES (11, 0, '三 儿童', '刘慈欣', '北京师范大学出版社', '', '特价小搜', '中国科幻巨作', 66, 0.00, 55.50, 53.00, 1, 'http://127.0.0.1/images/book/11.jpg', '2019-02-20 21:35:09', '2019-03-10 15:01:24');
-INSERT INTO `shop_book_list` VALUES (143, 0, '水浒传', '吴承恩', '人民出版社', '2,3', '四大名著', '四大名著经典之作', 12, 0.00, 40.43, 30.20, 1, NULL, '2019-03-10 19:12:15', '2019-03-10 20:04:44');
-INSERT INTO `shop_book_list` VALUES (144, 0, '水浒传二特人 ', '吴承恩', '人民出版社', '2', '四大名著', '四大名著经典之作', 5, 0.00, 40.43, 30.20, 1, 'http://127.0.0.1/images/book/144.jpg', '2019-03-10 19:12:15', '2019-03-10 20:52:56');
-INSERT INTO `shop_book_list` VALUES (145, 0, '1', '2', '3', '3,5,8,4,6,7,9,10,2,1', '1', '1', 0, 0.00, 213.00, 213.00, 1, '1', '2019-03-10 20:23:30', '2019-03-14 12:59:10');
-INSERT INTO `shop_book_list` VALUES (146, 0, '12321', '21312', '3123', '4,6', '12312', '213', 0, 0.00, 213.00, 213.00, 1, NULL, '2019-03-10 20:26:31', '2019-03-10 20:26:31');
-INSERT INTO `shop_book_list` VALUES (147, 0, '123', '13123', '21321', '4,2', '12312', '21321', 2, 0.00, 23.00, 12.00, 1, 'http://127.0.0.1/images/book/147.jpg', '2019-03-10 20:29:54', '2019-03-31 21:25:24');
-INSERT INTO `shop_book_list` VALUES (148, 0, '太容易', '123123', '21312', '5', '13123', '123', 0, 0.00, 32.00, 23.00, 1, 'http://127.0.0.1/images/book/148.jpg', '2019-03-10 20:30:30', '2019-03-31 21:25:19');
-INSERT INTO `shop_book_list` VALUES (149, 0, '23123让他', '21312', '312312', '3', '312', '12321', 5, 0.00, 232.00, 213.00, 1, 'http://127.0.0.1/images/book/149.jpg', '2019-03-10 20:33:17', '2019-03-31 21:25:13');
-INSERT INTO `shop_book_list` VALUES (150, 0, '水浒绕太阳', '吴承恩', '人民出版社', '2,3', '四大名著', '四大名著经典之作', 12, 0.00, 40.43, 30.20, 1, 'http://127.0.0.1/images/book/150.jpg', '2019-03-10 21:13:41', '2019-03-10 21:13:55');
-INSERT INTO `shop_book_list` VALUES (151, 0, '让他 浒传', '吴承恩', '人民出版社', '2', '四大名著', '四大名著经典之作', 12, 0.00, 40.43, 30.20, 1, NULL, '2019-03-10 21:13:41', '2019-03-10 21:13:41');
-INSERT INTO `shop_book_list` VALUES (152, 0, '水太容易', '吴承恩', '人民出版社', '2,3', '四大名著', '四大名著经典之作', 12, 0.00, 40.43, 30.20, 1, NULL, '2019-03-11 11:09:19', '2019-03-11 11:09:19');
-INSERT INTO `shop_book_list` VALUES (153, 0, '水浒太容易', '吴承恩', '人民出版社', '2', '四大名著', '四大名著经典之作', 12, 0.00, 40.43, 30.20, 1, NULL, '2019-03-11 11:09:19', '2019-03-11 11:09:19');
-INSERT INTO `shop_book_list` VALUES (154, 0, '红楼梦try让他', '吴承恩', '人民出版社', '2,3', '四大名著', '四大名著经典之作', 12, 0.00, 40.43, 30.20, 1, NULL, '2019-03-11 11:29:24', '2019-03-14 21:43:19');
-INSERT INTO `shop_book_list` VALUES (155, 0, '水太容易', '吴承恩', '人民出版社', '', '四大名著', '四大名著经典之作', 18, 0.00, 40.43, 30.20, 1, 'http://127.0.0.1/images/book/155.jpg', '2019-03-11 11:29:24', '2019-03-17 14:19:17');
-INSERT INTO `shop_book_list` VALUES (156, 0, '投入运营', '吴承恩', '人民出版社123', '2', '四大名著', '四大名著经典之作', 54, 123.00, 40.43, 30.20, 1, NULL, '2019-03-11 12:18:10', '2019-03-18 14:41:12');
-INSERT INTO `shop_book_list` VALUES (157, 0, '热特热', '吴承恩', '人民出版社', '2,4', '四大名著121', '四大名著经典之作12', 12, 11.00, 40.43, 30.15, 1, 'http://127.0.0.1/images/book/157.jpg', '2019-03-11 12:18:10', '2019-03-17 16:25:00');
-INSERT INTO `shop_book_list` VALUES (158, 1, '红楼里的风格', '夏明', '山东出版社', '1,2', '名著', '值得一看', 10, 0.00, 20.00, 10.00, 0, NULL, '2019-03-11 12:19:17', '2019-03-11 21:13:36');
-INSERT INTO `shop_book_list` VALUES (159, 1, '红楼里3453', '夏明', '山东出版社', '1,3', '名著', '值得一看', 10, 0.00, 20.00, 10.00, 0, NULL, '2019-03-11 12:19:17', '2019-03-11 12:19:17');
-INSERT INTO `shop_book_list` VALUES (160, 1, '1儿童', '2', '3', '1', '21312', '郭德纲', 1, 12.00, 14.00, 13.00, 1, NULL, '2019-03-16 19:01:49', '2019-03-16 19:01:49');
-INSERT INTO `shop_book_list` VALUES (161, 0, '213二', '23', '312312', '2', '12321', '12321', 124, 2131.00, 1231.00, 121.00, 1, NULL, '2019-03-17 16:26:35', '2019-03-18 14:33:01');
-INSERT INTO `shop_book_list` VALUES (162, 0, '2131', '2312', '3123', '', '21312', '1', 104, 1212.00, 20.98, 132.00, 1, NULL, '2019-03-17 16:31:58', '2019-03-18 14:40:50');
-INSERT INTO `shop_book_list` VALUES (163, 0, '123热帖', '123', '321', '2', '2131', '123', 12, 21.00, 21.00, 21.00, 1, 'http://127.0.0.1/images/book/163.png', '2019-03-18 14:41:32', '2019-03-27 09:52:56');
-INSERT INTO `shop_book_list` VALUES (164, 0, '213123', '123123', '213123', '1', '32', '13', 3213, 12321.00, 213.00, 213.00, 1, NULL, '2019-03-18 14:43:16', '2019-03-31 21:25:06');
-INSERT INTO `shop_book_list` VALUES (165, 0, '312gt', '3123', '123', '1,3', '21321', '12', 113, 213.00, 123.00, 13.00, 1, NULL, '2019-03-18 14:44:29', '2019-03-18 14:49:18');
-INSERT INTO `shop_book_list` VALUES (166, 0, 'yhfg', 'fg ', '法国', '1', '委任为', 'r\'we\'r', 100, 12.00, 12.00, 12.00, 1, NULL, '2019-03-18 14:53:12', '2019-03-18 14:53:12');
-INSERT INTO `shop_book_list` VALUES (167, 0, '43hg', 'fg ', '法国', '1', '委任为', 'r\'we\'r', 100, 12.00, 12.00, 12.00, 1, NULL, '2019-03-18 14:57:06', '2019-03-18 14:57:06');
-INSERT INTO `shop_book_list` VALUES (168, 0, '华国锋', '第三方', '第三方', '1,2', '213', 'f ', 123, 12.00, 43.00, 34.00, 1, NULL, '2019-03-18 14:57:06', '2019-03-18 14:57:06');
-INSERT INTO `shop_book_list` VALUES (169, 0, '日剧', 'fg ', '法国', '1', '委任为', '1321312312', 100, 12.00, 12.00, 12.00, 1, NULL, '2019-03-18 15:00:09', '2019-03-27 20:51:22');
-INSERT INTO `shop_book_list` VALUES (170, 0, '范热帖', '第三方', '第三方', '1,2', '213', 'f ', 123, 12.00, 43.00, 34.00, 1, NULL, '2019-03-18 15:00:09', '2019-03-18 15:00:09');
-INSERT INTO `shop_book_list` VALUES (171, 0, '热', 'fg ', '法国', '1', '委任为', 'r\'we\'r', 99, 12.00, 12.00, 12.00, 1, NULL, '2019-03-18 15:00:12', '2019-03-27 21:13:39');
-INSERT INTO `shop_book_list` VALUES (172, 0, '尔特', '第三方', '第三方', '1,2', '213', 'f ', 123, 12.00, 43.00, 34.00, 1, NULL, '2019-03-18 15:00:12', '2019-03-18 15:00:12');
-INSERT INTO `shop_book_list` VALUES (173, 0, '如', 'fg ', '法国', '1', '委任为', 'r\'we\'r', 21412, 12.00, 12.00, 12.00, 1, NULL, '2019-03-18 15:00:14', '2019-03-27 21:13:50');
-INSERT INTO `shop_book_list` VALUES (174, 0, '范尔特人', '第三方', '第三方', '1', '213', '21312312', 123, 12.00, 43.00, 34.00, 1, NULL, '2019-03-18 15:00:14', '2019-03-27 20:35:09');
-INSERT INTO `shop_book_list` VALUES (175, 0, '二亿人让他', 'fg ', '法国', '1', '委任为', '2312312', 100, 12.00, 12.00, 12.00, 1, NULL, '2019-03-18 15:00:17', '2019-03-19 16:46:31');
-INSERT INTO `shop_book_list` VALUES (176, 1, '图uv', '第三方', '第三方', '1,2', '213', 'f ', 124, 12.00, 43.00, 34.00, 1, NULL, '2019-03-18 15:00:17', '2019-03-25 23:56:34');
+INSERT INTO `shop_book_list` VALUES (1, 0, '天文星球', '迪特尔·B·赫尔曼', '民主与建设出版社', '2,11', '我的第一本太空知识绘本', '”数学星球“通识系列。孩子必懂的天文知识和人类太空探索发展史。德国著名天文台台长专为孩子打造；把银河系看成风火轮，将太阳、地球对比为南瓜、大头针，用孩子能懂的语言给孩子讲解天文知识。德国', 68, 0.00, 58.00, 42.60, 1, 'http://127.0.0.1/images/book/1.jpg', '2019-02-21 21:35:09', '2019-05-01 21:05:08');
+INSERT INTO `shop_book_list` VALUES (2, 0, '天文星座观测', '[英]Giles Sparrow', '人民邮电出版社', '11', '全天88星座漫游指南', '夜观星空 遥望星空中的琴弦 探秘宇宙天文的奥秘', 64, 0.00, 79.00, 62.37, 1, 'http://127.0.0.1/images/book/2.jpg', '2019-02-20 21:35:09', '2019-05-13 13:02:15');
+INSERT INTO `shop_book_list` VALUES (6, 0, '励志经典', '李问渠 李娟 采桑子 杨根深', '吉林出版集团有限责任公司', '12', '你的气场，终将成就独一无二的自己+能控制情绪的人，方能控制人生+不要只是看起来很努力+别在该奋斗的时候选择安逸', '暖心又激人奋进的经典套装，于平实的语言当中渗透前进的动力', 65, 0.00, 184.00, 157.00, 1, 'http://127.0.0.1/images/book/6.jpg', '2019-02-20 21:35:09', '2019-04-26 16:23:45');
+INSERT INTO `shop_book_list` VALUES (7, 0, '意林青年励志馆', '《意林》 图书部编', '吉林摄影出版社', '7,12', '意林青年励志馆', '写给年轻人的私人定制励志书', 66, 0.00, 34.00, 29.30, 1, 'http://127.0.0.1/images/book/7.jpg', '2019-02-20 21:35:09', '2019-04-21 21:45:30');
+INSERT INTO `shop_book_list` VALUES (8, 0, '军事百科典藏书系', '军情视点', '化学工业出版社', '16', '军事百科典藏书系', '翔实的数据，千余幅精美图片，兼具深度和广度的单兵武器装备世界大观，比一版内容更新更全、图片更多更精美', 65, 0.00, 69.00, 59.00, 1, 'http://127.0.0.1/images/book/8.jpg', '2019-02-20 21:35:09', '2019-04-26 16:25:11');
+INSERT INTO `shop_book_list` VALUES (9, 0, '军事百科典藏书系', '军情视点', '化学工业出版社', '16', '海军武器大百科（第二版）', '航母、巡洋舰、潜艇等海军武器风貌，兼具深度和广度的海军武器大观，比一版内容更新更全、图片更多更精美', 59, 0.00, 69.80, 62.80, 1, 'http://127.0.0.1/images/book/9.jpg', '2019-02-20 21:35:09', '2019-05-19 14:56:11');
+INSERT INTO `shop_book_list` VALUES (10, 0, '日本当代小说四大杰作', '宫部美雪，奥田英朗', '南海出版公司', '17,13', '新经典严选，套装共4册', '四位日本当代领军作家每人一部代表作，含东野圭吾《解忧杂货店》、伊坂幸太郎《金色梦乡》、宫部美雪《火车》、奥田英朗《精神科的故事：空中秋千》。外国文学出版重镇新经典从旗下五百多部日本文学中严选。', 60, 0.00, 173.50, 147.50, 1, 'http://127.0.0.1/images/book/10.jpg', '2019-02-20 21:35:09', '2019-04-22 09:27:51');
+INSERT INTO `shop_book_list` VALUES (11, 0, '边城', '沈从文', '中国友谊出版公', '13,17', '沈从文小说精粹（一曲爱与美的田园牧歌）', '语文新课标必读，中国乡土文学的典范，荣膺20世纪中文小说百强第二名。重现湘西世界的诗意与纯净，书写人情美、人事美、人性美的极致。汪曾祺、林徽因、曹文轩、李健吾等倾情推荐。', 65, 0.00, 32.00, 32.00, 1, 'http://127.0.0.1/images/book/11.jpg', '2019-02-20 21:35:09', '2019-05-18 21:40:16');
+INSERT INTO `shop_book_list` VALUES (143, 0, '人生海海', '麦家', '北京十月文艺出版社', '12,13', '莫言盛赞！董卿、高晓松、白百何、杨祐宁、何穗反复阅读，诚心推荐！麦家2019新作', '人生海海，何必在意一时沉浮！ 茅盾文学奖得主麦家2019强力之作，挑战常人不敢落笔之处，解密人性的荒唐与高尚。', 12, 0.00, 55.00, 49.50, 1, 'http://127.0.0.1/images/book/143.jpg', '2019-03-10 19:12:15', '2019-04-22 09:32:14');
+INSERT INTO `shop_book_list` VALUES (144, 0, '张召忠：进击的局座·悄悄话系列', '张召忠', '长江文艺出版社', '16', '套装全三册', '听局座讲中国故事，回望新中国69年风雨路，看中国制造巨大成就！', 5, 0.00, 126.00, 102.40, 1, 'http://127.0.0.1/images/book/144.jpg', '2019-03-10 19:12:15', '2019-04-22 09:33:44');
+INSERT INTO `shop_book_list` VALUES (179, 0, '我的伯父伯母周恩来邓颖超', '周秉德', '金城出版社', '14', '2018中国好书获奖作品', '四色图片200-300幅 其中有40%为首次刊出；作者周秉德以亲历者视角，详尽讲述了周、邓不为人知的生活、工作细节及高尚情操；此书为纪念周恩来诞辰120周年之作', 20, 73.00, 100.00, 89.00, 1, 'http://127.0.0.1/images/book/179.jpg', '2019-05-05 12:27:23', '2019-05-19 10:09:37');
+INSERT INTO `shop_book_list` VALUES (148, 0, '黄雀记', '苏童', '浙江人民出版社', '13,18', '苏童第九届茅盾文学获奖作品', '第九届茅盾文学奖获奖作品！当代文学大家苏童亲写新序推荐。全新升级，精装典藏，随书附赠精美书签！我们不过都是螳螂或蝉，而无处不在的命运才是幕后的黄雀。', 1, 0.00, 52.00, 37.40, 1, 'http://127.0.0.1/images/book/148.jpg', '2019-03-10 20:30:30', '2019-05-13 13:08:38');
+INSERT INTO `shop_book_list` VALUES (149, 0, '文学课', '沈从文', '四川人民出版社', '7', '浓缩沈从文60余年文学经验的阅读写作课', '两度提名诺贝尔文学奖，边城、湘行散记作者沈从文阅读和写作的秘诀！一本浓缩60余年文学经验的文学课，看大师是怎样炼成的！', 5, 0.00, 45.00, 38.58, 1, 'http://127.0.0.1/images/book/149.jpg', '2019-03-10 20:33:17', '2019-04-21 21:39:18');
+INSERT INTO `shop_book_list` VALUES (150, 0, '诺贝尔文学奖传世经典作品', '[美] 福克纳，[美] 海明威，[英] 萧伯纳，等', '新星出版社', '7', '豪华精装版全套（套装共40册）', '含老人与海、我弥留之际、小毛驴与我、荒原狼、鼠疫、米嘉之恋、喧哗与骚动等40部精装全译本作品', 5, 0.00, 1343.00, 999.00, 1, 'http://127.0.0.1/images/book/150.jpg', '2019-03-10 21:13:41', '2019-04-26 16:17:53');
+INSERT INTO `shop_book_list` VALUES (151, 0, '世界历史长卷', '塞巴斯蒂安·C.亚当斯', '新世界出版社', '2,6,7', '手绘年表（6米全彩手绘长卷，一座浓缩的历史博物馆）', '精准的时间坐标，历史脉络一目了然；300多幅写实插图，百科全书式的体量，全景呈现6000年人类文明；美国百年博览会连展6个月，好评无数；立足中国，了解世界（步印童书馆出品）', 12, 0.00, 398.00, 315.70, 1, 'http://127.0.0.1/images/book/151.jpg', '2019-03-10 21:13:41', '2019-04-21 21:35:58');
+INSERT INTO `shop_book_list` VALUES (152, 0, '历史深处的民国', '江城', '华文出版社', '6', '（套装全3册）晚清 共和 重生', '中国近代史十佳读物！幽默解读1840～1945。大量珍贵史料，从鸦片战争到抗日战争，百年风云真实再现。不逊于黄仁宇易中天袁腾飞张洪杰。', 11, 0.00, 108.00, 54.00, 1, 'http://127.0.0.1/images/book/152.jpg', '2019-03-11 11:09:19', '2019-04-26 16:24:22');
+INSERT INTO `shop_book_list` VALUES (153, 0, '这个历史挺靠谱', '袁腾飞', '湖南人民出版社', '6', '袁腾飞讲历史（全三册）', '中国通俗讲史界领军人物、百万级畅销书作家袁腾飞的代表作品《历史是个什么玩意儿》升级修订插图超值珍藏版，超受欢迎的简明通史，千万读者热烈追捧！', 12, 0.00, 99.00, 87.40, 1, 'http://127.0.0.1/images/book/153.jpg', '2019-03-11 11:09:19', '2019-04-21 21:33:28');
+INSERT INTO `shop_book_list` VALUES (154, 0, '常春藤传记馆', '刘启涛', '长春出版社', '14,2', '常春藤传记馆', '书是常春藤传记馆丛书之一，由温儒敏先生担任丛书总主编，北京大学语文教育研究所组织编写。传主覆盖范围广，和课程教学有呼应，专门为中小学生编写。', 8, 0.00, 20.80, 19.80, 1, 'http://127.0.0.1/images/book/154.jpg', '2019-03-11 11:29:24', '2019-05-10 16:07:42');
+INSERT INTO `shop_book_list` VALUES (155, 0, '白落梅典藏传记系列', '白落梅', '湖南文艺出版社', '14', '你若安好便是晴天：林徽因传+因为懂得 所以慈悲+你是我今生最美的修行', '愿你做那明心见性的女子，不被物惊，不为情困，不受世扰。纵居陋室，也静如莲花，珠钗散尽，亦可折梅而舞。百万级畅销书作者白落梅2017年全新作品。', 12, 0.00, 179.00, 142.60, 1, 'http://127.0.0.1/images/book/155.jpg', '2019-03-11 11:29:24', '2019-05-03 09:51:09');
+INSERT INTO `shop_book_list` VALUES (156, 0, '阿西莫夫科幻经典', '艾萨克·阿西莫夫', '江苏文艺出版社', '1', '神们自己+永恒的终结+机器人短篇全集', '科幻巨匠阿西莫夫被公认的经典巨作！关于平行宇宙的一切、关于时间旅行的终极奥秘和恢宏构想、“机器人学三大法则”的起源！', 54, 123.00, 117.00, 160.00, 1, 'http://127.0.0.1/images/book/156.jpg', '2019-03-11 12:18:10', '2019-04-21 21:26:14');
+INSERT INTO `shop_book_list` VALUES (157, 0, '阿瑟·克拉克至高科幻经典', '阿瑟·克拉克(Arthur C. Clarke)', '江苏凤凰文艺出版社', '1', '与罗摩相会+童年的终结+遥远的地球之歌+地光+神的九十亿个名字。', '怪不得是刘慈欣的偶像！阿瑟·克拉克，伟大的太空预言家！他是“科幻三巨头”之一，比肩阿西莫夫。', 8, 11.00, 217.00, 185.00, 1, 'http://127.0.0.1/images/book/157.jpg', '2019-03-11 12:18:10', '2019-05-08 19:05:31');
+INSERT INTO `shop_book_list` VALUES (178, 0, '三国演义（上下册）', '罗贯中', '民主与建设出版社', '2,6,7', '中国首部长篇历史小说', '依据正史《三国志》《晋书》《资治通鉴》等订正百余处错误，增加注释两万余字，附三国重要事件时间轴长卷彩页和人物关系图', 80, 23.00, 43.00, 30.00, 1, 'http://127.0.0.1/images/book/178.jpg', '2019-05-01 22:51:09', '2019-05-08 19:55:37');
+INSERT INTO `shop_book_list` VALUES (177, 0, '西游记', '吴承恩', '浙江教育出版社', '2,7', '中小学新课标书目', '经典原著权威改编', 20, 18.00, 30.00, 26.00, 1, 'http://127.0.0.1/images/book/177.jpg', '2019-05-01 22:51:09', '2019-05-08 19:54:23');
+INSERT INTO `shop_book_list` VALUES (161, 0, '超级大脑', '埃里克·加斯帕尔', '民主与建设出版社', '2', '让孩子成绩稳步提升的37种学习记忆法', '风靡欧洲的脑神经科学学习法，学习不仅靠努力，更要有方法：大脑“模糊”记忆法，列表格重组学习，典型情境法，荧光笔重组理解法，涂鸦笔记……你想要的方法全有了！', 124, 2131.00, 68.00, 43.00, 1, 'http://127.0.0.1/images/book/161.jpg', '2019-03-17 16:26:35', '2019-04-21 21:24:34');
+INSERT INTO `shop_book_list` VALUES (162, 0, '少年世界地理百科全书', '国王路出版有限公司', '中国地图出版社', '2,3', '《少儿视觉世界地图集》升级版', '足不出门见识世界，地理百科地图集，英国国王路精品儿童图书，原《少儿视觉世界地图集》升级版', 101, 1212.00, 248.80, 186.60, 1, 'http://127.0.0.1/images/book/162.jpg', '2019-03-17 16:31:58', '2019-05-19 14:56:11');
+INSERT INTO `shop_book_list` VALUES (163, 0, '地理学与生活', '阿瑟·格蒂斯、朱迪丝·格蒂斯', '北京联合出版有限公司', '3', '插图第11版', '地理学经典之作 美国地理学家协会杰出学者奖获得者领衔编著 生活中应知晓的地理学常识。', 11, 21.00, 110.00, 105.00, 1, 'http://127.0.0.1/images/book/163.jpg', '2019-03-18 14:41:32', '2019-05-05 12:28:52');
+INSERT INTO `shop_book_list` VALUES (164, 0, '共情的力量', '亚瑟·乔拉米卡利', '中国致公出版社', '15', '情商高的人，如何抚慰受伤的灵魂', '作者亲笔签名信全新升级版！如果我早写这本书，我弟弟就不会死了。哈佛大学医学院教授、全球共情研究第1人力作！美国心理学会狂荐！', 3212, 12321.00, 49.80, 42.60, 1, 'http://127.0.0.1/images/book/164.jpg', '2019-03-18 14:43:16', '2019-04-26 11:24:44');
+INSERT INTO `shop_book_list` VALUES (165, 0, '只想和你好好生活', '李松蔚 陈海贤', '江苏凤凰文艺出版社', '15,18,19', '武志红、陈海贤、李松蔚等国内顶级心理专家的亲密关系成长课', '愿你有一段好的亲密关系，让你的情感得到满足，内心完全舒展，释放出自己的力量，加固爱情的城墙。', 112, 213.00, 49.00, 29.00, 1, 'http://127.0.0.1/images/book/165.jpg', '2019-03-18 14:44:29', '2019-04-26 16:19:37');
+INSERT INTO `shop_book_list` VALUES (166, 0, '庆子绘本', '庆子·凯萨兹', '贵州人民出版社', '2', '精选图画书大师庆子·凯萨兹的上乘之作', '包含母爱、自我认同、勇气等主题，荣获多项国际大奖。故事轻快诙谐，画面柔和明丽，语言短小精悍，蕴意深刻。孩子能在快乐的阅读体验中收获感动与成长。', 100, 12.00, 64.00, 57.00, 1, 'http://127.0.0.1/images/book/166.jpg', '2019-03-18 14:53:12', '2019-04-21 21:08:39');
+INSERT INTO `shop_book_list` VALUES (167, 0, '四千年农夫', '富兰克林.H.金', '东方出版社', '6,4', '百年经典著作 规模化PK可持续，谁才是中国农业的未来？', '回望东亚一个世纪前的农业景观，什么是今日中国农业的根本反省？ 美国农业不到百年就穷尽了地力，而中国农耕却历经四千余年，原因何在？', 94, 12.00, 45.00, 32.00, 1, 'http://127.0.0.1/images/book/167.jpg', '2019-03-18 14:57:06', '2019-05-13 21:53:17');
+INSERT INTO `shop_book_list` VALUES (168, 0, '世界园林植物与花卉百科全书', '克里斯托弗.布里克尔', '河南科学技术出版社', '4', '英国皇家园艺学会推荐，8000种植物，4250幅彩图', '畅销多年的园艺百科全书，英国皇家园艺学会推荐，8000种植物，4250幅彩图，全球销量超过200多万册', 122, 12.00, 398.00, 350.00, 1, 'http://127.0.0.1/images/book/168.jpg', '2019-03-18 14:57:06', '2019-04-26 16:21:56');
+INSERT INTO `shop_book_list` VALUES (169, 0, '铃木绘本', '宫西达也、秋山匡', '化学工业出版社', '1,2', '铃木绘本0-3岁快乐成长礼盒装（全15册）', '当当独家大礼盒，日本经典童书品牌，宫西达也等绘本大师出品，涵盖好习惯养成、亲情、友情、生活认知、音乐启蒙等多个主题，培养孩子社交力、适应力、沟通力。', 95, 12.00, 319.00, 210.00, 1, 'http://127.0.0.1/images/book/169.jpg', '2019-03-18 15:00:09', '2019-05-19 07:42:01');
+INSERT INTO `shop_book_list` VALUES (170, 0, '全球科技通史', '吴军', '中信出版社', '1,2', '硅谷投资人吴军博士2019重磅作品', '文津图书奖得主、百万册畅销书作家、硅谷投资人吴军博士2019重磅作品。高文、钱颖一作序推荐。俯瞰一整部人类科技文明史，真正洞察世界变化趋势。', 123, 12.00, 88.00, 78.00, 1, 'http://127.0.0.1/images/book/170.jpg', '2019-03-18 15:00:09', '2019-04-21 20:57:57');
+INSERT INTO `shop_book_list` VALUES (171, 0, '王阳明传', '燕山刀客', '中国友谊出版公司', '14,13', '知行合一的心学圣人', '欲成大事者，不可不读王阳明!一本有料有趣有谱的王阳明传记。融合历史作品的厚重、悬疑小说的张力、戏剧的节奏感，深刻剖析知行合一的神奇威力，生动呈现心学圣人的传奇一生。', 96, 12.00, 48.00, 46.00, 1, 'http://127.0.0.1/images/book/171.jpg', '2019-03-18 15:00:12', '2019-05-01 10:36:34');
+INSERT INTO `shop_book_list` VALUES (172, 0, '深度成长', '科里•夏纳罕', '台海出版社', '12,13', '颠覆思维模式，重新定义成功！', '全面发展不如深度成长，很多人没有取得成功，是因为努力的方向太多，忽略了深挖自身的核心价值！', 123, 12.00, 33.00, 20.00, 1, 'http://127.0.0.1/images/book/172.jpg', '2019-03-18 15:00:12', '2019-04-21 18:30:47');
+INSERT INTO `shop_book_list` VALUES (173, 0, '三体', '刘慈欣', '重庆出版社', '1', '全三册 刘慈欣代表作，亚洲首部“雨果奖”获奖作品！', '《三体》获第73届世界科幻大会颁发的雨果奖*佳长篇小说奖，刘慈欣被授予2018年度克拉克想象力服务社会奖，亚洲首位雨果奖得主。', 6, 12.00, 93.00, 85.00, 1, 'http://127.0.0.1/images/book/173.jpg', '2019-03-18 15:00:14', '2019-04-26 15:36:50');
+INSERT INTO `shop_book_list` VALUES (174, 0, '摆渡人', '[英]克莱儿·麦克福尔', '百花洲文艺出版社', '1,7,19', '系列畅销千万册。如果命运是一条孤独的河流，谁会是你灵魂的摆渡人？', '《青春有你》王喆推荐！畅销欧美33个国家，荣获多项图书大奖。令千万读者灵魂震颤的人性救赎之作。如果我真的存在，也是因为你需要我', 123, 12.00, 36.00, 28.60, 1, 'http://127.0.0.1/images/book/174.jpg', '2019-03-18 15:00:14', '2019-04-21 18:21:53');
+INSERT INTO `shop_book_list` VALUES (175, 0, '人生海海', '麦家', '北京十月文艺出版社', '7', '人生海海（莫言盛赞！高晓松等倾心力荐！麦家2019新作)', '人生海海，何必在意一时沉浮！ 茅盾文学奖得主麦家2019强力之作，挑战常人不敢落笔之处，解密人性的荒唐与高尚。', 100, 12.00, 55.00, 49.50, 1, 'http://127.0.0.1/images/book/175.jpg', '2019-03-18 15:00:17', '2019-04-21 18:18:34');
+INSERT INTO `shop_book_list` VALUES (180, 0, '小林漫画：人间治愈术精选集', '林帝浣', '长江文艺出版社', '1,3', '全二册当当独家印章版，平和的你，才最美丽+生得再平凡，也是限量版', '在联合国总部讲学的中国漫画家，《中国诗词大会》背景绘制者，丰子恺的意蕴、黄永玉的才情、蔡志忠的幽默；人民日报、北京晚报多次力荐', 300, 60.00, 96.00, 70.00, 1, 'http://127.0.0.1/images/book/180.jpg', '2019-05-19 14:51:59', '2019-05-19 14:52:12');
+INSERT INTO `shop_book_list` VALUES (181, 0, '中国历史长卷：手绘年表', '江瑞芹 ', '天津人民出版社', '2,3', '全彩手绘6米长卷，一座博古通今的历史长廊', '精准的时间坐标系，500幅原创插图，前所未有的直观形式，全景呈现5000年中国文明。脉络一目了然，轻松学历史。内容丰富，体量巨大，一本胜过百本。历史爱好者的必备书。', 100, 200.00, 398.00, 260.00, 1, 'http://127.0.0.1/images/book/181.jpg', '2019-05-19 14:51:59', '2019-05-19 14:52:28');
 
 -- ----------------------------
 -- Table structure for shop_delivery_city
@@ -499,7 +502,7 @@ CREATE TABLE `shop_delivery_company`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_delivery_company
@@ -3861,7 +3864,7 @@ CREATE TABLE `shop_info`  (
 -- ----------------------------
 -- Records of shop_info
 -- ----------------------------
-INSERT INTO `shop_info` VALUES (1, '天天书店', 1, '书店成立于2017年，图书种类齐全1，书店成立于2017年，图书种类齐全1，书店成立于2017年，图书种类齐全', '2019-03-28 22:16:55');
+INSERT INTO `shop_info` VALUES (1, '天天书店', 1, '书店成立于2017年，图书种类齐全1，书店成立于2017年，图书种类齐全，\n\n书店成立于2017年，图书种类齐全', '2019-03-28 22:16:55');
 
 -- ----------------------------
 -- Table structure for shop_option_record
@@ -3875,13 +3878,16 @@ CREATE TABLE `shop_option_record`  (
   `remark` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_option_record
 -- ----------------------------
-INSERT INTO `shop_option_record` VALUES (1, '15553598117', '管理员', 1, '测试', '2019-03-12 22:57:31');
-INSERT INTO `shop_option_record` VALUES (5, '15553598117', '管理员1', 0, '更改店铺名称', '2019-03-14 18:18:24');
+INSERT INTO `shop_option_record` VALUES (10, '15553598111', 'pwx', 0, '修改店铺描述', '2019-05-13 21:52:54');
+INSERT INTO `shop_option_record` VALUES (9, '15553598117', '管理员', 0, '开始店铺', '2019-05-13 13:04:05');
+INSERT INTO `shop_option_record` VALUES (8, '15553598117', '管理员', 0, '暂时关闭', '2019-05-13 13:03:46');
+INSERT INTO `shop_option_record` VALUES (11, '15553598117', '管理员', 0, 'sdd', '2019-05-19 14:53:13');
+INSERT INTO `shop_option_record` VALUES (12, '15553598117', '管理员', 0, 'asa', '2019-05-19 14:53:32');
 
 -- ----------------------------
 -- Table structure for shop_order_list
@@ -3900,31 +3906,31 @@ CREATE TABLE `shop_order_list`  (
   `deliveryId` int(11) NULL DEFAULT NULL,
   `deliveryOrderId` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `deliveryAddressId` int(11) NOT NULL,
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `deliveryAt` datetime(0) NULL DEFAULT NULL,
   `dealAt` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 664 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 758 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_order_list
 -- ----------------------------
-INSERT INTO `shop_order_list` VALUES (663, 'D0000000072019231212609', 7, '18706512441', 1, 4, 405.60, 0.00, 405.60, NULL, NULL, 7, '2019-03-31 21:26:09', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (662, 'D0000000122019231212608', 12, '18706712123', 1, 3, 249.00, 4.00, 253.00, NULL, NULL, 12, '2019-03-31 21:26:08', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (661, 'D0000000122019231212607', 12, '18706712123', 1, 3, 895.75, 0.00, 895.75, NULL, NULL, 12, '2019-03-31 21:26:07', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (660, 'D0000000132019231212606', 13, '13566516123', 1, 3, 325.40, 4.00, 329.40, NULL, NULL, 13, '2019-03-31 21:26:06', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (659, 'D0000000072019231212605', 7, '18706512441', 1, 3, 797.00, 5.00, 802.00, NULL, NULL, 7, '2019-03-31 21:26:05', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (658, 'D0000000072019231212604', 7, '18706512441', 1, 2, 90.20, 1.00, 91.20, NULL, NULL, 7, '2019-03-31 21:26:04', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (657, 'D0000000162019231212603', 16, '14947912122', 1, 2, 236.00, 4.00, 240.00, NULL, NULL, 16, '2019-03-31 21:26:03', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (656, 'D0000000132019231212602', 13, '13566516123', 1, 2, 397.00, 1.00, 398.00, NULL, NULL, 13, '2019-03-31 21:26:02', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (655, 'D0000000152019231212601', 15, '16554512123', 1, 4, 650.00, 4.00, 654.00, NULL, NULL, 15, '2019-03-31 21:26:01', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (654, 'D0000000102019231212600', 10, '18706512657', 1, 4, 377.00, 3.00, 380.00, NULL, NULL, 10, '2019-03-31 21:26:00', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (652, 'D0000000132019231212558', 13, '13566516123', 1, 3, 729.60, 1.00, 730.60, NULL, NULL, 13, '2019-03-31 21:25:58', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (653, 'D0000000092019231212559', 9, '18706595468', 6, 3, 734.00, 3.00, 737.00, 1, '75240863667', 9, '2019-03-31 21:25:59', '2019-03-31 21:25:59', NULL);
-INSERT INTO `shop_order_list` VALUES (651, 'D0000000082019231212557', 8, '18706904351', 1, 1, 60.40, 4.00, 64.40, NULL, NULL, 8, '2019-03-31 21:25:57', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (650, 'D0000000012019231212556', 1, '18706512280', 1, 1, 106.00, 0.00, 106.00, NULL, NULL, 21, '2019-03-31 21:25:56', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (649, 'D0000000042019231212555', 4, '18706512132', 1, 1, 21.00, 1.00, 22.00, NULL, NULL, 4, '2019-03-31 21:25:55', NULL, NULL);
-INSERT INTO `shop_order_list` VALUES (648, 'D0000000102019231212554', 10, '18706512657', 1, 4, 182.20, 1.00, 183.20, NULL, NULL, 10, '2019-03-31 21:25:54', NULL, NULL);
+INSERT INTO `shop_order_list` VALUES (748, 'D0000000012019410160742', 1, '15553598112', 6, 1, 19.80, 6.00, 25.80, NULL, NULL, 48, '2131', '2019-05-10 16:07:42', NULL, '2019-05-10 16:07:45');
+INSERT INTO `shop_order_list` VALUES (749, 'D0000000012019411003855', 1, '15553598112', 6, 1, 37.40, 6.00, 43.40, 8, '5156155020222', 47, '21', '2019-05-11 00:38:55', '2019-05-11 00:39:19', '2019-05-11 00:39:03');
+INSERT INTO `shop_order_list` VALUES (750, 'D0000000012019413095314', 1, '15553598112', 7, 1, 32.00, 6.00, 38.00, NULL, NULL, 47, '质量问题', '2019-05-13 09:53:14', NULL, '2019-05-13 11:26:28');
+INSERT INTO `shop_order_list` VALUES (751, 'D0000000012019413130215', 1, '15553598112', 5, 2, 151.37, 0.00, 151.37, 8, '26515651615616', 48, '', '2019-05-13 13:02:15', '2019-05-13 13:02:44', '2019-05-13 13:02:21');
+INSERT INTO `shop_order_list` VALUES (752, 'D0000000012019413215317', 1, '15553598112', 5, 1, 128.00, 6.00, 134.00, 4, '213123123123123', 47, '', '2019-05-13 21:53:17', '2019-05-13 21:53:43', '2019-05-13 21:53:26');
+INSERT INTO `shop_order_list` VALUES (753, 'D0000000012019413220458', 1, '15553598112', 5, 1, 188.40, 0.00, 188.40, 4, '12312312', 48, '', '2019-05-13 22:04:58', '2019-05-13 22:05:21', '2019-05-13 22:05:02');
+INSERT INTO `shop_order_list` VALUES (754, 'D0000000012019418214016', 1, '15553598112', 0, 1, 32.00, 6.00, 38.00, NULL, NULL, 47, '', '2019-05-18 21:40:16', NULL, NULL);
+INSERT INTO `shop_order_list` VALUES (755, 'D0000000012019419074200', 1, '15553598112', 1, 1, 210.00, 0.00, 210.00, NULL, NULL, 48, '', '2019-05-19 07:42:00', NULL, '2019-05-19 07:42:20');
+INSERT INTO `shop_order_list` VALUES (756, 'D0000000012019419100937', 1, '15553598112', 0, 1, 89.00, 6.00, 95.00, NULL, NULL, 47, '', '2019-05-19 10:09:37', NULL, NULL);
+INSERT INTO `shop_order_list` VALUES (757, 'D0000000012019419145611', 1, '15553598112', 7, 2, 622.60, 0.00, 622.60, 8, '332432424242', 48, '2131', '2019-05-19 14:56:11', '2019-05-19 14:57:09', '2019-05-19 14:57:52');
+INSERT INTO `shop_order_list` VALUES (747, 'D0000000202019408200133', 20, '15553598111', 1, 1, 210.00, 0.00, 210.00, NULL, NULL, 49, '', '2019-05-08 20:01:33', NULL, '2019-05-08 20:01:53');
+INSERT INTO `shop_order_list` VALUES (746, 'D0000000012019408195801', 1, '15553598112', 5, 2, 125.17, 6.00, 131.17, 3, '15615265115561', 47, '', '2019-05-08 19:58:01', '2019-05-08 19:58:57', '2019-05-08 19:58:04');
+INSERT INTO `shop_order_list` VALUES (745, 'D0000000012019408195743', 1, '15553598112', 0, 2, 242.00, 0.00, 242.00, NULL, NULL, 47, '', '2019-05-08 19:57:43', NULL, NULL);
+INSERT INTO `shop_order_list` VALUES (744, 'D0000000012019408195723', 1, '15553598112', 1, 1, 125.60, 6.00, 131.60, NULL, NULL, 48, '', '2019-05-08 19:57:23', NULL, '2019-05-08 19:57:27');
+INSERT INTO `shop_order_list` VALUES (743, 'D0000000012019408195622', 1, '15553598112', 1, 1, 210.00, 0.00, 210.00, NULL, NULL, 47, '', '2019-05-08 19:56:22', NULL, '2019-05-08 19:56:27');
 
 -- ----------------------------
 -- Table structure for shop_refund_record
@@ -3940,7 +3946,13 @@ CREATE TABLE `shop_refund_record`  (
   `remark` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 33 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of shop_refund_record
+-- ----------------------------
+INSERT INTO `shop_refund_record` VALUES (31, 'T0000000012019413112628', 'D0000000012019413095314', '15553598112', 7, 38.00, '同意退款', '2019-05-13 11:26:28');
+INSERT INTO `shop_refund_record` VALUES (32, 'T0000000012019419145752', 'D0000000012019419145611', '15553598112', 7, 622.60, '123', '2019-05-19 14:57:52');
 
 -- ----------------------------
 -- Table structure for shop_stock_record
@@ -3956,30 +3968,15 @@ CREATE TABLE `shop_stock_record`  (
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_stock_record
 -- ----------------------------
-INSERT INTO `shop_stock_record` VALUES (1, 1, '三体', 12, 123.00, 0, '21312', '2019-03-18 13:42:53');
-INSERT INTO `shop_stock_record` VALUES (2, 162, '2131', 1, 12.00, 1, '新进图书：修改库存', '2019-03-18 14:40:50');
-INSERT INTO `shop_stock_record` VALUES (3, 156, '红楼梦', 40, 10.00, 1, '新进图书：修改库存', '2019-03-18 14:41:12');
-INSERT INTO `shop_stock_record` VALUES (4, 165, '312213', 213, 213.00, 0, '新进图书：新进图书', '2019-03-18 14:44:32');
-INSERT INTO `shop_stock_record` VALUES (5, 165, '1312', 1, 12.00, 1, '新进图书：修改库存', '2019-03-18 14:48:55');
-INSERT INTO `shop_stock_record` VALUES (6, 165, '312dsdf ', -100, NULL, 2, '删除库存：删除100本', '2019-03-18 14:49:18');
-INSERT INTO `shop_stock_record` VALUES (7, 167, 'fggfh', 100, 12.00, 0, '新进图书：新进图书', '2019-03-18 14:57:06');
-INSERT INTO `shop_stock_record` VALUES (8, 168, '范大r', 123, 12.00, 0, '新进图书：新进图书', '2019-03-18 14:57:06');
-INSERT INTO `shop_stock_record` VALUES (9, 169, 'fg', 100, 12.00, 0, '新进图书：新进图书', '2019-03-18 15:00:09');
-INSERT INTO `shop_stock_record` VALUES (10, 170, 'tgtrh', 123, 12.00, 0, '新进图书：新进图书', '2019-03-18 15:00:09');
-INSERT INTO `shop_stock_record` VALUES (11, 171, 'try', 100, 12.00, 0, '新进图书：新进图书', '2019-03-18 15:00:12');
-INSERT INTO `shop_stock_record` VALUES (12, 172, 'yeter', 123, 12.00, 0, '新进图书：新进图书', '2019-03-18 15:00:12');
-INSERT INTO `shop_stock_record` VALUES (13, 173, '43534', 100, 12.00, 0, '新进图书：新进图书', '2019-03-18 15:00:14');
-INSERT INTO `shop_stock_record` VALUES (14, 174, 'ytghtr', 123, 12.00, 0, '新进图书：新进图书', '2019-03-18 15:00:14');
-INSERT INTO `shop_stock_record` VALUES (15, 175, '4643', 100, 12.00, 0, '新进图书：新进图书', '2019-03-18 15:00:17');
-INSERT INTO `shop_stock_record` VALUES (16, 176, '435ht', 123, 12.00, 0, '新进图书：新进图书', '2019-03-18 15:00:17');
-INSERT INTO `shop_stock_record` VALUES (17, 176, '543tr', 1, 123.00, 1, '新进图书：增加库存', '2019-03-25 23:56:34');
-INSERT INTO `shop_stock_record` VALUES (18, 171, '4534', -1, NULL, 2, '删除库存：2131231', '2019-03-27 21:13:41');
-INSERT INTO `shop_stock_record` VALUES (19, 173, '345', 21312, 1212.00, 1, '新进图书：增加库存', '2019-03-27 21:13:50');
+INSERT INTO `shop_stock_record` VALUES (24, 181, '中国历史长卷：手绘年表', 100, 200.00, 0, '新进图书：新进图书', '2019-05-19 14:51:59');
+INSERT INTO `shop_stock_record` VALUES (23, 180, '小林漫画：人间治愈术精选集', 300, 60.00, 0, '新进图书：新进图书', '2019-05-19 14:51:59');
+INSERT INTO `shop_stock_record` VALUES (22, 178, '三国演义（上下册）', 50, 60.00, 1, '新进图书：增加库存', '2019-05-08 19:55:37');
+INSERT INTO `shop_stock_record` VALUES (21, 179, '我的伯父伯母周恩来邓颖超', 2, 90.00, 1, '新进图书：增加库存', '2019-05-08 19:55:22');
 
 -- ----------------------------
 -- Table structure for shop_sub_order_list
@@ -3997,54 +3994,59 @@ CREATE TABLE `shop_sub_order_list`  (
   `bookImageUrl` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
   `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1588 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 1752 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_sub_order_list
 -- ----------------------------
-INSERT INTO `shop_sub_order_list` VALUES (1563, 655, 10, '三绕太阳', '特价小搜', 4, 55.50, 53.00, 'http://127.0.0.1/images/book/10.jpg', '2019-03-31 21:26:01');
-INSERT INTO `shop_sub_order_list` VALUES (1587, 663, 152, '水太容易', '四大名著', 1, 40.43, 30.20, NULL, '2019-03-31 21:26:09');
-INSERT INTO `shop_sub_order_list` VALUES (1586, 663, 11, '三 儿童', '特价小搜', 5, 55.50, 53.00, 'http://127.0.0.1/images/book/11.jpg', '2019-03-31 21:26:09');
-INSERT INTO `shop_sub_order_list` VALUES (1585, 663, 158, '红楼里的风格', '名著', 5, 20.00, 10.00, NULL, '2019-03-31 21:26:09');
-INSERT INTO `shop_sub_order_list` VALUES (1584, 663, 155, '水太容易', '四大名著', 2, 40.43, 30.20, 'http://127.0.0.1/images/book/155.jpg', '2019-03-31 21:26:09');
-INSERT INTO `shop_sub_order_list` VALUES (1583, 662, 2, '流浪地球', '特价', 3, 55.50, 53.00, 'http://127.0.0.1/images/book/2.jpg', '2019-03-31 21:26:08');
-INSERT INTO `shop_sub_order_list` VALUES (1581, 662, 173, '如', '委任为', 4, 12.00, 12.00, NULL, '2019-03-31 21:26:08');
-INSERT INTO `shop_sub_order_list` VALUES (1582, 662, 163, '123热帖', '2131', 2, 21.00, 21.00, 'http://127.0.0.1/images/book/163.png', '2019-03-31 21:26:08');
-INSERT INTO `shop_sub_order_list` VALUES (1580, 661, 2, '流浪地球', '特价', 2, 55.50, 53.00, 'http://127.0.0.1/images/book/2.jpg', '2019-03-31 21:26:07');
-INSERT INTO `shop_sub_order_list` VALUES (1579, 661, 157, '热特热', '四大名著121', 5, 40.43, 30.15, 'http://127.0.0.1/images/book/157.jpg', '2019-03-31 21:26:07');
-INSERT INTO `shop_sub_order_list` VALUES (1576, 660, 9, '三体', '特价小搜', 3, 55.50, 53.00, NULL, '2019-03-31 21:26:06');
-INSERT INTO `shop_sub_order_list` VALUES (1577, 660, 143, '水浒传', '四大名著', 2, 40.43, 30.20, NULL, '2019-03-31 21:26:06');
-INSERT INTO `shop_sub_order_list` VALUES (1578, 661, 149, '23123让他', '312', 3, 232.00, 213.00, 'http://127.0.0.1/images/book/149.jpg', '2019-03-31 21:26:07');
-INSERT INTO `shop_sub_order_list` VALUES (1572, 659, 9, '三体', '特价小搜', 2, 55.50, 53.00, NULL, '2019-03-31 21:26:05');
-INSERT INTO `shop_sub_order_list` VALUES (1573, 659, 9, '三体', '特价小搜', 5, 55.50, 53.00, NULL, '2019-03-31 21:26:05');
-INSERT INTO `shop_sub_order_list` VALUES (1574, 659, 146, '12321', '12312', 2, 213.00, 213.00, NULL, '2019-03-31 21:26:05');
-INSERT INTO `shop_sub_order_list` VALUES (1575, 660, 8, '三 ', '特价小搜', 2, 55.50, 53.00, 'http://127.0.0.1/images/book/8.jpg', '2019-03-31 21:26:06');
-INSERT INTO `shop_sub_order_list` VALUES (1571, 658, 171, '热', '委任为', 5, 12.00, 12.00, NULL, '2019-03-31 21:26:04');
-INSERT INTO `shop_sub_order_list` VALUES (1570, 658, 156, '投入运营', '四大名著', 1, 40.43, 30.20, NULL, '2019-03-31 21:26:04');
-INSERT INTO `shop_sub_order_list` VALUES (1565, 655, 144, '水浒传二特人 ', '四大名著', 5, 40.43, 30.20, 'http://127.0.0.1/images/book/144.jpg', '2019-03-31 21:26:01');
-INSERT INTO `shop_sub_order_list` VALUES (1569, 657, 1, '三体', '特价图书', 4, 61.00, 53.00, 'http://127.0.0.1/images/book/1.jpg', '2019-03-31 21:26:03');
-INSERT INTO `shop_sub_order_list` VALUES (1568, 657, 175, '二亿人让他', '委任为', 2, 12.00, 12.00, NULL, '2019-03-31 21:26:03');
-INSERT INTO `shop_sub_order_list` VALUES (1567, 656, 162, '2131', '21312', 1, 20.98, 132.00, NULL, '2019-03-31 21:26:02');
-INSERT INTO `shop_sub_order_list` VALUES (1566, 656, 8, '三 ', '特价小搜', 5, 55.50, 53.00, 'http://127.0.0.1/images/book/8.jpg', '2019-03-31 21:26:02');
-INSERT INTO `shop_sub_order_list` VALUES (1564, 655, 154, '红楼梦try让他', '四大名著', 5, 40.43, 30.20, NULL, '2019-03-31 21:26:01');
-INSERT INTO `shop_sub_order_list` VALUES (1562, 655, 170, '范热帖', '213', 4, 43.00, 34.00, NULL, '2019-03-31 21:26:01');
-INSERT INTO `shop_sub_order_list` VALUES (1560, 654, 158, '红楼里的风格', '名著', 1, 20.00, 10.00, NULL, '2019-03-31 21:26:00');
-INSERT INTO `shop_sub_order_list` VALUES (1561, 654, 8, '三 ', '特价小搜', 4, 55.50, 53.00, 'http://127.0.0.1/images/book/8.jpg', '2019-03-31 21:26:00');
-INSERT INTO `shop_sub_order_list` VALUES (1558, 654, 172, '尔特', '213', 3, 43.00, 34.00, NULL, '2019-03-31 21:26:00');
-INSERT INTO `shop_sub_order_list` VALUES (1559, 654, 7, '三体 热', '特价小搜', 1, 55.50, 53.00, 'http://127.0.0.1/images/book/7.jpg', '2019-03-31 21:26:00');
-INSERT INTO `shop_sub_order_list` VALUES (1556, 653, 174, '范尔特人', '213', 1, 43.00, 34.00, NULL, '2019-03-31 21:25:59');
-INSERT INTO `shop_sub_order_list` VALUES (1557, 653, 162, '2131', '21312', 5, 20.98, 132.00, NULL, '2019-03-31 21:25:59');
-INSERT INTO `shop_sub_order_list` VALUES (1554, 652, 164, '213123', '32', 2, 213.00, 213.00, NULL, '2019-03-31 21:25:58');
-INSERT INTO `shop_sub_order_list` VALUES (1555, 653, 158, '红楼里的风格', '名著', 4, 20.00, 10.00, NULL, '2019-03-31 21:25:59');
-INSERT INTO `shop_sub_order_list` VALUES (1552, 652, 164, '213123', '32', 1, 213.00, 213.00, NULL, '2019-03-31 21:25:58');
-INSERT INTO `shop_sub_order_list` VALUES (1553, 652, 150, '水浒绕太阳', '四大名著', 3, 40.43, 30.20, 'http://127.0.0.1/images/book/150.jpg', '2019-03-31 21:25:58');
-INSERT INTO `shop_sub_order_list` VALUES (1550, 650, 7, '三体 热', '特价小搜', 2, 55.50, 53.00, 'http://127.0.0.1/images/book/7.jpg', '2019-03-31 21:25:56');
-INSERT INTO `shop_sub_order_list` VALUES (1551, 651, 152, '水太容易', '四大名著', 2, 40.43, 30.20, NULL, '2019-03-31 21:25:57');
-INSERT INTO `shop_sub_order_list` VALUES (1547, 648, 158, '红楼里的风格', '名著', 1, 20.00, 10.00, NULL, '2019-03-31 21:25:54');
-INSERT INTO `shop_sub_order_list` VALUES (1548, 648, 175, '二亿人让他', '委任为', 3, 12.00, 12.00, NULL, '2019-03-31 21:25:54');
-INSERT INTO `shop_sub_order_list` VALUES (1549, 649, 163, '123热帖', '2131', 1, 21.00, 21.00, 'http://127.0.0.1/images/book/163.png', '2019-03-31 21:25:55');
-INSERT INTO `shop_sub_order_list` VALUES (1546, 648, 152, '水太容易', '四大名著', 1, 40.43, 30.20, NULL, '2019-03-31 21:25:54');
-INSERT INTO `shop_sub_order_list` VALUES (1545, 648, 10, '三绕太阳', '特价小搜', 2, 55.50, 53.00, 'http://127.0.0.1/images/book/10.jpg', '2019-03-31 21:25:54');
+INSERT INTO `shop_sub_order_list` VALUES (1751, 757, 9, '军事百科典藏书系', '海军武器大百科（第二版）', 1, 69.80, 62.80, 'http://127.0.0.1/images/book/9.jpg', '2019-05-19 14:56:11');
+INSERT INTO `shop_sub_order_list` VALUES (1750, 757, 162, '少年世界地理百科全书', '《少儿视觉世界地图集》升级版', 3, 248.80, 186.60, 'http://127.0.0.1/images/book/162.jpg', '2019-05-19 14:56:11');
+INSERT INTO `shop_sub_order_list` VALUES (1749, 756, 179, '我的伯父伯母周恩来邓颖超', '2018中国好书获奖作品', 1, 100.00, 89.00, 'http://127.0.0.1/images/book/179.jpg', '2019-05-19 10:09:37');
+INSERT INTO `shop_sub_order_list` VALUES (1748, 755, 169, '铃木绘本', '铃木绘本0-3岁快乐成长礼盒装（全15册）', 1, 319.00, 210.00, 'http://127.0.0.1/images/book/169.jpg', '2019-05-19 07:42:01');
+INSERT INTO `shop_sub_order_list` VALUES (1746, 753, 9, '军事百科典藏书系', '海军武器大百科（第二版）', 3, 69.80, 62.80, 'http://127.0.0.1/images/book/9.jpg', '2019-05-13 22:04:59');
+INSERT INTO `shop_sub_order_list` VALUES (1747, 754, 11, '边城', '沈从文小说精粹（一曲爱与美的田园牧歌）', 1, 32.00, 32.00, 'http://127.0.0.1/images/book/11.jpg', '2019-05-18 21:40:16');
+INSERT INTO `shop_sub_order_list` VALUES (1744, 751, 179, '我的伯父伯母周恩来邓颖超', '2018中国好书获奖作品', 1, 100.00, 89.00, 'http://127.0.0.1/images/book/179.jpg', '2019-05-13 13:02:15');
+INSERT INTO `shop_sub_order_list` VALUES (1745, 752, 167, '四千年农夫', '百年经典著作 规模化PK可持续，谁才是中国农业的未来？', 4, 45.00, 32.00, 'http://127.0.0.1/images/book/167.jpg', '2019-05-13 21:53:17');
+INSERT INTO `shop_sub_order_list` VALUES (1743, 751, 2, '天文星座观测', '全天88星座漫游指南', 1, 79.00, 62.37, 'http://127.0.0.1/images/book/2.jpg', '2019-05-13 13:02:15');
+INSERT INTO `shop_sub_order_list` VALUES (1742, 750, 167, '四千年农夫', '百年经典著作 规模化PK可持续，谁才是中国农业的未来？', 1, 45.00, 32.00, 'http://127.0.0.1/images/book/167.jpg', '2019-05-13 09:53:14');
+INSERT INTO `shop_sub_order_list` VALUES (1741, 749, 148, '黄雀记', '苏童第九届茅盾文学获奖作品', 1, 52.00, 37.40, 'http://127.0.0.1/images/book/148.jpg', '2019-05-11 00:38:55');
+INSERT INTO `shop_sub_order_list` VALUES (1740, 748, 154, '常春藤传记馆', '常春藤传记馆', 1, 20.80, 19.80, 'http://127.0.0.1/images/book/154.jpg', '2019-05-10 16:07:42');
+INSERT INTO `shop_sub_order_list` VALUES (1739, 747, 169, '铃木绘本', '铃木绘本0-3岁快乐成长礼盒装（全15册）', 1, 319.00, 210.00, 'http://127.0.0.1/images/book/169.jpg', '2019-05-08 20:01:33');
+INSERT INTO `shop_sub_order_list` VALUES (1738, 746, 9, '军事百科典藏书系', '海军武器大百科（第二版）', 1, 69.80, 62.80, 'http://127.0.0.1/images/book/9.jpg', '2019-05-08 19:58:01');
+INSERT INTO `shop_sub_order_list` VALUES (1737, 746, 2, '天文星座观测', '全天88星座漫游指南', 1, 79.00, 62.37, 'http://127.0.0.1/images/book/2.jpg', '2019-05-08 19:58:01');
+INSERT INTO `shop_sub_order_list` VALUES (1736, 745, 167, '四千年农夫', '百年经典著作 规模化PK可持续，谁才是中国农业的未来？', 1, 45.00, 32.00, 'http://127.0.0.1/images/book/167.jpg', '2019-05-08 19:57:43');
+INSERT INTO `shop_sub_order_list` VALUES (1735, 745, 169, '铃木绘本', '铃木绘本0-3岁快乐成长礼盒装（全15册）', 1, 319.00, 210.00, 'http://127.0.0.1/images/book/169.jpg', '2019-05-08 19:57:43');
+INSERT INTO `shop_sub_order_list` VALUES (1733, 743, 169, '铃木绘本', '铃木绘本0-3岁快乐成长礼盒装（全15册）', 1, 319.00, 210.00, 'http://127.0.0.1/images/book/169.jpg', '2019-05-08 19:56:22');
+INSERT INTO `shop_sub_order_list` VALUES (1734, 744, 9, '军事百科典藏书系', '海军武器大百科（第二版）', 2, 69.80, 62.80, 'http://127.0.0.1/images/book/9.jpg', '2019-05-08 19:57:23');
+
+-- ----------------------------
+-- Table structure for shop_user_cart_list
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_user_cart_list`;
+CREATE TABLE `shop_user_cart_list`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `bookId` int(11) NOT NULL,
+  `count` int(11) NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `author` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `press` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` float(10, 2) NOT NULL,
+  `salePrice` float(10, 2) NOT NULL,
+  `stock` int(11) NOT NULL,
+  `imageUrl` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of shop_user_cart_list
+-- ----------------------------
+INSERT INTO `shop_user_cart_list` VALUES (43, 1, 174, 5, '摆渡人', '[英]克莱儿·麦克福尔', '百花洲文艺出版社', '系列畅销千万册。如果命运是一条孤独的河流，谁会是你灵魂的摆渡人？', '《青春有你》王喆推荐！畅销欧美33个国家，荣获多项图书大奖。令千万读者灵魂震颤的人性救赎之作。如果我真的存在，也是因为你需要我', 36.00, 28.60, 123, 'http://127.0.0.1/images/book/174.jpg', '2019-05-19 07:47:01');
+INSERT INTO `shop_user_cart_list` VALUES (30, 20, 169, 1, '铃木绘本', '宫西达也、秋山匡', '化学工业出版社', '铃木绘本0-3岁快乐成长礼盒装（全15册）', '当当独家大礼盒，日本经典童书品牌，宫西达也等绘本大师出品，涵盖好习惯养成、亲情、友情、生活认知、音乐启蒙等多个主题，培养孩子社交力、适应力、沟通力。', 319.00, 210.00, 97, 'http://127.0.0.1/images/book/169.jpg', '2019-05-08 20:01:01');
+INSERT INTO `shop_user_cart_list` VALUES (44, 1, 173, 1, '三体', '刘慈欣', '重庆出版社', '全三册 刘慈欣代表作，亚洲首部“雨果奖”获奖作品！', '《三体》获第73届世界科幻大会颁发的雨果奖*佳长篇小说奖，刘慈欣被授予2018年度克拉克想象力服务社会奖，亚洲首位雨果奖得主。', 93.00, 85.00, 6, 'http://127.0.0.1/images/book/173.jpg', '2019-05-19 14:55:45');
 
 -- ----------------------------
 -- Table structure for shop_user_delivery
@@ -4053,6 +4055,7 @@ DROP TABLE IF EXISTS `shop_user_delivery`;
 CREATE TABLE `shop_user_delivery`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 0,
   `deliveryName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `deliveryMobile` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `provinceId` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -4063,35 +4066,14 @@ CREATE TABLE `shop_user_delivery`  (
   `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 50 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_user_delivery
 -- ----------------------------
-INSERT INTO `shop_user_delivery` VALUES (1, 1, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '天安门', 1, '2019-03-15 18:22:47', '2019-03-15 18:22:47');
-INSERT INTO `shop_user_delivery` VALUES (2, 2, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '21312', 1, '2019-03-15 19:32:23', '2019-03-15 19:32:23');
-INSERT INTO `shop_user_delivery` VALUES (3, 3, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '31', 1, '2019-03-15 19:32:23', '2019-03-15 19:32:23');
-INSERT INTO `shop_user_delivery` VALUES (4, 4, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '123', 1, '2019-03-15 19:32:24', '2019-03-15 19:32:24');
-INSERT INTO `shop_user_delivery` VALUES (5, 5, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '12', 1, '2019-03-15 19:32:27', '2019-03-15 19:32:27');
-INSERT INTO `shop_user_delivery` VALUES (6, 6, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '21', 1, '2019-03-15 19:32:28', '2019-03-15 19:32:28');
-INSERT INTO `shop_user_delivery` VALUES (7, 7, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '321', 1, '2019-03-15 19:32:31', '2019-03-15 19:32:31');
-INSERT INTO `shop_user_delivery` VALUES (8, 8, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '321', 1, '2019-03-15 19:32:31', '2019-03-15 19:32:31');
-INSERT INTO `shop_user_delivery` VALUES (9, 9, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '12', 1, '2019-03-15 19:32:34', '2019-03-15 19:32:34');
-INSERT INTO `shop_user_delivery` VALUES (10, 10, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '3', 1, '2019-03-15 19:32:35', '2019-03-15 19:32:35');
-INSERT INTO `shop_user_delivery` VALUES (11, 11, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '1', 1, '2019-03-15 19:32:37', '2019-03-15 19:32:37');
-INSERT INTO `shop_user_delivery` VALUES (12, 12, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '321321', 1, '2019-03-15 19:32:37', '2019-03-15 19:32:37');
-INSERT INTO `shop_user_delivery` VALUES (13, 13, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '321321', 1, '2019-03-15 19:32:37', '2019-03-15 19:32:37');
-INSERT INTO `shop_user_delivery` VALUES (14, 14, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '123', 1, '2019-03-15 19:32:39', '2019-03-15 19:32:39');
-INSERT INTO `shop_user_delivery` VALUES (15, 15, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '4343534fdg', 1, '2019-03-15 19:32:39', '2019-03-15 19:32:39');
-INSERT INTO `shop_user_delivery` VALUES (16, 16, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '123', 1, '2019-03-15 19:32:40', '2019-03-15 19:32:40');
-INSERT INTO `shop_user_delivery` VALUES (17, 17, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '213', 1, '2019-03-15 19:32:41', '2019-03-15 19:32:41');
-INSERT INTO `shop_user_delivery` VALUES (18, 11, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '21', 1, '2019-03-15 19:32:42', '2019-03-15 19:32:42');
-INSERT INTO `shop_user_delivery` VALUES (19, 11, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '213', 1, '2019-03-15 19:32:42', '2019-03-15 19:32:42');
-INSERT INTO `shop_user_delivery` VALUES (20, 11, '张三', '15553598117', '110000000000', '110100000000', '110101000000', '12', 1, '2019-03-15 19:32:42', '2019-03-15 19:32:42');
-INSERT INTO `shop_user_delivery` VALUES (21, 1, '里斯', '166621312', '120000000000', '120100000000', '120104000000', '新地址', 0, '2019-03-22 19:48:58', '2019-03-22 19:48:58');
-INSERT INTO `shop_user_delivery` VALUES (22, 1, '王五', '213', '220000000000', '220400000000', '220421000000', 'sdf', 0, '2019-03-22 20:00:05', '2019-03-22 20:00:05');
-INSERT INTO `shop_user_delivery` VALUES (23, 1, '李六', '213', '140000000000', '140400000000', '140414000000', '321', 0, '2019-03-22 20:00:59', '2019-03-22 20:00:59');
-INSERT INTO `shop_user_delivery` VALUES (24, 5, '张三', '12312412', '130000000000', '130200000000', '130202000000', '21312', 0, '2019-03-29 22:16:54', '2019-03-29 22:16:54');
+INSERT INTO `shop_user_delivery` VALUES (49, 20, 0, '王五', '15553539811', '150000000000', '150400000000', '150403000000', '王家庄', 1, '2019-05-08 20:01:30', '2019-05-08 20:01:30');
+INSERT INTO `shop_user_delivery` VALUES (48, 1, 0, '李四', '15553598112', '230000000000', '230300000000', '230303000000', '将军街道', 0, '2019-05-08 19:57:19', '2019-05-08 19:57:19');
+INSERT INTO `shop_user_delivery` VALUES (47, 1, 0, '张三', '15553598112', '150000000000', '150500000000', '150522000000', '张家庄', 1, '2019-05-08 19:56:19', '2019-05-08 19:56:19');
 
 -- ----------------------------
 -- Table structure for shop_user_list
@@ -4102,6 +4084,7 @@ CREATE TABLE `shop_user_list`  (
   `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `nickname` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `pwd` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `payPwd` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sex` int(11) NULL DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 0,
   `email` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
@@ -4109,27 +4092,12 @@ CREATE TABLE `shop_user_list`  (
   `createdAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 21 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of shop_user_list
 -- ----------------------------
-INSERT INTO `shop_user_list` VALUES (1, '18706512280', '张三', '1', 1, 0, '181828@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512280.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (2, '18706512281', '里斯', '0', 0, 1, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512281.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (3, '18706512284', '里斯1', 'bb977426b4b867914626650e249cdb9e', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512284.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (4, '18706512132', '1231', '0', 0, 1, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512121.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (5, '18324242344', '1231', '0', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (6, '18706513453', '1231', '0', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (7, '18706512441', '1231', '0', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (8, '18706904351', '1231', '61c4b7810c575e0cee1ebf6cc3b0feb2', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (9, '18706595468', '1231', '0', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (10, '18706512657', '1231', '0', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (11, '18706452123', '1231', '0', 0, 1, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg?q-sign-algorithm=sha1&q-ak=AKIDcJtnaNKls7nnJdglTbX5SY9mvc6kj1G5&q-sign-time=1552710093;1552711893&q-key-time=1552710093;1552711893&q-header-list=&q-url-param-list=&q-signature=fbc98eef04da1737a386c4b6c822acae1e499738&x-cos-security-https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (12, '18706712123', '1231', '0', 0, 1, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (13, '13566516123', '1231', '1d52e155dc24482b0ac71f58db5c0941', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (14, '18643512128', '1231', '0', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (15, '16554512123', '1231', '4769eeb0322bdfe3768ed5271d3419a8', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (16, '14947912122', '1231', '603d4c66d1e3d4ff8ae8a5deed016b24', 0, 1, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
-INSERT INTO `shop_user_list` VALUES (17, '15675121215', '1231', '06499517193845ef333fdbebf86ab374', 0, 0, '1818281221@qq.com', 'https://shop-store-management-1258820804.cos.ap-guangzhou.myqcloud.com/users/userAvatar/18706512123.jpg', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
+INSERT INTO `shop_user_list` VALUES (1, '15553598112', '张三', '9360a8c6c832b423dafae38ccceb0b7c', '96e79218965eb72c92a549dd5a330112', 0, 0, '181828@qq.com', 'http://127.0.0.1/images/user/15553598112.png', '2019-03-13 19:02:08', '2019-03-14 19:02:08');
+INSERT INTO `shop_user_list` VALUES (20, '15553598111', '15553598111', '9360a8c6c832b423dafae38ccceb0b7c', '96e79218965eb72c92a549dd5a330112', NULL, 0, NULL, NULL, '2019-05-08 20:00:53', '2019-05-08 20:00:53');
 
 SET FOREIGN_KEY_CHECKS = 1;
