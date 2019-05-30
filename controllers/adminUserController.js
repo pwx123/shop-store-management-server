@@ -1,7 +1,7 @@
 const formidable = require("formidable");
 const fs = require("fs");
 const path = require("path");
-const rsaKey = require("../config/rsa");
+const nodeRSA = require("node-rsa");
 const logger = require("../config/log4j");
 const resMsg = require("../utils/utils").resMsg;
 const hasEmpty = require("../utils/utils").hasEmpty;
@@ -24,7 +24,11 @@ class adminUserController {
     try {
       let name = req.body.name;
       let pwd = decodeURI(req.body.pwd);
-      let decryptPwd = rsaKey.decrypt(pwd, "utf8");
+      const key = new nodeRSA({b: 512});
+      key.setOptions({encryptionScheme: "pkcs1"});
+      let privateKey = req.session.privateKey;
+      key.importKey(privateKey, "pkcs1");
+      let decryptPwd = key.decrypt(pwd, "utf8");
       if (hasEmpty(name, decryptPwd)) {
         res.json(resMsg(9001));
         return false;
@@ -63,8 +67,12 @@ class adminUserController {
       let nickname = req.body.nickname;
       let pwd = decodeURI(req.body.pwd);
       let repPwd = decodeURI(req.body.repPwd);
-      let decryptPwd = rsaKey.decrypt(pwd, "utf8");
-      let decryptRepPwd = rsaKey.decrypt(repPwd, "utf8");
+      const key = new nodeRSA({b: 512});
+      key.setOptions({encryptionScheme: "pkcs1"});
+      let privateKey = req.session.privateKey;
+      key.importKey(privateKey, "pkcs1");
+      let decryptPwd = key.decrypt(pwd, "utf8");
+      let decryptRepPwd = key.decrypt(repPwd, "utf8");
       if (hasEmpty(name, decryptPwd, decryptRepPwd, nickname) || !mobileReg.test(name) || nickname.length > 20) {
         res.json(resMsg(9001));
         return false;
@@ -146,9 +154,13 @@ class adminUserController {
       let pwd = decodeURI(req.body.pwd);
       let newPwd = decodeURI(req.body.newPwd);
       let repNewPwd = decodeURI(req.body.repNewPwd);
-      let decryptPwd = rsaKey.decrypt(pwd, "utf8");
-      let decryptNewPwd = rsaKey.decrypt(newPwd, "utf8");
-      let decryptRepNewPwd = rsaKey.decrypt(repNewPwd, "utf8");
+      const key = new nodeRSA({b: 512});
+      key.setOptions({encryptionScheme: "pkcs1"});
+      let privateKey = req.session.privateKey;
+      key.importKey(privateKey, "pkcs1");
+      let decryptPwd = key.decrypt(pwd, "utf8");
+      let decryptNewPwd = key.decrypt(newPwd, "utf8");
+      let decryptRepNewPwd = key.decrypt(repNewPwd, "utf8");
       if (hasEmpty(decryptPwd, decryptNewPwd, decryptRepNewPwd)) {
         res.json(resMsg(9001));
         return false;
