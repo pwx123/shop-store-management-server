@@ -1,9 +1,9 @@
 var session = require("express-session");
-var redis = require("./redisConnect").reids;
+var redis = require("./redisConnect").redis;
 var redisStore = require("connect-redis")(session);
 
 module.exports = session({
-  store: new redisStore({
+  store: new redisStore({ // 存储在Redis服务器中
     client: redis,
     prefix: ""
   }),

@@ -51,6 +51,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER(11),
       allowNull: false
     },
+    remark: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     createdAt: {
       type: DataTypes.DATE,
       get() {

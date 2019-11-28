@@ -15,7 +15,7 @@ var shopRouter = require("./routes/shop");
 var orderRouter = require("./routes/order");
 var apiRouter = require("./routes/api");
 
-const noSessionUrl = ["/admin/login", "/admin/register", "/getPublicKey", "/getUserList", "/api/getOrder"];
+const noSessionUrl = ["/admin/login", "/admin/register", "/getPublicKey", "/getUserList", "/api/getOrder", "/api/orderNotify"];
 
 var app = express();
 

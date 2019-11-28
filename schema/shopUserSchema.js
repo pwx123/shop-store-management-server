@@ -19,6 +19,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    payPwd: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     sex: {
       type: DataTypes.INTEGER(11),
       allowNull: true

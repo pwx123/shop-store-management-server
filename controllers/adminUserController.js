@@ -1,7 +1,7 @@
 const formidable = require("formidable");
 const fs = require("fs");
 const path = require("path");
-const nodeRSA = require("node-rsa");
+const rsaKey = require("../config/rsa");
 const logger = require("../config/log4j");
 const resMsg = require("../utils/utils").resMsg;
 const hasEmpty = require("../utils/utils").hasEmpty;
@@ -24,25 +24,22 @@ class adminUserController {
     try {
       let name = req.body.name;
       let pwd = decodeURI(req.body.pwd);
-      const key = new nodeRSA({b: 512});
-      key.setOptions({encryptionScheme: "pkcs1"});
-      let privateKey = req.session.privateKey;
-      key.importKey(privateKey, "pkcs1");
-      let decryptPwd = key.decrypt(pwd, "utf8");
+      let decryptPwd = rsaKey.decrypt(pwd, "utf8"); // 私钥解密密码
       if (hasEmpty(name, decryptPwd)) {
         res.json(resMsg(9001));
         return false;
       } else {
-        let result = await adminUserModel.getUserInfo(name);
+        let result = await adminUserModel.getUserInfo(name); // 更加用户名获取用户信息
         if (result === null) {
-          res.json(resMsg(1001));
+          res.json(resMsg(1001)); // 无此用户
           return false;
         }
-        if (decryptPwd === result.pwd) {
-          req.session.loginUser = result.name;
+        if (decryptPwd === result.pwd) { // 判断密码是否正确
+          req.session.loginUser = result.name; // 登录成功后设置成功标识
+          req.session.loginId = result.id;
           res.json(resMsg(200));
         } else {
-          res.json(resMsg(1002));
+          res.json(resMsg(1002)); // 密码错误
         }
       }
     } catch (error) {
@@ -67,12 +64,8 @@ class adminUserController {
       let nickname = req.body.nickname;
       let pwd = decodeURI(req.body.pwd);
       let repPwd = decodeURI(req.body.repPwd);
-      const key = new nodeRSA({b: 512});
-      key.setOptions({encryptionScheme: "pkcs1"});
-      let privateKey = req.session.privateKey;
-      key.importKey(privateKey, "pkcs1");
-      let decryptPwd = key.decrypt(pwd, "utf8");
-      let decryptRepPwd = key.decrypt(repPwd, "utf8");
+      let decryptPwd = rsaKey.decrypt(pwd, "utf8");
+      let decryptRepPwd = rsaKey.decrypt(repPwd, "utf8");
       if (hasEmpty(name, decryptPwd, decryptRepPwd, nickname) || !mobileReg.test(name) || nickname.length > 20) {
         res.json(resMsg(9001));
         return false;
@@ -154,13 +147,9 @@ class adminUserController {
       let pwd = decodeURI(req.body.pwd);
       let newPwd = decodeURI(req.body.newPwd);
       let repNewPwd = decodeURI(req.body.repNewPwd);
-      const key = new nodeRSA({b: 512});
-      key.setOptions({encryptionScheme: "pkcs1"});
-      let privateKey = req.session.privateKey;
-      key.importKey(privateKey, "pkcs1");
-      let decryptPwd = key.decrypt(pwd, "utf8");
-      let decryptNewPwd = key.decrypt(newPwd, "utf8");
-      let decryptRepNewPwd = key.decrypt(repNewPwd, "utf8");
+      let decryptPwd = rsaKey.decrypt(pwd, "utf8");
+      let decryptNewPwd = rsaKey.decrypt(newPwd, "utf8");
+      let decryptRepNewPwd = rsaKey.decrypt(repNewPwd, "utf8");
       if (hasEmpty(decryptPwd, decryptNewPwd, decryptRepNewPwd)) {
         res.json(resMsg(9001));
         return false;
