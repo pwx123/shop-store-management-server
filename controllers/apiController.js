@@ -63,23 +63,29 @@ class apiController {
       let {type} = req.body;
       for (let key of Object.keys(req.app.io.sockets.sockets)) {
         let socket = req.app.io.sockets.sockets[key];
-        let sessionID = socket.request.sessionID;
-        socket.request.sessionStore.client.get(sessionID, function (err, result) {
-          if (err) {
-            logger.error(err);
-          } else {
-            if (result) {
-              if (type === 1) {
-                socket.emit("hasNewOrder", resMsg(200));
-              } else if (type === 6) {
-                socket.emit("hasNewRefundOrder", resMsg(200));
-              }
-            } else {
-              socket.emit("err", resMsg(401));
-              socket.disconnect(true);
-            }
-          }
-        });
+        // let sessionID = socket.request.sessionID;
+        if (type === 1) {
+          socket.emit("hasNewOrder", resMsg(200));
+        } else if (type === 6) {
+          socket.emit("hasNewRefundOrder", resMsg(200));
+        }
+        // 取消了 socket 鉴权，代码丢失，忘记怎么改的了
+        // socket.request.sessionStore.client.get(sessionID, function (err, result) {
+        //   if (err) {
+        //     logger.error(err);
+        //   } else {
+        //     if (result) {
+        //       if (type === 1) {
+        //         socket.emit("hasNewOrder", resMsg(200));
+        //       } else if (type === 6) {
+        //         socket.emit("hasNewRefundOrder", resMsg(200));
+        //       }
+        //     } else {
+        //       socket.emit("err", resMsg(401));
+        //       socket.disconnect(true);
+        //     }
+        //   }
+        // });
       }
       res.json(resMsg(200));
     } catch (error) {

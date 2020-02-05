@@ -23,14 +23,6 @@ var io = require("socket.io").listen(app.listen(3000));
 io.sockets.use(function (socket, next) {
   sessionMiddleware(socket.request, socket.request.res, next);
 });
-io.sockets.use(function (socket, next) {
-  if (socket.request.session.loginUser && typeof socket.request.session.loginUser === "string") {
-    next();
-  } else {
-    socket.emit("err", resMsg(401));
-    socket.disconnect(true);
-  }
-});
 io.sockets.on("connection", (socket) => {
   console.log("\x1B[32m new socket.io connection successfully\x1B[0m");
 });
